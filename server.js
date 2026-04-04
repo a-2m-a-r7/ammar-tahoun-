@@ -1914,30 +1914,39 @@ const server = createServer(async (req, res) => {
   }
 });
 
-await ensureJsonFile(CONTACT_FILE, []);
-try {
-  await migrateLegacyMediaIfNeeded();
-  await ensureDirectory(MEDIA_DIR);
-  await ensureDirectory(PROFILE_MEDIA_DIR);
-  await ensureDirectory(PROJECT_MEDIA_DIR);
-} catch (error) {
-  if (MEDIA_DIR !== LEGACY_MEDIA_DIR) {
-    console.warn(`[media] Falling back to workspace media storage because "${MEDIA_DIR}" is not writable.`);
-    setActiveMediaDirectory(LEGACY_MEDIA_DIR);
+export default async function handler(req, res) {
+  return new Promise((resolve) => {
+    server.emit("request", req, res);
+    res.on("finish", resolve);
+  });
+}
+
+if (!process.env.VERCEL) {
+  await ensureJsonFile(CONTACT_FILE, []);
+  try {
+    await migrateLegacyMediaIfNeeded();
     await ensureDirectory(MEDIA_DIR);
     await ensureDirectory(PROFILE_MEDIA_DIR);
     await ensureDirectory(PROJECT_MEDIA_DIR);
-  } else {
-    throw error;
+  } catch (error) {
+    if (MEDIA_DIR !== LEGACY_MEDIA_DIR) {
+      console.warn(`[media] Falling back to workspace media storage because "${MEDIA_DIR}" is not writable.`);
+      setActiveMediaDirectory(LEGACY_MEDIA_DIR);
+      await ensureDirectory(MEDIA_DIR);
+      await ensureDirectory(PROFILE_MEDIA_DIR);
+      await ensureDirectory(PROJECT_MEDIA_DIR);
+    } else {
+      throw error;
+    }
   }
-}
 
-server.listen(PORT, () => {
-  console.log(`Portfolio server is running on http://localhost:${PORT}`);
-  console.log(`[media] Active storage directory: ${MEDIA_DIR}`);
-  if (!ADMIN_TOKEN) {
-    console.warn("[admin] PORTFOLIO_ADMIN_TOKEN is missing — admin login will fail. Add it to .env next to server.js.");
-  } else {
-    console.log("[admin] Admin API enabled (PORTFOLIO_ADMIN_TOKEN loaded).");
-  }
-});
+  server.listen(PORT, () => {
+    console.log(`Portfolio server is running on http://localhost:${PORT}`);
+    console.log(`[media] Active storage directory: ${MEDIA_DIR}`);
+    if (!ADMIN_TOKEN) {
+      console.warn("[admin] PORTFOLIO_ADMIN_TOKEN is missing — admin login will fail. Add it to .env next to server.js.");
+    } else {
+      console.log("[admin] Admin API enabled (PORTFOLIO_ADMIN_TOKEN loaded).");
+    }
+  });
+}
