@@ -1,0 +1,27 @@
+<svg width="1280" height="800" viewBox="0 0 1280 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1280" height="800" rx="40" fill="#FFF6EE"/>
+  <rect x="60" y="64" width="1160" height="672" rx="32" fill="#FFFFFF" stroke="#E8D9CC"/>
+  <rect x="104" y="118" width="460" height="564" rx="28" fill="url(#paint0_linear)"/>
+  <rect x="610" y="118" width="560" height="110" rx="24" fill="#FFF0E8"/>
+  <rect x="610" y="256" width="560" height="182" rx="24" fill="#FFF0E8"/>
+  <rect x="610" y="466" width="268" height="216" rx="24" fill="#FFF0E8"/>
+  <rect x="902" y="466" width="268" height="216" rx="24" fill="#FFF0E8"/>
+  <circle cx="334" cy="286" r="134" fill="#FFFFFF" fill-opacity="0.18"/>
+  <rect x="684" y="152" width="320" height="26" rx="13" fill="#111827"/>
+  <rect x="684" y="194" width="200" height="14" rx="7" fill="#7A8799"/>
+  <rect x="652" y="294" width="220" height="18" rx="9" fill="#111827"/>
+  <rect x="652" y="332" width="420" height="12" rx="6" fill="#B6C0CC"/>
+  <rect x="652" y="360" width="420" height="12" rx="6" fill="#B6C0CC"/>
+  <rect x="652" y="388" width="260" height="12" rx="6" fill="#B6C0CC"/>
+  <rect x="652" y="520" width="176" height="18" rx="9" fill="#111827"/>
+  <rect x="652" y="552" width="184" height="14" rx="7" fill="#7A8799"/>
+  <rect x="944" y="520" width="176" height="18" rx="9" fill="#111827"/>
+  <rect x="944" y="552" width="184" height="14" rx="7" fill="#7A8799"/>
+  <text x="100" y="92" fill="#111827" font-size="36" font-family="Bahnschrift, Arial, sans-serif">Atlas Commerce Experience</text>
+  <defs>
+    <linearGradient id="paint0_linear" x1="104" y1="118" x2="564" y2="682" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1C7DF7"/>
+      <stop offset="1" stop-color="#FF7A59"/>
+    </linearGradient>
+  </defs>
+</svg>

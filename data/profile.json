@@ -1,0 +1,394 @@
+{
+  "site": {
+    "title": "Ammar Tahoon | Futuristic Developer Portfolio",
+    "description": "Ultra-premium futuristic portfolio for Ammar Tahoon, showcasing cinematic frontend work, AI-powered products, premium UI systems, and secure full-stack engineering.",
+    "url": ""
+  },
+  "personal": {
+    "fullName": "Ammar Tahoon",
+    "legalName": "Ammar Ahmed Abdelrahman Tahoon",
+    "nativeName": "Ammar Tahoon",
+    "role": "AI Engineer",
+    "tagline": "AI Engineer",
+    "heroSummary": "I build AI-driven solutions across machine learning, deep learning, computer vision, and NLP, while turning ideas into clean and practical digital products.",
+    "availability": "Student",
+    "location": "10th of Ramadan City, Egypt",
+    "timezone": "Africa/Cairo",
+    "email": "mart33645@gmail.com",
+    "phone": "01140628954",
+    "resumeUrl": "#",
+    "profileImage": "/media/profile/avatar-1774383698268-030e1fcb.jpg"
+  },
+  "highlights": [
+    "Machine learning and deep learning focus",
+    "Computer vision and NLP projects",
+    "Practical AI product building",
+    "Modern web interfaces for smart systems"
+  ],
+  "socials": [
+    {
+      "label": "GitHub",
+      "handle": "@mart33645-wq",
+      "url": "https://github.com/mart33645-wq"
+    },
+    {
+      "label": "LinkedIn",
+      "handle": "/in/ammar-tahoun-822222382",
+      "url": "https://www.linkedin.com/in/ammar-tahoun-822222382?utm_source=share_via&utm_content=profile&utm_medium=member_android"
+    },
+    {
+      "label": "Instagram",
+      "handle": "@a_2m_a_r7",
+      "url": "https://www.instagram.com/a_2m_a_r7?igsh=OTdrdnc2c2dldDVk"
+    },
+    {
+      "label": "WhatsApp",
+      "handle": "Chat on WhatsApp",
+      "url": "https://wa.me/201140628954"
+    }
+  ],
+  "stats": [
+    {
+      "value": "0",
+      "label": "Years of Experience"
+    },
+    {
+      "value": "5+",
+      "label": "Projects Built"
+    },
+    {
+      "value": "Student",
+      "label": "Current Stage"
+    },
+    {
+      "value": "AI",
+      "label": "Main Focus"
+    }
+  ],
+  "about": {
+    "intro": "I am an AI Engineering student focused on learning and building across the main AI tracks, with special interest in machine learning, deep learning, computer vision, and NLP.",
+    "body": "My goal is to grow as a well-rounded AI Engineer by building practical projects that connect intelligent models with useful real-world applications. I keep expanding my skills through hands-on work, continuous learning, and a strong interest in the full AI landscape.",
+    "principles": [
+      "Design that communicates authority in seconds",
+      "Motion that supports storytelling, not noise",
+      "Frontend architecture with performance discipline",
+      "Backend foundations ready for real-world extension"
+    ]
+  },
+  "spotlightTech": [
+    {
+      "name": "Python",
+      "category": "Core",
+      "summary": "My main language for building AI projects, experimenting with models, and solving practical machine learning problems."
+    },
+    {
+      "name": "Machine Learning",
+      "category": "AI/ML",
+      "summary": "Training and applying machine learning models to turn data into useful predictions and intelligent systems."
+    },
+    {
+      "name": "Deep Learning",
+      "category": "AI",
+      "summary": "Exploring neural networks and deep learning workflows for building more advanced intelligent systems."
+    },
+    {
+      "name": "TensorFlow",
+      "category": "Framework",
+      "summary": "Using TensorFlow to build, train, and experiment with deep learning models for practical AI tasks."
+    },
+    {
+      "name": "OpenCV",
+      "category": "Computer Vision",
+      "summary": "Working with OpenCV for image processing, visual analysis, and computer vision project implementation."
+    },
+    {
+      "name": "Computer Vision",
+      "category": "AI",
+      "summary": "Working on image-based AI tasks such as detection, recognition, and visual understanding."
+    },
+    {
+      "name": "NLP",
+      "category": "AI",
+      "summary": "Exploring natural language processing to build systems that understand, analyze, and work with text."
+    },
+    {
+      "name": "React",
+      "category": "Frontend",
+      "summary": "Building clean and interactive web interfaces to present AI products and smart applications in a usable way."
+    }
+  ],
+  "services": [
+    {
+      "title": "AI Model Development",
+      "summary": "Building intelligent solutions using machine learning concepts and practical model experimentation.",
+      "points": [
+        "Model-focused problem solving",
+        "Experimentation with AI workflows",
+        "Practical project implementation"
+      ]
+    },
+    {
+      "title": "Computer Vision Projects",
+      "summary": "Creating AI solutions that work with images and visual data to solve real-world tasks.",
+      "points": [
+        "Image processing concepts",
+        "Visual recognition workflows",
+        "Project-based implementation"
+      ]
+    },
+    {
+      "title": "Web Development",
+      "summary": "Building modern web applications and interfaces that can present products, services, and AI ideas in a clear way.",
+      "points": [
+        "Responsive interface building",
+        "Frontend project implementation",
+        "Clean modern user experience"
+      ]
+    }
+  ],
+  "skillGroups": [
+    {
+      "title": "AI and Machine Learning",
+      "items": [
+        "Python",
+        "Machine Learning",
+        "Deep Learning",
+        "TensorFlow",
+        "Computer Vision",
+        "NLP",
+        "OpenCV"
+      ]
+    },
+    {
+      "title": "Web Development",
+      "items": [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "React",
+        "Node.js",
+        "Tailwind CSS"
+      ]
+    },
+    {
+      "title": "Tools and Data",
+      "items": [
+        "MongoDB",
+        "Git",
+        "GitHub",
+        "Jupyter Notebook",
+        "VS Code",
+        "APIs"
+      ]
+    }
+  ],
+  "process": [
+    {
+      "step": "01",
+      "title": "Decode the Vision",
+      "description": "Map the product story, the target audience, and the emotional first impression the interface should create."
+    },
+    {
+      "step": "02",
+      "title": "Design the Scene",
+      "description": "Translate strategy into cinematic layouts, premium typography, motion hierarchy, and immersive UI direction."
+    },
+    {
+      "step": "03",
+      "title": "Engineer the Experience",
+      "description": "Build the frontend, secure the backend, optimize the interactions, and prepare the system for scale."
+    },
+    {
+      "step": "04",
+      "title": "Launch with Confidence",
+      "description": "Ship a portfolio or product presence that feels world-class and is easy to update over time."
+    }
+  ],
+  "projects": [
+    {
+      "title": "Base Calc",
+      "slug": "base-calc",
+      "summary": "A desktop application built with WPF and C# for handling base calculations and number-system conversion in a clean, simple, and educational interface.",
+      "category": "Desktop",
+      "year": "Recent",
+      "image": "/assets/project-command.svg",
+      "stack": [
+        "WPF",
+        "C#",
+        "Desktop App",
+        "Algorithms"
+      ],
+      "metrics": [
+        "Number system conversion",
+        "Clean desktop workflow",
+        "Learning-focused utility"
+      ],
+      "details": {
+        "challenge": "Build a useful desktop tool that makes base conversion and calculation easier to understand and use for students and learners.",
+        "solution": "I created a WPF-based desktop experience with clear inputs, accurate calculation logic, and a straightforward interface focused on speed and simplicity.",
+        "impact": [
+          "Made base conversion easier to test and validate",
+          "Strengthened my desktop application fundamentals",
+          "Delivered a practical educational utility in C#"
+        ]
+      },
+      "links": {
+        "live": "#",
+        "repo": "#",
+        "caseStudy": "#"
+      }
+    },
+    {
+      "title": "Mini Physics Lab Simulator",
+      "slug": "mini-physics-lab-simulator",
+      "summary": "A small virtual physics lab built with WPF and C# to simulate electrical circuit experiments using bulbs, resistors, a voltmeter, an ammeter, batteries, and switches.",
+      "category": "Simulation",
+      "year": "Recent",
+      "image": "/assets/project-commerce.svg",
+      "stack": [
+        "WPF",
+        "C#",
+        "Physics",
+        "Simulation"
+      ],
+      "metrics": [
+        "Circuit simulation",
+        "Interactive lab components",
+        "Educational desktop experience"
+      ],
+      "details": {
+        "challenge": "Recreate a simple but realistic physics lab experience in software so users can interact with circuit elements in a clear and understandable way.",
+        "solution": "I designed an interactive desktop simulator where users can connect and explore electrical elements visually while observing values through virtual measuring tools.",
+        "impact": [
+          "Turned physical circuit ideas into an interactive software experience",
+          "Improved my understanding of simulation-oriented problem solving",
+          "Created a useful educational project with real component interaction"
+        ]
+      },
+      "links": {
+        "live": "#",
+        "repo": "#",
+        "caseStudy": "#"
+      }
+    },
+    {
+      "title": "AI-Powered Pharmacy Platform",
+      "slug": "ai-powered-pharmacy-platform",
+      "summary": "A full pharmacy website supported by AI, designed to provide a modern digital experience for showcasing products, improving user interaction, and expanding into smarter pharmacy workflows.",
+      "category": "AI",
+      "year": "Recent",
+      "image": "/assets/project-ai.svg",
+      "stack": [
+        "Web Development",
+        "AI",
+        "Full Stack",
+        "Database"
+      ],
+      "metrics": [
+        "End-to-end website structure",
+        "AI-supported experience",
+        "Scalable pharmacy concept"
+      ],
+      "details": {
+        "challenge": "Build a complete pharmacy website that goes beyond a standard storefront by adding AI support to improve the overall digital experience.",
+        "solution": "I developed a full web platform structure that combines product presentation, service-oriented flows, and AI support to make the project feel smarter and more modern.",
+        "impact": [
+          "Showcased my ability to combine web development with AI concepts",
+          "Created a stronger full-stack style portfolio project",
+          "Built a foundation that can grow into a smarter pharmacy product"
+        ]
+      },
+      "links": {
+        "live": "#",
+        "repo": "#",
+        "caseStudy": "#"
+      }
+    }
+  ],
+  "experience": [
+    {
+      "period": "First Year",
+      "role": "University Student",
+      "company": "Innovation University, 10th of Ramadan City, Egypt",
+      "summary": "Currently studying at Innovation University and building a strong foundation in programming, problem-solving, and modern software development while preparing to specialize in AI.",
+      "points": [
+        "Building core technical foundations through university study",
+        "Preparing to specialize in Artificial Intelligence",
+        "Combining academic learning with practical project building"
+      ]
+    },
+    {
+      "period": "Current Focus",
+      "role": "AI Learning Path",
+      "company": "Self-Directed Development",
+      "summary": "I am actively exploring the main AI tracks through personal practice and project building, with growing focus on machine learning, deep learning, computer vision, and NLP.",
+      "points": [
+        "Learning across the broader AI landscape",
+        "Building hands-on projects to strengthen understanding",
+        "Creating an early portfolio that reflects my future specialization"
+      ]
+    }
+  ],
+  "certificates": [],
+  "testimonials": [
+    {
+      "quote": "The interface feels premium immediately. It has the confidence of a product, not just a portfolio page.",
+      "name": "Sample Client",
+      "title": "Replace with a real testimonial"
+    },
+    {
+      "quote": "Strong visual storytelling, clean engineering, and interactions that make the work feel alive.",
+      "name": "Sample Founder",
+      "title": "Replace with a real testimonial"
+    }
+  ],
+  "insights": [
+    {
+      "title": "Why premium motion design changes how recruiters perceive frontend skill",
+      "tag": "Motion",
+      "summary": "A short insight slot you can later replace with real articles, product thoughts, or technical writing.",
+      "url": "#"
+    },
+    {
+      "title": "The difference between a normal portfolio and a product-level personal brand",
+      "tag": "Brand",
+      "summary": "Use this section for ideas, essays, or short notes that show your thinking beyond implementation.",
+      "url": "#"
+    }
+  ],
+  "faqs": [
+    {
+      "question": "Is this portfolio ready to customize right away?",
+      "answer": "Yes. Replace the placeholder content in data/profile.json, update your links, and the experience is ready to run."
+    },
+    {
+      "question": "Can I add real projects and services later?",
+      "answer": "Yes. The entire frontend reads from the profile JSON file, so you can update content without touching the UI structure."
+    },
+    {
+      "question": "Is the contact form secured?",
+      "answer": "Yes. The backend includes validation, payload limits, a honeypot field, rate limiting, and secure response headers."
+    }
+  ],
+  "contact": {
+    "heading": "Let's build something impossible to ignore",
+    "intro": "Use the form for freelance inquiries, remote opportunities, or ambitious product ideas. Messages are stored safely and can later be forwarded to email or webhooks.",
+    "directLinks": [
+      {
+        "label": "Email",
+        "value": "mart33645@gmail.com",
+        "url": "mailto:mart33645@gmail.com"
+      },
+      {
+        "label": "Phone",
+        "value": "01140628954",
+        "url": "tel:+201140628954"
+      },
+      {
+        "label": "WhatsApp",
+        "value": "Chat with me on WhatsApp",
+        "url": "https://wa.me/201140628954"
+      }
+    ]
+  }
+}

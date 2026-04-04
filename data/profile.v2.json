@@ -1,0 +1,381 @@
+{
+  "site": {
+    "title": "Ammar Tahoon | Futuristic Developer Portfolio",
+    "description": "Ultra-premium futuristic portfolio for Ammar Tahoon, showcasing cinematic frontend work, AI-powered products, premium UI systems, and secure full-stack engineering.",
+    "url": "http://localhost:3000"
+  },
+  "personal": {
+    "fullName": "Ammar Tahoon",
+    "nativeName": "AMMAR TAHOON",
+    "role": "Full-Stack Developer | AI Product Builder | Frontend Engineer",
+    "tagline": "I build futuristic web apps",
+    "heroSummary": "I design and engineer cinematic web experiences that blend motion, performance, and product clarity. This portfolio is built to feel like a premium digital product from the first second.",
+    "availability": "Available for elite freelance projects, remote roles, product collaborations, and AI-first startup builds.",
+    "location": "Egypt",
+    "timezone": "Africa/Cairo",
+    "email": "you@example.com",
+    "phone": "+20 100 000 0000",
+    "resumeUrl": "#",
+    "profileImage": "/assets/avatar-monogram.svg"
+  },
+  "highlights": [
+    "Cinematic UI engineering",
+    "AI-ready product systems",
+    "Secure full-stack delivery",
+    "Fast, scalable, immersive UX"
+  ],
+  "socials": [
+    {
+      "label": "GitHub",
+      "handle": "@your-github",
+      "url": "https://github.com/your-github"
+    },
+    {
+      "label": "LinkedIn",
+      "handle": "/in/your-linkedin",
+      "url": "https://linkedin.com/in/your-linkedin"
+    },
+    {
+      "label": "Behance",
+      "handle": "@your-behance",
+      "url": "https://behance.net/your-behance"
+    },
+    {
+      "label": "WhatsApp",
+      "handle": "Direct line",
+      "url": "https://wa.me/201000000000"
+    }
+  ],
+  "stats": [
+    {
+      "value": "03+",
+      "label": "Years of Experience"
+    },
+    {
+      "value": "12+",
+      "label": "Projects Count"
+    },
+    {
+      "value": "100%",
+      "label": "Dedication"
+    },
+    {
+      "value": "24h",
+      "label": "Response Window"
+    }
+  ],
+  "about": {
+    "intro": "I care deeply about the first impression a product creates. My work combines clean engineering, premium visuals, and intentional interaction design so every interface feels modern, confident, and memorable.",
+    "body": "This portfolio foundation is data-driven and secure by default. You can replace the placeholder content with your real bio, projects, socials, and experience from a single JSON file, while keeping the cinematic frontend and the contact API intact.",
+    "principles": [
+      "Design that communicates authority in seconds",
+      "Motion that supports storytelling, not noise",
+      "Frontend architecture with performance discipline",
+      "Backend foundations ready for real-world extension"
+    ]
+  },
+  "spotlightTech": [
+    {
+      "name": "React",
+      "category": "Frontend",
+      "summary": "Building fluid interfaces, interactive dashboards, and component systems with premium UX polish."
+    },
+    {
+      "name": "Node.js",
+      "category": "Backend",
+      "summary": "Creating secure APIs, web services, and scalable product backends with structured logic."
+    },
+    {
+      "name": "MongoDB",
+      "category": "Data",
+      "summary": "Designing flexible data layers for content, messaging, and product analytics."
+    },
+    {
+      "name": "Tailwind CSS",
+      "category": "UI Systems",
+      "summary": "Crafting fast, expressive design systems with strong visual consistency and responsive control."
+    },
+    {
+      "name": "OpenAI",
+      "category": "AI",
+      "summary": "Integrating copilots, assistants, summarization, and AI-enhanced product workflows."
+    },
+    {
+      "name": "Next.js",
+      "category": "Full-Stack",
+      "summary": "Shipping SEO-friendly, production-ready apps with server rendering and strong DX."
+    }
+  ],
+  "services": [
+    {
+      "title": "Premium Portfolio Systems",
+      "summary": "Personal brands and portfolio websites engineered to feel expensive, polished, and globally competitive.",
+      "points": [
+        "High-end visual direction",
+        "Cinematic interactions and transitions",
+        "Flexible content structure"
+      ]
+    },
+    {
+      "title": "Full-Stack Product Development",
+      "summary": "From concept to production: frontend architecture, backend APIs, forms, data flows, and deployable product foundations.",
+      "points": [
+        "Responsive product interfaces",
+        "Structured backend logic",
+        "Secure contact and data handling"
+      ]
+    },
+    {
+      "title": "AI-Powered Experiences",
+      "summary": "Interfaces and tools designed for AI workflows, automation, copilots, and smart product experiences.",
+      "points": [
+        "Assistant-ready flows",
+        "Prompt-driven interactions",
+        "Scalable integration patterns"
+      ]
+    }
+  ],
+  "skillGroups": [
+    {
+      "title": "Frontend Engineering",
+      "items": [
+        "React",
+        "Next.js",
+        "Tailwind CSS",
+        "Framer Motion",
+        "Responsive Design",
+        "Design Systems"
+      ]
+    },
+    {
+      "title": "Backend Systems",
+      "items": [
+        "Node.js",
+        "REST APIs",
+        "Authentication",
+        "Rate Limiting",
+        "Validation",
+        "Security Headers"
+      ]
+    },
+    {
+      "title": "Data and Infra",
+      "items": [
+        "MongoDB",
+        "PostgreSQL",
+        "Redis",
+        "Docker",
+        "Deployment",
+        "Webhooks"
+      ]
+    }
+  ],
+  "process": [
+    {
+      "step": "01",
+      "title": "Decode the Vision",
+      "description": "Map the product story, the target audience, and the emotional first impression the interface should create."
+    },
+    {
+      "step": "02",
+      "title": "Design the Scene",
+      "description": "Translate strategy into cinematic layouts, premium typography, motion hierarchy, and immersive UI direction."
+    },
+    {
+      "step": "03",
+      "title": "Engineer the Experience",
+      "description": "Build the frontend, secure the backend, optimize the interactions, and prepare the system for scale."
+    },
+    {
+      "step": "04",
+      "title": "Launch with Confidence",
+      "description": "Ship a portfolio or product presence that feels world-class and is easy to update over time."
+    }
+  ],
+  "projects": [
+    {
+      "title": "Signal Command Center",
+      "slug": "signal-command-center",
+      "summary": "A futuristic control dashboard for mission-critical alerts, live metrics, and team operations in a cinematic command-room interface.",
+      "category": "React",
+      "year": "2026",
+      "image": "/assets/project-command.svg",
+      "stack": [
+        "React",
+        "Node.js",
+        "PostgreSQL",
+        "AI"
+      ],
+      "metrics": [
+        "Realtime insights",
+        "Operator-centric UX",
+        "Scalable system design"
+      ],
+      "details": {
+        "challenge": "Create a monitoring dashboard that feels powerful without overwhelming the operator with noise.",
+        "solution": "I designed a layered interface with focus zones, rich motion cues, and structured data surfaces that guide attention naturally.",
+        "impact": [
+          "Reduced cognitive overload through stronger visual hierarchy",
+          "Made high-frequency data easier to scan",
+          "Created a foundation ready for AI-powered diagnostics"
+        ]
+      },
+      "links": {
+        "live": "#",
+        "repo": "#",
+        "caseStudy": "#"
+      }
+    },
+    {
+      "title": "Atlas Commerce Experience",
+      "slug": "atlas-commerce-experience",
+      "summary": "A premium commerce experience focused on speed, conversion, storytelling, and luxury product presentation across devices.",
+      "category": "Next.js",
+      "year": "2026",
+      "image": "/assets/project-commerce.svg",
+      "stack": [
+        "Next.js",
+        "Tailwind CSS",
+        "Stripe",
+        "Analytics"
+      ],
+      "metrics": [
+        "Luxury visual system",
+        "Conversion-focused flow",
+        "Responsive product storytelling"
+      ],
+      "details": {
+        "challenge": "Elevate the perceived value of the brand while keeping the storefront extremely fast and conversion-ready.",
+        "solution": "I combined premium editorial layouts, deliberate whitespace, motion-assisted product focus, and a clean purchase path.",
+        "impact": [
+          "Stronger premium brand perception",
+          "Cleaner product discovery journey",
+          "Flexible structure for future catalog growth"
+        ]
+      },
+      "links": {
+        "live": "#",
+        "repo": "#",
+        "caseStudy": "#"
+      }
+    },
+    {
+      "title": "Pulse AI Assistant",
+      "slug": "pulse-ai-assistant",
+      "summary": "An AI-powered workspace assistant that transforms documents, messages, and knowledge into fast action across product teams.",
+      "category": "AI",
+      "year": "2026",
+      "image": "/assets/project-ai.svg",
+      "stack": [
+        "OpenAI",
+        "Node.js",
+        "Redis",
+        "Webhooks"
+      ],
+      "metrics": [
+        "AI-first workflows",
+        "Fast retrieval patterns",
+        "Integrations-ready backend"
+      ],
+      "details": {
+        "challenge": "Build an assistant experience that feels useful in real work, not like a disconnected demo.",
+        "solution": "I focused on sharp task framing, webhook integrations, and a UI that turns AI output into actionable next steps.",
+        "impact": [
+          "Faster response and summarization loops",
+          "Cleaner knowledge access for teams",
+          "Ready path for deeper product automation"
+        ]
+      },
+      "links": {
+        "live": "#",
+        "repo": "#",
+        "caseStudy": "#"
+      }
+    }
+  ],
+  "experience": [
+    {
+      "period": "Now",
+      "role": "Independent Developer",
+      "company": "Portfolio + Product Systems",
+      "summary": "Building premium portfolio experiences, full-stack web products, and AI-ready interfaces with a focus on first impression, clarity, and performance.",
+      "points": [
+        "Designed and shipped immersive frontend experiences",
+        "Built secure APIs and structured contact flows",
+        "Created reusable systems ready for future growth"
+      ]
+    },
+    {
+      "period": "Open to update",
+      "role": "Add your real role here",
+      "company": "Replace with your company or freelance phase",
+      "summary": "This slot is ready for your actual background, collaborations, internships, client work, or startup journey.",
+      "points": [
+        "Add measurable outcomes",
+        "Add product or company names",
+        "Add 2 to 3 concrete achievements"
+      ]
+    }
+  ],
+  "testimonials": [
+    {
+      "quote": "The interface feels premium immediately. It has the confidence of a product, not just a portfolio page.",
+      "name": "Sample Client",
+      "title": "Replace with a real testimonial"
+    },
+    {
+      "quote": "Strong visual storytelling, clean engineering, and interactions that make the work feel alive.",
+      "name": "Sample Founder",
+      "title": "Replace with a real testimonial"
+    }
+  ],
+  "insights": [
+    {
+      "title": "Why premium motion design changes how recruiters perceive frontend skill",
+      "tag": "Motion",
+      "summary": "A short insight slot you can later replace with real articles, product thoughts, or technical writing.",
+      "url": "#"
+    },
+    {
+      "title": "The difference between a normal portfolio and a product-level personal brand",
+      "tag": "Brand",
+      "summary": "Use this section for ideas, essays, or short notes that show your thinking beyond implementation.",
+      "url": "#"
+    }
+  ],
+  "faqs": [
+    {
+      "question": "Is this portfolio ready to customize right away?",
+      "answer": "Yes. Replace the placeholder content in data/profile.json, update your links, and the experience is ready to run."
+    },
+    {
+      "question": "Can I add real projects and services later?",
+      "answer": "Yes. The entire frontend reads from the profile JSON file, so you can update content without touching the UI structure."
+    },
+    {
+      "question": "Is the contact form secured?",
+      "answer": "Yes. The backend includes validation, payload limits, a honeypot field, rate limiting, and secure response headers."
+    }
+  ],
+  "contact": {
+    "heading": "Let's build something impossible to ignore",
+    "intro": "Use the form for freelance inquiries, remote opportunities, or ambitious product ideas. Messages are stored safely and can later be forwarded to email or webhooks.",
+    "directLinks": [
+      {
+        "label": "Email",
+        "value": "you@example.com",
+        "url": "mailto:you@example.com"
+      },
+      {
+        "label": "Phone",
+        "value": "+20 100 000 0000",
+        "url": "tel:+201000000000"
+      },
+      {
+        "label": "WhatsApp",
+        "value": "Open a direct chat",
+        "url": "https://wa.me/201000000000"
+      }
+    ]
+  }
+}

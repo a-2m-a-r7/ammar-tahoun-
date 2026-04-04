@@ -1,0 +1,10 @@
+node_modules
+.env
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+coverage
+dist
+.DS_Store
+Thumbs.db
+data/contact-submissions.json.bak

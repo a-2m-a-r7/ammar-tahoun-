@@ -1,0 +1,14 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="120" fill="url(#paint0_linear)"/>
+  <rect x="28" y="28" width="456" height="456" rx="96" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="10"/>
+  <circle cx="256" cy="184" r="86" fill="#FFFFFF" fill-opacity="0.14"/>
+  <path d="M170 360C170 310.294 210.294 270 260 270H252C301.706 270 342 310.294 342 360V370H170V360Z" fill="#FFFFFF" fill-opacity="0.14"/>
+  <text x="256" y="214" text-anchor="middle" fill="white" font-size="84" font-family="Bahnschrift, Arial, sans-serif" font-weight="700">AT</text>
+  <text x="256" y="430" text-anchor="middle" fill="white" font-size="36" font-family="Bahnschrift, Arial, sans-serif" letter-spacing="10">AMMAR TAHOON</text>
+  <defs>
+    <linearGradient id="paint0_linear" x1="52" y1="48" x2="458" y2="470" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1C7DF7"/>
+      <stop offset="1" stop-color="#FF7A59"/>
+    </linearGradient>
+  </defs>
+</svg>
