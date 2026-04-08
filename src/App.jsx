@@ -795,9 +795,9 @@ export default function App() {
                           <p className="display-meta text-white/46">Signal summary</p>
                           <Sparkles size={16} className="text-cyan-300" />
                         </div>
-                        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                        <div className="mt-4 grid gap-1 grid-cols-3">
                           {stats.slice(0, 3).map((stat) => (
-                            <div key={stat.label} className="rounded-2xl border border-white/8 bg-slate-950/45 p-4">
+                            <div key={stat.label} className="flex flex-col items-center justify-center text-center rounded-2xl border border-white/8 bg-slate-950/45 px-1 py-3 overflow-hidden">
                               <p className="display-stat text-white">{stat.value}</p>
                               <p className="display-meta mt-2 text-white/48">{stat.label}</p>
                             </div>
