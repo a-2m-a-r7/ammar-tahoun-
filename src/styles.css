@@ -230,7 +230,9 @@ body::selection {
 .display-heading-sm,
 .display-stat,
 .display-meta {
-  overflow-wrap: break-word;
+  overflow-wrap: normal;
+  word-break: keep-all;
+  white-space: normal;
 }
 
 .display-heading-lg {
@@ -259,17 +261,19 @@ body::selection {
 
 .display-stat {
   font-family: "Inter", sans-serif;
-  font-size: clamp(0.84rem, 0.98vw, 0.92rem);
+  font-size: clamp(0.7rem, 0.9vw, 0.85rem);
   line-height: 1.18;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
+  word-break: keep-all;
 }
 
 .display-meta {
-  font-size: 0.63rem;
+  font-size: 0.58rem;
   line-height: 1.4;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
+  word-break: keep-all;
 }
 
 .hero-name {
@@ -353,10 +357,12 @@ body::selection {
 
 .hero-signal-card__value {
   margin: 0.75rem 0 0;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   line-height: 1.58;
   color: rgba(255, 255, 255, 0.82);
-  overflow-wrap: break-word;
+  overflow-wrap: normal;
+  word-break: keep-all;
+  white-space: normal;
 }
 
 .signal-chip {
