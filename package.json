@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite",
     "dev:server": "node --watch server.js",
-    "build": "vite build",
+    "build": "vite build && node postbuild.js",
     "start": "npm run build && node server.js",
     "serve": "node server.js",
     "check": "node --check server.js && vite build"
