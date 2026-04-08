@@ -11,7 +11,7 @@
     "role": "AI Engineer",
     "tagline": "AI Engineer",
     "heroSummary": "I build AI-driven solutions across machine learning, deep learning, computer vision, and NLP, while turning ideas into clean and practical digital products.",
-    "availability": "Student",
+    "availability": "Open to Opportunities",
     "location": "10th of Ramadan City, Egypt",
     "timezone": "Africa/Cairo",
     "email": "mart33645@gmail.com",
@@ -57,7 +57,7 @@
       "label": "Projects Built"
     },
     {
-      "value": "Student",
+      "value": "Early Career",
       "label": "Current Stage"
     },
     {
@@ -66,7 +66,7 @@
     }
   ],
   "about": {
-    "intro": "I am an AI Engineering student focused on learning and building across the main AI tracks, with special interest in machine learning, deep learning, computer vision, and NLP.",
+    "intro": "I am an AI Engineer focused on learning and building across the main AI tracks, with special interest in machine learning, deep learning, computer vision, and NLP.",
     "body": "My goal is to grow as a well-rounded AI Engineer by building practical projects that connect intelligent models with useful real-world applications. I keep expanding my skills through hands-on work, continuous learning, and a strong interest in the full AI landscape.",
     "principles": [
       "Design that communicates authority in seconds",
@@ -308,7 +308,7 @@
   "experience": [
     {
       "period": "First Year",
-      "role": "University Student",
+      "role": "AI Engineer (Undergraduate)",
       "company": "Innovation University, 10th of Ramadan City, Egypt",
       "summary": "Currently studying at Innovation University and building a strong foundation in programming, problem-solving, and modern software development while preparing to specialize in AI.",
       "points": [

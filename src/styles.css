@@ -49,7 +49,7 @@ body::selection {
 .filter-pill,
 .status-pill,
 .project-card__cta {
-  font-family: "Orbitron", "Inter", sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .noise-overlay {
@@ -159,6 +159,9 @@ body::selection {
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   opacity: 0.8;
@@ -231,7 +234,7 @@ body::selection {
 }
 
 .display-heading-lg {
-  font-family: "Orbitron", "Inter", sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: clamp(1.08rem, 1.45vw, 1.3rem);
   line-height: 1.18;
   text-transform: uppercase;
@@ -239,7 +242,7 @@ body::selection {
 }
 
 .display-heading-md {
-  font-family: "Orbitron", "Inter", sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: clamp(0.96rem, 1.12vw, 1.06rem);
   line-height: 1.2;
   text-transform: uppercase;
@@ -247,7 +250,7 @@ body::selection {
 }
 
 .display-heading-sm {
-  font-family: "Orbitron", "Inter", sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: clamp(0.88rem, 0.95vw, 0.96rem);
   line-height: 1.26;
   text-transform: uppercase;
@@ -255,7 +258,7 @@ body::selection {
 }
 
 .display-stat {
-  font-family: "Orbitron", "Inter", sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: clamp(0.84rem, 0.98vw, 0.92rem);
   line-height: 1.18;
   text-transform: uppercase;
