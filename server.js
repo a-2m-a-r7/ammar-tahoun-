@@ -1004,6 +1004,30 @@ async function updateProfile(mutator) {
   });
 }
 
+async function forwardToEmail(entry) {
+  const accessKey = process.env.WEB3FORMS_ACCESS_KEY;
+  if (!accessKey) {
+    return;
+  }
+
+  try {
+    await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({
+        access_key: accessKey,
+        name: entry.name,
+        email: entry.email,
+        subject: `New Message from ${entry.name}`,
+        message: entry.message,
+        replyto: entry.email
+      })
+    });
+  } catch (e) {
+    console.error("Local email forwarding failed:", e);
+  }
+}
+
 async function forwardToWebhook(entry) {
   if (!CONTACT_WEBHOOK_URL) {
     return;
@@ -1540,6 +1564,7 @@ const server = createServer(async (req, res) => {
 
       await saveContactSubmission(submission);
       await forwardToWebhook(submission).catch(() => null);
+      await forwardToEmail(submission).catch(() => null);
 
       sendJson(res, 201, {
         ok: true,
