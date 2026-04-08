@@ -227,8 +227,7 @@ body::selection {
 .display-heading-sm,
 .display-stat,
 .display-meta {
-  overflow-wrap: anywhere;
-  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .display-heading-lg {
@@ -354,7 +353,7 @@ body::selection {
   font-size: 0.82rem;
   line-height: 1.58;
   color: rgba(255, 255, 255, 0.82);
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .signal-chip {
