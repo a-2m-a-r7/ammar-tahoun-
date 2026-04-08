@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 
 dotenv.config({ path: path.join(__dirname, ".env") });
 
-const PORT = Number.parseInt(process.env.PORT || "3000", 10);
+const PORT = Number.parseInt(process.env.PORT || "3005", 10);
 const DIST_DIR = path.join(__dirname, "dist");
 const DATA_DIR = path.join(__dirname, "data");
 const LEGACY_MEDIA_DIR = path.join(__dirname, "media");
