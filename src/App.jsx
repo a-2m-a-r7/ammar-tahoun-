@@ -61,7 +61,7 @@ const sectionVariants = {
     y: 0,
     scale: 1,
     transition: {
-      duration: 0.9,
+      duration: 0.55,
       ease: [0.22, 1, 0.36, 1]
     }
   }
@@ -71,8 +71,8 @@ const staggerContainer = {
   hidden: {},
   show: {
     transition: {
-      staggerChildren: 0.11,
-      delayChildren: 0.08
+      staggerChildren: 0.06,
+      delayChildren: 0.05
     }
   }
 };
@@ -84,7 +84,7 @@ const staggerItem = {
     y: 0,
     scale: 1,
     transition: {
-      duration: 0.72,
+      duration: 0.45,
       ease: [0.22, 1, 0.36, 1]
     }
   }
@@ -307,7 +307,7 @@ export default function App() {
   const shouldReduceMotion = useReducedMotion();
   const deferredFilter = useDeferredValue(activeFilter);
   const { scrollYProgress } = useScroll();
-  const progressScaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 24, mass: 0.18 });
+  const progressScaleX = useSpring(scrollYProgress, { stiffness: 200, damping: 18, mass: 0.1 });
 
   const parallaxX = useMotionValue(0);
   const parallaxY = useMotionValue(0);
@@ -318,10 +318,10 @@ export default function App() {
   const orbPrimaryY = useMotionValue(-240);
   const orbSecondaryX = useMotionValue(-140);
   const orbSecondaryY = useMotionValue(-140);
-  const orbPrimarySpringX = useSpring(orbPrimaryX, { stiffness: 76, damping: 22, mass: 1.1 });
-  const orbPrimarySpringY = useSpring(orbPrimaryY, { stiffness: 76, damping: 22, mass: 1.1 });
-  const orbSecondarySpringX = useSpring(orbSecondaryX, { stiffness: 110, damping: 28, mass: 0.9 });
-  const orbSecondarySpringY = useSpring(orbSecondaryY, { stiffness: 110, damping: 28, mass: 0.9 });
+  const orbPrimarySpringX = useSpring(orbPrimaryX, { stiffness: 140, damping: 18, mass: 0.7 });
+  const orbPrimarySpringY = useSpring(orbPrimaryY, { stiffness: 140, damping: 18, mass: 0.7 });
+  const orbSecondarySpringX = useSpring(orbSecondaryX, { stiffness: 160, damping: 15, mass: 0.5 });
+  const orbSecondarySpringY = useSpring(orbSecondaryY, { stiffness: 160, damping: 15, mass: 0.5 });
 
   useEffect(() => {
     const controller = new AbortController();
