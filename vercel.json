@@ -1,0 +1,11 @@
+{
+  "functions": {
+    "api/**/*.js": {
+      "includeFiles": "{data/**,media/**}"
+    }
+  },
+  "rewrites": [
+    { "source": "/api/profile", "destination": "/api/profile" },
+    { "source": "/media/(.*)", "destination": "/api/media?path=/media/$1" }
+  ]
+}
