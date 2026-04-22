@@ -1,4 +1,5 @@
 import {
+  Component,
   lazy,
   startTransition,
   Suspense,
@@ -47,6 +48,7 @@ import MagneticButton from "./components/MagneticButton";
 import ProjectModal from "./components/ProjectModal";
 import AIChatbot from "./components/AIChatbot";
 import IntegratedAdminStudio from "./components/IntegratedAdminStudio";
+import fallbackProfile from "../data/profile.json";
 
 const BackgroundFX = lazy(() => import("./components/BackgroundFX"));
 
@@ -336,6 +338,29 @@ function LoadingScene({ error }) {
   );
 }
 
+class NonCriticalFeatureBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error) {
+    console.error(`${this.props.featureName || "Non-critical feature"} crashed:`, error);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback ?? null;
+    }
+
+    return this.props.children;
+  }
+}
+
 export default function App() {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -423,14 +448,30 @@ export default function App() {
         }
 
         const payload = await response.json();
+        const nextProfile = payload?.data && typeof payload.data === "object" ? payload.data : null;
+
+        if (!nextProfile) {
+          throw new Error("Profile response payload was invalid.");
+        }
+
         if (!active) {
           return;
         }
 
-        setProfile(payload.data);
-        syncPortfolioSeo(payload.data);
+        setProfile(nextProfile);
+        setError("");
+        syncPortfolioSeo(nextProfile);
       } catch (loadError) {
         if (loadError.name !== "AbortError" && active) {
+          console.error("Profile API failed. Falling back to bundled profile data.", loadError);
+
+          if (fallbackProfile && typeof fallbackProfile === "object") {
+            setProfile(fallbackProfile);
+            setError("");
+            syncPortfolioSeo(fallbackProfile);
+            return;
+          }
+
           setError(loadError.message || "Unable to load the portfolio.");
         }
       } finally {
@@ -1617,30 +1658,34 @@ export default function App() {
         ) : null}
       </AnimatePresence>
 
-      <AIChatbot />
-      
-      <IntegratedAdminStudio
-        adminPromptOpen={adminPromptOpen}
-        onCloseAdminPrompt={() => setAdminPromptOpen(false)}
-        onVerifyAdminToken={adminHandlers.onVerifyAdminToken}
-        editorState={editorState}
-        onCloseEditor={adminHandlers.onCloseEditor}
-        adminToken={adminToken}
-        onAdminTokenChange={setAdminToken}
-        rememberAdmin={rememberAdmin}
-        onRememberAdminChange={setRememberAdmin}
-        isAdminAuthenticated={ownerSessionActive}
-        busy={submitting}
-        status={formStatus}
-        profileImage={profile?.personal?.profileImage}
-        profile={profile}
-        onLogout={adminHandlers.onLogout}
-        onOpenVault={adminHandlers.onOpenVault}
-        onOpenPhotoEditor={adminHandlers.onOpenPhotoEditor}
-        onOpenProjectCreator={adminHandlers.onOpenProjectCreator}
-        onOpenCertificateCreator={adminHandlers.onOpenCertificateCreator}
-        onOpenContactEditor={adminHandlers.onOpenContactEditor}
-      />
+      <NonCriticalFeatureBoundary featureName="AI assistant">
+        <AIChatbot />
+      </NonCriticalFeatureBoundary>
+
+      <NonCriticalFeatureBoundary featureName="Admin studio">
+        <IntegratedAdminStudio
+          adminPromptOpen={adminPromptOpen}
+          onCloseAdminPrompt={() => setAdminPromptOpen(false)}
+          onVerifyAdminToken={adminHandlers.onVerifyAdminToken}
+          editorState={editorState}
+          onCloseEditor={adminHandlers.onCloseEditor}
+          adminToken={adminToken}
+          onAdminTokenChange={setAdminToken}
+          rememberAdmin={rememberAdmin}
+          onRememberAdminChange={setRememberAdmin}
+          isAdminAuthenticated={ownerSessionActive}
+          busy={submitting}
+          status={formStatus}
+          profileImage={profile?.personal?.profileImage}
+          profile={profile}
+          onLogout={adminHandlers.onLogout}
+          onOpenVault={adminHandlers.onOpenVault}
+          onOpenPhotoEditor={adminHandlers.onOpenPhotoEditor}
+          onOpenProjectCreator={adminHandlers.onOpenProjectCreator}
+          onOpenCertificateCreator={adminHandlers.onOpenCertificateCreator}
+          onOpenContactEditor={adminHandlers.onOpenContactEditor}
+        />
+      </NonCriticalFeatureBoundary>
     </div>
   );
 }

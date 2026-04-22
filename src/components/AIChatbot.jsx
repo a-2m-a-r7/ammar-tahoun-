@@ -12,6 +12,20 @@ const SUGGESTED_QUESTIONS = [
 const formatTime = () =>
   new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
+const AI_CHAT_TIMEOUT_MS = 28000;
+
+async function parseErrorResponse(response) {
+  const contentType = response.headers.get('content-type') || '';
+
+  if (contentType.includes('application/json')) {
+    const payload = await response.json().catch(() => null);
+    return payload?.message || 'Stream unavailable';
+  }
+
+  const text = await response.text().catch(() => '');
+  return text || 'Stream unavailable';
+}
+
 const AIChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
@@ -60,9 +74,16 @@ const AIChatbot = () => {
       if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }, 50);
 
+    let timeoutId;
+    let didTimeout = false;
+
     try {
       const controller = new AbortController();
       abortRef.current = controller;
+      timeoutId = window.setTimeout(() => {
+        didTimeout = true;
+        controller.abort();
+      }, AI_CHAT_TIMEOUT_MS);
 
       const response = await fetch('/api/ai/chat', {
         method: 'POST',
@@ -71,7 +92,11 @@ const AIChatbot = () => {
         signal: controller.signal
       });
 
-      if (!response.ok || !response.body) {
+      if (!response.ok) {
+        throw new Error(await parseErrorResponse(response));
+      }
+
+      if (!response.body) {
         throw new Error('Stream unavailable');
       }
 
@@ -79,6 +104,7 @@ const AIChatbot = () => {
       const decoder = new TextDecoder();
       let buffer = '';
       let accumulated = '';
+      let completed = false;
 
       while (true) {
         const { done, value } = await reader.read();
@@ -103,12 +129,14 @@ const AIChatbot = () => {
                 scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
               }
             } else if (evt.done) {
+              completed = true;
               setMessages(prev => {
                 const next = [...prev];
                 next[aiMsgIndex] = { ...next[aiMsgIndex], content: evt.response || accumulated, streaming: false };
                 return next;
               });
             } else if (evt.error) {
+              completed = true;
               setMessages(prev => {
                 const next = [...prev];
                 next[aiMsgIndex] = { ...next[aiMsgIndex], content: evt.message || 'Error from intelligence core.', streaming: false };
@@ -118,15 +146,46 @@ const AIChatbot = () => {
           } catch { /* ignore parse errors */ }
         }
       }
-    } catch (err) {
-      if (err.name !== 'AbortError') {
+
+      if (!completed) {
         setMessages(prev => {
           const next = [...prev];
-          next[aiMsgIndex] = { role: 'ai', content: 'Connection failure. Intelligence core unreachable.', time: formatTime(), streaming: false };
+          next[aiMsgIndex] = {
+            ...next[aiMsgIndex],
+            content: accumulated || 'The AI assistant ended the stream unexpectedly. Please try again.',
+            streaming: false
+          };
+          return next;
+        });
+      }
+    } catch (err) {
+      if (didTimeout) {
+        setMessages(prev => {
+          const next = [...prev];
+          next[aiMsgIndex] = {
+            role: 'ai',
+            content: 'The AI assistant timed out. Please try again in a moment.',
+            time: formatTime(),
+            streaming: false
+          };
+          return next;
+        });
+      } else if (err.name !== 'AbortError') {
+        setMessages(prev => {
+          const next = [...prev];
+          next[aiMsgIndex] = {
+            role: 'ai',
+            content: err?.message || 'Connection failure. Intelligence core unreachable.',
+            time: formatTime(),
+            streaming: false
+          };
           return next;
         });
       }
     } finally {
+      if (timeoutId) {
+        window.clearTimeout(timeoutId);
+      }
       setIsStreaming(false);
       abortRef.current = null;
     }
