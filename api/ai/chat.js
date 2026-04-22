@@ -1,6 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { readFileSync } from 'fs';
-import { join } from 'path';
+import profile from '../../data/profile.json' assert { type: 'json' };
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -19,10 +18,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    const file = join(process.cwd(), 'data', 'profile.json');
-    const profileRaw = readFileSync(file, 'utf8');
-    const profile = JSON.parse(profileRaw);
-
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
