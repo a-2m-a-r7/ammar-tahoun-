@@ -1842,9 +1842,9 @@ const server = createServer(async (req, res) => {
         return;
       }
 
-      const payload = await parseJsonBody(req);
+      const payload = await parseJsonBody(req, { maxBodySize: 65536 });
       const userMessage = sanitizeText(payload.message, { maxLength: 1000 });
-
+      
       if (!userMessage) {
         sendJson(res, 400, { ok: false, message: "Message is required." });
         return;
@@ -1853,7 +1853,7 @@ const server = createServer(async (req, res) => {
       try {
         const profile = await readProfile();
         const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
         const history = Array.isArray(payload.history) ? payload.history.slice(-6) : [];
 
