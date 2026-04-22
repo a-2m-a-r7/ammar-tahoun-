@@ -3,12 +3,8 @@ import fs from 'fs/promises';
 async function copyAssets() {
   await fs.mkdir('dist/api', { recursive: true }).catch(() => {});
   
-  try {
-    await fs.copyFile('data/profile.json', 'dist/api/profile');
-    console.log('Successfully copied profile.json to dist/api/profile');
-  } catch (e) {
-    console.error('Failed to copy profile data:', e.message);
-  }
+  // Profile API is handled by serverless functions (api/profile.js)
+  // or dynamically by server.js, so we no longer bundle it as a static file.
   
   try {
     await fs.cp('media', 'dist/media', { recursive: true });
