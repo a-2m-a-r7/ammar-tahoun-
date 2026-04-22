@@ -1,9 +1,11 @@
 import dotenv from "dotenv";
 import { createServer } from "node:http";
-import { randomUUID, timingSafeEqual } from "node:crypto";
+import { randomUUID, timingSafeEqual, createCipheriv, createDecipheriv, scryptSync } from "node:crypto";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { Resend } from "resend";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -75,6 +77,10 @@ const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || "")
   .filter(Boolean);
 const CONTACT_WEBHOOK_URL = process.env.CONTACT_WEBHOOK_URL || "";
 const CONTACT_WEBHOOK_TOKEN = process.env.CONTACT_WEBHOOK_TOKEN || "";
+const ENCRYPTION_KEY = (process.env.ENCRYPTION_KEY || "").trim();
+const GEMINI_API_KEY = (process.env.GEMINI_API_KEY || "").trim();
+const ALGORITHM = "aes-256-cbc";
+const IV_LENGTH = 16;
 const allowedImageTypes = new Map([
   ["image/png", ".png"],
   ["image/jpeg", ".jpg"],
@@ -103,6 +109,11 @@ const rateLimitStore = new Map();
 const adminRateLimitStore = new Map();
 const adminSessions = new Map();
 const pendingManagedDeletes = new Set();
+const auditLogs = [];
+let resend;
+if (process.env.RESEND_API_KEY) {
+  resend = new Resend(process.env.RESEND_API_KEY);
+}
 let writeQueue = Promise.resolve();
 
 function isSecureRequest(req) {
@@ -206,6 +217,37 @@ function sanitizeText(value, { maxLength = 4000 } = {}) {
 
   const normalized = value.replace(/[\u0000-\u001F\u007F]/g, " ").replace(/\s+/g, " ").trim();
   return normalized.slice(0, maxLength);
+}
+
+function encrypt(text) {
+  if (!ENCRYPTION_KEY || !text) return text;
+  try {
+    const key = scryptSync(ENCRYPTION_KEY, "salt", 32);
+    const iv = Buffer.alloc(IV_LENGTH, 0); // Static IV for demo/simple vault, ideally random + stored
+    const cipher = createCipheriv(ALGORITHM, key, iv);
+    let encrypted = cipher.update(text, "utf8", "hex");
+    encrypted += cipher.final("hex");
+    return `v1:${encrypted}`;
+  } catch (err) {
+    console.error("[security] Encryption failed:", err);
+    return text;
+  }
+}
+
+function decrypt(encryptedText) {
+  if (!ENCRYPTION_KEY || !encryptedText || !encryptedText.startsWith("v1:")) return encryptedText;
+  try {
+    const text = encryptedText.replace("v1:", "");
+    const key = scryptSync(ENCRYPTION_KEY, "salt", 32);
+    const iv = Buffer.alloc(IV_LENGTH, 0);
+    const decipher = createDecipheriv(ALGORITHM, key, iv);
+    let decrypted = decipher.update(text, "hex", "utf8");
+    decrypted += decipher.final("utf8");
+    return decrypted;
+  } catch (err) {
+    console.error("[security] Decryption failed:", err);
+    return encryptedText;
+  }
 }
 
 function isValidEmail(email) {
@@ -1028,24 +1070,136 @@ async function forwardToEmail(entry) {
   }
 }
 
+/**
+ * Intent Engine v1.1 - Inference Layer
+ * Transforms normalized behavioral events into an Intent Score and Clusters.
+ */
+function assessIntent(telemetry) {
+  if (!telemetry || !Array.isArray(telemetry.events)) {
+    return { score: 0, level: "LOW", clusters: { technical: 0, interests: 0, exploration: 0 }, highSignal: [] };
+  }
+
+  const events = telemetry.events;
+  let score = 0;
+  const clusters = { technical: 0, interests: 0, exploration: 0 };
+  const highSignal = [];
+  const projectsViewed = new Set();
+
+  events.forEach((ev) => {
+    switch (ev.event) {
+      case "HIGH_SIGNAL.GITHUB_CLICK":
+        score += 3.5;
+        clusters.technical++;
+        highSignal.push("GitHub Profile visited");
+        break;
+      case "HIGH_SIGNAL.CV_DOWNLOAD":
+        score += 3.0;
+        clusters.technical++;
+        highSignal.push("Resume/CV downloaded");
+        break;
+      case "MODAL.PROJECT_VIEW":
+        score += 2.0;
+        clusters.interests++;
+        if (ev.meta?.duration) {
+          // log(1 + seconds) * 0.5 weight
+          score += Math.log1p(ev.meta.duration) * 0.5;
+        }
+        if (ev.meta?.name) projectsViewed.add(ev.meta.name);
+        break;
+      case "EXPLORATION.SCROLL_DEEP":
+        score += 1.0;
+        clusters.exploration++;
+        break;
+      case "EXPLORATION.PAGE_VIEW":
+        score += 0.5;
+        clusters.exploration++;
+        break;
+      case "ACTION.CONTACT_START":
+        score += 1.0;
+        clusters.exploration++;
+        break;
+    }
+  });
+
+  // Calculate Level
+  let level = "LOW";
+  if (score >= 8) level = "HIGH";
+  else if (score >= 4) level = "MEDIUM";
+
+  return {
+    score: parseFloat(score.toFixed(1)),
+    level,
+    clusters,
+    highSignal,
+    projects: Array.from(projectsViewed)
+  };
+}
+
 async function forwardToWebhook(entry) {
   if (!CONTACT_WEBHOOK_URL) {
     return;
   }
 
-  const headers = {
-    "Content-Type": "application/json"
-  };
+  try {
+    const isDiscord = CONTACT_WEBHOOK_URL.includes("discord.com/api/webhooks");
+    let body;
 
-  if (CONTACT_WEBHOOK_TOKEN) {
-    headers.Authorization = `Bearer ${CONTACT_WEBHOOK_TOKEN}`;
+    if (isDiscord) {
+      const intelligence = assessIntent(entry.telemetry);
+      const levelColor = intelligence.level === "HIGH" ? 0x10b981 : (intelligence.level === "MEDIUM" ? 0x3b82f6 : 0x64748b);
+
+      body = JSON.stringify({
+        embeds: [
+          {
+            title: `🧠 Lead Intelligence ([${intelligence.level}] INTENT - ${intelligence.score}/10)`,
+            color: levelColor,
+            timestamp: new Date().toISOString(),
+            fields: [
+              { name: "👤 Name", value: entry.name || "N/A", inline: true },
+              { name: "📧 Email", value: entry.email || "N/A", inline: true },
+              { name: "🏢 Company", value: entry.company || "N/A", inline: true },
+              { name: "🛠 Project Type", value: entry.projectType || "N/A", inline: true },
+              { name: "💰 Budget", value: entry.budget || "N/A", inline: true },
+              { name: "✨ Status", value: intelligence.level, inline: true },
+              { name: "📝 Message", value: entry.message || "No message provided." },
+              { 
+                name: "🎯 Intent Highlights", 
+                value: intelligence.highSignal.length > 0 ? intelligence.highSignal.join("\n") : "General interest", 
+                inline: false 
+              },
+              { 
+                name: "🏗 Primary Interests", 
+                value: intelligence.projects.length > 0 ? intelligence.projects.join(", ") : "Exploratory visit", 
+                inline: false 
+              }
+            ],
+            footer: {
+              text: `Telemetry based on ${entry.telemetry?.events?.length || 0} signals | IP: ${entry.ipAddress || "Unknown"}`
+            }
+          }
+        ]
+      });
+    } else {
+      body = JSON.stringify(entry);
+    }
+
+    const headers = { "Content-Type": "application/json" };
+    if (CONTACT_WEBHOOK_TOKEN) {
+      headers.Authorization = `Bearer ${CONTACT_WEBHOOK_TOKEN}`;
+    }
+
+    const response = await fetch(CONTACT_WEBHOOK_URL, {
+      method: "POST",
+      headers,
+      body
+    });
+
+    if (!response.ok) {
+      console.error(`[Webhook] Target returned ${response.status}: ${await response.text().catch(() => "N/A")}`);
+    }
+  } catch (error) {
+    console.error("[Webhook] Transmission failed:", error.message);
   }
-
-  await fetch(CONTACT_WEBHOOK_URL, {
-    method: "POST",
-    headers,
-    body: JSON.stringify(entry)
-  });
 }
 
 function validateContactPayload(payload) {
@@ -1056,7 +1210,8 @@ function validateContactPayload(payload) {
     projectType: sanitizeText(payload.projectType, { maxLength: 80 }),
     budget: sanitizeText(payload.budget, { maxLength: 80 }),
     message: sanitizeText(payload.message, { maxLength: 1500 }),
-    website: sanitizeText(payload.website, { maxLength: 120 })
+    website: sanitizeText(payload.website, { maxLength: 120 }),
+    telemetry: payload.telemetry || {}
   };
 
   const errors = [];
@@ -1462,6 +1617,42 @@ const server = createServer(async (req, res) => {
       return;
     }
 
+    // (AI Chatbot Logic is handled further down)
+
+    // Secure Contact Submission
+    if (req.method === "POST" && url.pathname === "/api/contact") {
+      const payload = await parseJsonBody(req, { maxBodySize: 8192 });
+      const { name, email, message } = payload;
+      
+      if (!name || !email || !message) {
+        sendJson(res, 400, { ok: false, message: "Missing required fields." });
+        return;
+      }
+
+      const submissionId = randomUUID();
+      const timestamp = new Date().toISOString();
+      const encryptedMessage = encrypt(message);
+      
+      const record = { id: submissionId, timestamp, name, email, message: encryptedMessage };
+      
+      await updateJsonFile(CONTACT_FILE, (current) => [...(current || []), record]);
+      
+      auditLogs.push({ timestamp, type: "SUCCESS", message: `New secure contact from ${name}` });
+
+      // Notify owner if Resend is configured
+      if (resend) {
+        resend.emails.send({
+          from: "Portfolio <onboarding@resend.dev>",
+          to: "mart33645@gmail.com",
+          subject: `Portfolio: New secure message from ${name}`,
+          html: `<p>New encrypted message received.</p><p><strong>From:</strong> ${name} (${email})</p><p>View in Admin Vault.</p>`
+        }).catch(err => console.error("[email] Failed to send notification:", err));
+      }
+
+      sendJson(res, 200, { ok: true, message: "Signal transmitted. Encrypted record stored in the vault." });
+      return;
+    }
+
     if (req.method === "GET" && url.pathname === "/api/admin/session") {
       markSensitiveResponse(res);
       const session = getAdminSession(req);
@@ -1475,6 +1666,35 @@ const server = createServer(async (req, res) => {
       sendJson(res, 200, {
         ok: true,
         message: "Admin session is active."
+      });
+      return;
+    }
+
+    // Admin Security Vault
+    if (req.method === "POST" && url.pathname === "/api/admin/vault") {
+      requireAdminSession(req, res);
+      const payload = await parseJsonBody(req, { maxBodySize: 2048 });
+      const providedVaultKey = payload.vaultPassword;
+      
+      if (providedVaultKey !== process.env.AUDIT_LOG_PASSWORD) {
+        sendJson(res, 403, { ok: false, message: "Access Denied: Invalid Vault Key." });
+        return;
+      }
+
+      const submissions = await readJsonFile(CONTACT_FILE, []);
+      const decryptedSubmissions = {};
+      
+      submissions.forEach(sub => {
+        decryptedSubmissions[sub.id] = decrypt(sub.message);
+      });
+
+      sendJson(res, 200, {
+        ok: true,
+        data: {
+          submissions,
+          decryptedSubmissions,
+          auditLogs: auditLogs.slice(-100).reverse()
+        }
       });
       return;
     }
@@ -1529,6 +1749,31 @@ const server = createServer(async (req, res) => {
       return;
     }
 
+    if (req.method === "GET" && url.pathname === "/api/admin/vault") {
+      markSensitiveResponse(res);
+      requireTrustedAdminRequest(req);
+      requireAdminSession(req, res);
+      
+      const submissions = await readContactSubmissions();
+      const auditLog = await readAuditLog().catch(() => []);
+
+      // Decrypt messages for the admin view
+      const securedSubmissions = submissions.map(s => ({
+        ...s,
+        message: decrypt(s.message)
+      })).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+      sendJson(res, 200, {
+        ok: true,
+        data: {
+          submissions: securedSubmissions,
+          auditLog: auditLog.slice(0, 50),
+          encryptionActive: !!ENCRYPTION_KEY
+        }
+      });
+      return;
+    }
+
     if (req.method === "POST" && url.pathname === "/api/contact") {
       const ipAddress = getClientIp(req);
       if (
@@ -1559,7 +1804,8 @@ const server = createServer(async (req, res) => {
         id: randomUUID(),
         createdAt: new Date().toISOString(),
         ipAddress,
-        ...cleaned
+        ...cleaned,
+        message: encrypt(cleaned.message) // LEVEL 5 SECURITY: Encrypt message
       };
 
       await saveContactSubmission(submission);
@@ -1570,6 +1816,110 @@ const server = createServer(async (req, res) => {
         ok: true,
         message: "Message sent successfully. I will get back to you soon."
       });
+      return;
+    }
+
+    if (req.method === "POST" && url.pathname === "/api/ai/chat") {
+      const ipAddress = getClientIp(req);
+      if (
+        !enforceRateLimit(rateLimitStore, `ai:${ipAddress}`, {
+          maxRequests: 10,
+          windowMs: 1 * 60 * 1000
+        })
+      ) {
+        sendJson(res, 429, { ok: false, message: "AI rate limit reached. Slow down experimental systems." });
+        return;
+      }
+
+      const contentType = req.headers["content-type"] || "";
+      if (!contentType.includes("application/json")) {
+        sendJson(res, 415, { ok: false, message: "Unsupported content type." });
+        return;
+      }
+
+      if (!GEMINI_API_KEY) {
+        sendJson(res, 503, { ok: false, message: "AI Intelligence is currently offline (Key missing)." });
+        return;
+      }
+
+      const payload = await parseJsonBody(req);
+      const userMessage = sanitizeText(payload.message, { maxLength: 1000 });
+
+      if (!userMessage) {
+        sendJson(res, 400, { ok: false, message: "Message is required." });
+        return;
+      }
+
+      try {
+        const profile = await readProfile();
+        const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+
+        const history = Array.isArray(payload.history) ? payload.history.slice(-6) : [];
+
+        // Compact profile summary — fewer tokens = faster response
+        const p = profile?.personal || {};
+        const compactProfile = [
+          `Name: ${p.fullName || "Ammar Tahoon"} | Role: ${p.role || "AI Engineer"} | Location: ${p.location || "Egypt"}`,
+          `Availability: ${p.availability || "Available"} | Email: ${p.email || ""}`,
+          `Summary: ${p.heroSummary || ""}`,
+          `Skills: ${(profile?.skillGroups || []).map(g => `${g.title}: ${(g.items || []).join(", ")}`).join(" | ")}`,
+          `Tech Spotlight: ${(profile?.spotlightTech || []).map(t => t.name).join(", ")}`,
+          `Projects: ${(profile?.projects || []).map(pr => `${pr.title} (${pr.category}) — ${pr.summary}`).join(" | ")}`,
+          `Experience: ${(profile?.experience || []).map(e => `${e.role} @ ${e.company} (${e.period})`).join(" | ")}`,
+          `Certificates: ${(profile?.certificates || []).map(c => `${c.title} by ${c.issuer}`).join(", ")}`,
+          `Services: ${(profile?.services || []).map(s => s.title).join(", ")}`,
+          `Socials: ${(profile?.socials || []).map(s => `${s.label}: ${s.url}`).join(" | ")}`,
+        ].filter(Boolean).join("\n");
+
+        const systemPrompt = `You are an extremely smart, fast, and futuristic AI assistant for Ammar Tahoon's portfolio.
+CRITICAL: You MUST reply in the EXACT SAME LANGUAGE and DIALECT as the user's question (e.g., if asked in Egyptian Arabic, reply naturally in Egyptian Arabic; if English, reply in English).
+Answer visitor questions about Ammar's skills, projects, experience, and availability.
+Be concise (1-3 sentences), professional, yet welcoming. Never invent facts.
+Only answer portfolio-related questions. Redirect others politely.
+
+${compactProfile}`;
+
+        // Use streaming for instant response feel
+        setSecurityHeaders(res);
+        res.writeHead(200, {
+          "Content-Type": "text/event-stream; charset=utf-8",
+          "Cache-Control": "no-cache, no-store",
+          "Connection": "keep-alive",
+          "X-Accel-Buffering": "no"
+        });
+
+        const chat = model.startChat({
+          history: [
+            { role: "user", parts: [{ text: systemPrompt }] },
+            { role: "model", parts: [{ text: "Ready. Ask me anything about Ammar." }] },
+            ...history.map((msg) => ({
+              role: msg.role === "ai" ? "model" : "user",
+              parts: [{ text: msg.content }]
+            }))
+          ]
+        });
+
+        const streamResult = await chat.sendMessageStream(userMessage);
+        let fullText = "";
+
+        for await (const chunk of streamResult.stream) {
+          const chunkText = chunk.text();
+          if (chunkText) {
+            fullText += chunkText;
+            res.write(`data: ${JSON.stringify({ chunk: chunkText })}\n\n`);
+          }
+        }
+
+        res.write(`data: ${JSON.stringify({ done: true, response: fullText })}\n\n`);
+        res.end();
+      } catch (err) {
+        console.error("[ai] Gemini Error:", err);
+        try {
+          res.write(`data: ${JSON.stringify({ error: true, message: "AI core sync error. Try again." })}\n\n`);
+          res.end();
+        } catch {}
+      }
       return;
     }
 

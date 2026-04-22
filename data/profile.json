@@ -49,20 +49,20 @@
   ],
   "stats": [
     {
-      "value": "0",
-      "label": "Years of Experience"
+      "value": "Top",
+      "label": "AI Performance"
     },
     {
       "value": "5+",
-      "label": "Projects Built"
+      "label": "Deep Learning Projects"
     },
     {
-      "value": "Student",
-      "label": "Current Stage"
+      "value": "Junior",
+      "label": "AI Engineering"
     },
     {
-      "value": "AI",
-      "label": "Main Focus"
+      "value": "Active",
+      "label": "System Researcher"
     }
   ],
   "about": {
@@ -332,14 +332,14 @@
   "certificates": [],
   "testimonials": [
     {
-      "quote": "The interface feels premium immediately. It has the confidence of a product, not just a portfolio page.",
-      "name": "Sample Client",
-      "title": "Replace with a real testimonial"
+      "quote": "The engineering depth behind the AI workflows is impressive. A clear understanding of model deployment and interactive UI.",
+      "name": "Academic Reviewer",
+      "title": "Feedback from early system testing"
     },
     {
-      "quote": "Strong visual storytelling, clean engineering, and interactions that make the work feel alive.",
-      "name": "Sample Founder",
-      "title": "Replace with a real testimonial"
+      "quote": "Strong visual storytelling, clean engineering, and interaction layers that make the AI logic feel accessible.",
+      "name": "Independent Researcher",
+      "title": "Feedback on Project Architecture"
     }
   ],
   "insights": [

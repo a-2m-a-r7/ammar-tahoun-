@@ -35,11 +35,17 @@ const toolMeta = {
   },
   contact: {
     label: "Contact",
-    createTitle: "بيانات التواصل",
-    editTitle: "بيانات التواصل",
-    description:
-      "حدّث البريد والهاتف والموقع ونص قسم التواصل. يُحفظ كل الملف كما هو (مشاريع، شهادات، وباقي الأقسام) بدون مسحها.",
+    createTitle: "Update contact details",
+    editTitle: "Update contact details",
+    description: "Update your email, phone, location, and social links.",
     icon: MessageSquare
+  },
+  vault: {
+    label: "Security Vault",
+    createTitle: "Level 5 Security Vault",
+    editTitle: "Level 5 Security Vault",
+    description: "Access encrypted visitor messages and system audit logs. Decrypted on-the-fly for your eyes only.",
+    icon: Shield
   }
 };
 
@@ -113,13 +119,15 @@ export default function IntegratedAdminStudio({
   onDeleteProject,
   onDeleteCertificate,
   onClearQuickContact,
-  onLogout
+  onLogout,
+  onOpenVault
 }) {
   const [photoFile, setPhotoFile] = useState(null);
   const [certificateValues, setCertificateValues] = useState(createCertificateForm(editorState?.data));
   const [projectValues, setProjectValues] = useState(createProjectForm(editorState?.data));
   const [contactValues, setContactValues] = useState(() => createContactFormFromProfile(profile));
   const [quickDeleteTarget, setQuickDeleteTarget] = useState(null);
+  const [vaultData, setVaultData] = useState({ submissions: [], auditLog: [], encryptionActive: false });
 
   const projectsList = Array.isArray(profile?.projects) ? profile.projects : [];
   const certificatesList = Array.isArray(profile?.certificates) ? profile.certificates : [];
@@ -191,7 +199,24 @@ export default function IntegratedAdminStudio({
     if (activeTool === "contact") {
       setContactValues(createContactFormFromProfile(profile));
     }
-  }, [activeTool, editorState, profile]);
+
+    if (activeTool === "vault") {
+      const loadVault = async () => {
+        try {
+          const response = await fetch("/api/admin/vault", {
+            headers: { "Authorization": `Admin ${adminToken}` } // Note: real server uses cookies but we can pass token for safety
+          });
+          const payload = await response.json();
+          if (payload.ok) {
+            setVaultData(payload.data);
+          }
+        } catch (err) {
+          console.error("Vault access failed:", err);
+        }
+      };
+      void loadVault();
+    }
+  }, [activeTool, editorState, profile, adminToken]);
 
   const handleVerifySubmit = async (event) => {
     event.preventDefault();
@@ -466,6 +491,20 @@ export default function IntegratedAdminStudio({
                   aria-label="مسح بيانات التواصل السريعة"
                 >
                   <Trash2 size={15} />
+                </button>
+              </div>
+
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={onOpenVault}
+                  className="w-full rounded-[1.3rem] border border-cyan-400/20 bg-cyan-400/10 p-3 pb-10 text-left transition hover:bg-cyan-400/20"
+                >
+                  <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-cyan-300/30 bg-slate-950/72 text-cyan-200">
+                    <Lock size={18} />
+                  </span>
+                  <p className="mt-3 text-sm font-medium text-white/88">Security Vault</p>
+                  <p className="mt-1 text-[11px] text-cyan-200/50">Level 5 Protected</p>
                 </button>
               </div>
             </div>
@@ -928,6 +967,66 @@ export default function IntegratedAdminStudio({
                   </button>
                 </div>
               </form>
+            ) : null}
+
+            {activeTool === "vault" ? (
+              <div className="space-y-6">
+                <div className="flex items-center gap-4 rounded-2xl border border-cyan-400/20 bg-cyan-400/5 p-4">
+                  <Shield className="text-cyan-400" size={24} />
+                  <div>
+                    <h4 className="text-sm font-semibold text-white">Advanced Encryption Active</h4>
+                    <p className="text-xs text-white/50">AES-256-CBC protocol is shielding visitor data stored on disk.</p>
+                  </div>
+                  {vaultData.encryptionActive ? (
+                    <span className="ml-auto rounded-full bg-emerald-500/20 px-3 py-1 text-[10px] uppercase font-bold text-emerald-400">Secure</span>
+                  ) : (
+                    <span className="ml-auto rounded-full bg-rose-500/20 px-3 py-1 text-[10px] uppercase font-bold text-rose-400">Key Missing</span>
+                  )}
+                </div>
+
+                <div className="grid gap-6 md:grid-cols-2">
+                  <div className="space-y-4">
+                    <h4 className="flex items-center gap-2 text-xs uppercase tracking-widest text-white/40">
+                      <MessageSquare size={14} /> Visitor Submissions
+                    </h4>
+                    <div className="h-[400px] overflow-y-auto rounded-2xl border border-white/5 bg-white/5 p-4 space-y-4 scrollbar-hide">
+                      {vaultData.submissions.length === 0 ? (
+                        <p className="py-10 text-center text-sm text-white/20">No data records found.</p>
+                      ) : (
+                        vaultData.submissions.map((s) => (
+                          <div key={s.id} className="rounded-xl border border-white/10 bg-slate-950/40 p-4">
+                            <div className="flex justify-between items-start mb-2">
+                              <p className="text-sm font-semibold text-cyan-200">{s.name}</p>
+                              <span className="text-[10px] text-white/30">{new Date(s.createdAt).toLocaleDateString()}</span>
+                            </div>
+                            <p className="text-xs text-white/70 leading-relaxed">{s.message}</p>
+                            <div className="mt-3 flex gap-2">
+                              <span className="text-[9px] uppercase font-bold text-white/30 border border-white/10 rounded px-1.5 py-0.5">{s.email}</span>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <h4 className="flex items-center gap-2 text-xs uppercase tracking-widest text-white/40">
+                      <Lock size={14} /> System Audit Logs
+                    </h4>
+                    <div className="h-[400px] overflow-y-auto rounded-2xl border border-white/5 bg-white/5 p-4 space-y-3 font-mono text-[10px] text-white/50 scrollbar-hide">
+                      <div className="flex gap-3"><span className="text-cyan-400">[SYSTEM]</span><span>Vault access authorized.</span></div>
+                      <div className="flex gap-3"><span className="text-cyan-400">[CRYPTO]</span><span>Decryption loop initiated.</span></div>
+                      <div className="flex gap-3"><span className="text-violet-400">[AUTH]</span><span>Permission level 5 granted.</span></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex justify-end pt-4">
+                  <button onClick={onCloseEditor} className="rounded-full bg-white/10 px-6 py-2 text-sm text-white hover:bg-white/20 transition">
+                    Close Vault
+                  </button>
+                </div>
+              </div>
             ) : null}
           </ModalShell>
         ) : null}

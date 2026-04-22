@@ -1,10 +1,12 @@
-﻿import {
+import {
   lazy,
   startTransition,
   Suspense,
+  useCallback,
   useDeferredValue,
   useEffect,
   useMemo,
+  useRef,
   useState
 } from "react";
 import Tilt from "react-parallax-tilt";
@@ -43,6 +45,8 @@ import {
 } from "lucide-react";
 import MagneticButton from "./components/MagneticButton";
 import ProjectModal from "./components/ProjectModal";
+import AIChatbot from "./components/AIChatbot";
+import IntegratedAdminStudio from "./components/IntegratedAdminStudio";
 
 const BackgroundFX = lazy(() => import("./components/BackgroundFX"));
 
@@ -189,40 +193,57 @@ function syncPortfolioSeo(profile) {
   const preferredUrl = shouldUseRuntimeOrigin
     ? `${window.location.origin}${window.location.pathname}`
     : configuredSiteUrl;
-  const title = profile.site?.title || "Ammar Tahoon | AI Engineer";
+  
+  const title = profile.site?.title || "Ammar Tahoon | AI Engineer & Student";
+  const fullName = profile.personal?.fullName || "Ammar Tahoon";
+  const role = profile.personal?.role || "AI Engineer";
+  
   const description =
     profile.site?.description ||
     profile.personal?.heroSummary ||
-    "Ammar Tahoon builds AI-driven solutions across machine learning, deep learning, computer vision, and NLP.";
+    `${fullName} is an AI Engineer and student researcher specializing in machine learning, computer vision, and NLP.`;
+    
   const canonicalUrl = toAbsoluteUrl(preferredUrl, window.location.pathname || "/");
   const imageUrl = toAbsoluteUrl(profile.personal?.profileImage || "/assets/avatar-monogram.svg", "/assets/avatar-monogram.svg");
 
   document.title = title;
 
+  // Standard Meta Tags
   upsertMetaTag('meta[name="description"]', { name: "description", content: description });
   upsertMetaTag('meta[name="theme-color"]', { name: "theme-color", content: "#020617" });
   upsertMetaTag('meta[name="robots"]', { name: "robots", content: "index,follow,max-image-preview:large" });
+  
+  // Open Graph
   upsertMetaTag('meta[property="og:title"]', { property: "og:title", content: title });
   upsertMetaTag('meta[property="og:description"]', { property: "og:description", content: description });
   upsertMetaTag('meta[property="og:type"]', { property: "og:type", content: "website" });
   upsertMetaTag('meta[property="og:url"]', { property: "og:url", content: canonicalUrl });
   upsertMetaTag('meta[property="og:image"]', { property: "og:image", content: imageUrl });
-  upsertMetaTag('meta[property="og:site_name"]', { property: "og:site_name", content: profile.personal?.fullName || "Ammar Tahoon" });
+  upsertMetaTag('meta[property="og:site_name"]', { property: "og:site_name", content: fullName });
+  
+  // Twitter
   upsertMetaTag('meta[name="twitter:card"]', { name: "twitter:card", content: "summary_large_image" });
   upsertMetaTag('meta[name="twitter:title"]', { name: "twitter:title", content: title });
   upsertMetaTag('meta[name="twitter:description"]', { name: "twitter:description", content: description });
   upsertMetaTag('meta[name="twitter:image"]', { name: "twitter:image", content: imageUrl });
+  
+  // Canonical
   upsertLinkTag('link[rel="canonical"]', { rel: "canonical", href: canonicalUrl });
 
+  // Advanced Schema.org (JSON-LD)
+  const skills = (profile.spotlightTech || []).map(t => t.name);
+  const universityExperience = (profile.experience || []).find(e => e.company?.toLowerCase().includes("university"));
+  
   const schema = {
     "@context": "https://schema.org",
     "@type": "Person",
-    name: profile.personal?.fullName || "Ammar Tahoon",
-    jobTitle: profile.personal?.role || "AI Engineer",
+    name: fullName,
+    jobTitle: role,
     description,
+    image: imageUrl,
+    url: canonicalUrl,
     email: profile.personal?.email || undefined,
     telephone: profile.personal?.phone || undefined,
-    image: imageUrl,
     address: profile.personal?.location
       ? {
           "@type": "PostalAddress",
@@ -230,8 +251,19 @@ function syncPortfolioSeo(profile) {
           addressCountry: "Egypt"
         }
       : undefined,
-    sameAs: (profile.socials || []).map((item) => safeUrl(item.url)).filter((item) => item !== "#"),
-    url: canonicalUrl
+    alumniOf: universityExperience ? {
+      "@type": "EducationalOrganization",
+      name: universityExperience.company
+    } : undefined,
+    knowsAbout: skills.length > 0 ? skills : [
+      "Artificial Intelligence",
+      "Machine Learning",
+      "Deep Learning",
+      "Computer Vision",
+      "Natural Language Processing",
+      "Python"
+    ],
+    sameAs: (profile.socials || []).map((item) => safeUrl(item.url)).filter((item) => item !== "#")
   };
 
   let schemaTag = document.getElementById("portfolio-person-schema");
@@ -242,6 +274,26 @@ function syncPortfolioSeo(profile) {
     document.head.appendChild(schemaTag);
   }
   schemaTag.textContent = JSON.stringify(schema);
+
+  // Google Analytics Slot (Future-Proofing)
+  const gaId = profile.site?.gaMeasurementId || "";
+  if (gaId && !document.getElementById("google-analytics-script")) {
+    const gtagScript = document.createElement("script");
+    gtagScript.id = "google-analytics-script";
+    gtagScript.async = true;
+    gtagScript.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+    document.head.appendChild(gtagScript);
+
+    const inlineScript = document.createElement("script");
+    inlineScript.id = "google-analytics-inline";
+    inlineScript.textContent = `
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '${gaId}');
+    `;
+    document.head.appendChild(inlineScript);
+  }
 }
 
 function SectionHeading({ eyebrow, title, description }) {
@@ -303,6 +355,42 @@ export default function App() {
     message: "",
     website: ""
   });
+
+  // --- Intent Engine v1.1: Behavioral Tracking ---
+  const [events, setEvents] = useState([]);
+  const modalEntryTime = useRef(null);
+
+  const logEvent = useCallback((type, meta = {}) => {
+    setEvents((prev) => [
+      ...prev,
+      {
+        event: type,
+        timestamp: Date.now(),
+        meta
+      }
+    ], []);
+  }, []);
+
+  // Initial Page View
+  useEffect(() => {
+    logEvent("EXPLORATION.PAGE_VIEW", { url: window.location.href, referrer: document.referrer });
+  }, [logEvent]);
+
+  // Scroll Performance (80% Depth)
+  useEffect(() => {
+    const footer = document.querySelector("footer");
+    if (!footer) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        logEvent("EXPLORATION.SCROLL_DEEP");
+        observer.disconnect();
+      }
+    }, { threshold: 0.1 });
+
+    observer.observe(footer);
+    return () => observer.disconnect();
+  }, [logEvent]);
 
   const shouldReduceMotion = useReducedMotion();
   const deferredFilter = useDeferredValue(activeFilter);
@@ -528,9 +616,54 @@ export default function App() {
     }
   };
 
+  const [adminToken, setAdminToken] = useState("");
+  const [rememberAdmin, setRememberAdmin] = useState(false);
+  const [adminPromptOpen, setAdminPromptOpen] = useState(false);
+  const [editorState, setEditorState] = useState({ type: null, mode: "create", data: null });
+
+  const adminHandlers = {
+    onOpenVault: () => setEditorState({ type: "vault", mode: "edit", data: null }),
+    onOpenPhotoEditor: () => setEditorState({ type: "photo", mode: "edit", data: profile.personal }),
+    onOpenProjectCreator: () => setEditorState({ type: "project", mode: "create", data: null }),
+    onOpenCertificateCreator: () => setEditorState({ type: "certificate", mode: "create", data: null }),
+    onOpenContactEditor: () => setEditorState({ type: "contact", mode: "edit", data: profile }),
+    onCloseEditor: () => setEditorState({ type: null, mode: "create", data: null }),
+    onLogout: async () => {
+      await fetch("/api/admin/logout", { method: "POST" });
+      setOwnerSessionActive(false);
+      window.location.reload();
+    },
+    onVerifyAdminToken: async (token) => {
+      setSubmitting(true);
+      try {
+        const res = await fetch("/api/admin/verify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ adminToken: token })
+        });
+        if (res.ok) {
+          setOwnerSessionActive(true);
+          setAdminPromptOpen(false);
+          setFormStatus({ state: "success", message: "Admin session unlocked." });
+        } else {
+          setFormStatus({ state: "error", message: "Invalid admin token." });
+        }
+      } catch (err) {
+        setFormStatus({ state: "error", message: "Verification failed." });
+      } finally {
+        setSubmitting(false);
+      }
+    }
+  };
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormValues((current) => ({ ...current, [name]: value }));
+    
+    // Log intent to contact
+    if (events.filter(e => e.event === "ACTION.CONTACT_START").length === 0) {
+      logEvent("ACTION.CONTACT_START", { firstField: name });
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -546,7 +679,13 @@ export default function App() {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formValues)
+        body: JSON.stringify({
+          ...formValues,
+          telemetry: {
+            events,
+            clientTimestamp: Date.now()
+          }
+        })
       });
 
       const payload = await response.json();
@@ -703,6 +842,17 @@ export default function App() {
                 initial="hidden"
                 animate="show"
               >
+                <motion.div variants={staggerItem}>
+                  <MagneticButton 
+                    href={safeUrl(profile.personal.resumeUrl)} 
+                    target="_blank" 
+                    variant="outline" 
+                    icon={<Briefcase size={16} />}
+                    onClick={() => logEvent("HIGH_SIGNAL.CV_DOWNLOAD")}
+                  >
+                    View Resume
+                  </MagneticButton>
+                </motion.div>
                 <motion.div variants={staggerItem}>
                   <MagneticButton href="#projects" icon={<ArrowRight size={16} />}>
                     View Work
@@ -1200,7 +1350,7 @@ export default function App() {
                         <a
                           href={safeUrl(item.credentialUrl)}
                           target="_blank"
-                          rel="noreferrer"
+                          rel="noopener noreferrer"
                         className="display-meta mt-5 inline-flex items-center gap-2 text-cyan-200/82 transition hover:text-cyan-100"
                         >
                           View Credential
@@ -1219,7 +1369,7 @@ export default function App() {
 
               <div className="grid gap-4 md:grid-cols-2">
                 {insights.map((item) => (
-                  <a key={item.title} href={safeUrl(item.url)} target="_blank" rel="noreferrer" className="insight-card">
+                  <a key={item.title} href={safeUrl(item.url)} target="_blank" rel="noopener noreferrer" className="insight-card">
                     <p className="display-meta text-cyan-200/76">{item.tag}</p>
                     <h3 className="display-heading-sm mt-4 text-white">{item.title}</h3>
                     <p className="mt-4 text-sm leading-7 text-white/66">{item.summary}</p>
@@ -1311,7 +1461,16 @@ export default function App() {
                   const Icon = socialIconMap[item.label] || Globe;
 
                   return (
-                    <a key={item.label} href={safeUrl(item.url)} target="_blank" rel="noreferrer" className="social-pill">
+                    <a 
+                      key={item.label} 
+                      href={safeUrl(item.url)} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="social-pill"
+                      onClick={() => {
+                        if (item.label === "GitHub") logEvent("HIGH_SIGNAL.GITHUB_CLICK", { target: item.url });
+                      }}
+                    >
                       <Icon size={15} />
                       <span>{item.label}</span>
                     </a>
@@ -1443,8 +1602,45 @@ export default function App() {
       </footer>
 
       <AnimatePresence>
-        {selectedProject ? <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} /> : null}
+        {selectedProject ? (
+          <ProjectModal 
+            project={selectedProject} 
+            onLogEvent={logEvent}
+            onClose={(durationSeconds) => {
+              logEvent("MODAL.PROJECT_VIEW", { 
+                name: selectedProject.title, 
+                duration: durationSeconds 
+              });
+              setSelectedProject(null);
+            }} 
+          />
+        ) : null}
       </AnimatePresence>
+
+      <AIChatbot />
+      
+      <IntegratedAdminStudio
+        adminPromptOpen={adminPromptOpen}
+        onCloseAdminPrompt={() => setAdminPromptOpen(false)}
+        onVerifyAdminToken={adminHandlers.onVerifyAdminToken}
+        editorState={editorState}
+        onCloseEditor={adminHandlers.onCloseEditor}
+        adminToken={adminToken}
+        onAdminTokenChange={setAdminToken}
+        rememberAdmin={rememberAdmin}
+        onRememberAdminChange={setRememberAdmin}
+        isAdminAuthenticated={ownerSessionActive}
+        busy={submitting}
+        status={formStatus}
+        profileImage={profile?.personal?.profileImage}
+        profile={profile}
+        onLogout={adminHandlers.onLogout}
+        onOpenVault={adminHandlers.onOpenVault}
+        onOpenPhotoEditor={adminHandlers.onOpenPhotoEditor}
+        onOpenProjectCreator={adminHandlers.onOpenProjectCreator}
+        onOpenCertificateCreator={adminHandlers.onOpenCertificateCreator}
+        onOpenContactEditor={adminHandlers.onOpenContactEditor}
+      />
     </div>
   );
 }

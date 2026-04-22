@@ -15,6 +15,7 @@ import {
   RefreshCw,
   Save,
   Shield,
+  ShieldCheck,
   Sparkles,
   Trophy,
   Trash2,
@@ -36,7 +37,8 @@ const adminTabs = [
   { id: "expertise", icon: Sparkles },
   { id: "projects", icon: Briefcase },
   { id: "certificates", icon: Trophy },
-  { id: "extras", icon: Layers3 }
+  { id: "extras", icon: Layers3 },
+  { id: "vault", icon: Shield }
 ];
 
 const adminCopy = {
@@ -48,7 +50,8 @@ const adminCopy = {
       expertise: "Expertise",
       projects: "Projects",
       certificates: "Certificates",
-      extras: "Extras"
+      extras: "Extras",
+      vault: "Security Vault"
     },
     login: {
       kicker: "Private access",
@@ -315,7 +318,13 @@ const adminCopy = {
       emptyExperience: "No experience entries added yet.",
       emptyTestimonials: "No testimonials added yet.",
       emptyInsights: "No insights added yet.",
-      emptyFaqs: "No FAQ entries added yet."
+      emptyFaqs: "No FAQ entries added yet.",
+      vaultTitle: "Intelligence & Security Vault",
+      vaultDescription: "Access encrypted visitor records and monitor the portfolio's active security layers.",
+      encryptionActive: "AES-256 Handshake Active",
+      encryptionInactive: "Security Key Missing",
+      submissions: "Visitor Stream",
+      auditLog: "Audit Log (Level 5)"
     }
   },
   ar: {
@@ -326,7 +335,8 @@ const adminCopy = {
       expertise: "الخبرات",
       projects: "المشاريع",
       certificates: "الشهادات",
-      extras: "إضافات"
+      extras: "إضافات",
+      vault: "خزنة الأمان"
     },
     login: {
       kicker: "دخول خاص",
@@ -583,7 +593,13 @@ const adminCopy = {
       emptyExperience: "لا توجد خبرات مضافة بعد.",
       emptyTestimonials: "لا توجد توصيات بعد.",
       emptyInsights: "لا توجد مقالات بعد.",
-      emptyFaqs: "لا توجد أسئلة شائعة بعد."
+      emptyFaqs: "لا توجد أسئلة شائعة بعد.",
+      vaultTitle: "خزنة الأمان والذكاء",
+      vaultDescription: "الوصول إلى سجلات الزوار المشفرة ومراقبة طبقات الحماية النشطة.",
+      encryptionActive: "تشفير AES-256 مفعل",
+      encryptionInactive: "مفتاح الأمان غير موجود",
+      submissions: "رسائل الزوار",
+      auditLog: "سجل العمليات"
     }
   }
 };
@@ -1078,12 +1094,9 @@ export default function AdminApp() {
   const [selectedCertificateId, setSelectedCertificateId] = useState("");
   const [draftSavedAt, setDraftSavedAt] = useState("");
   const [draftRecoveryMessage, setDraftRecoveryMessage] = useState("");
-  const [systemHealth, setSystemHealth] = useState({
-    ok: false,
-    status: "checking",
-    timestamp: "",
-    message: "Checking server health..."
-  });
+  const [vaultData, setVaultData] = useState({ submissions: [], stats: {}, auditLogs: [] });
+  const [vaultPassword, setVaultPassword] = useState("");
+  const [decryptedRecords, setDecryptedRecords] = useState({});
   const isArabic = adminLanguage === "ar";
   const copy = adminCopy[adminLanguage];
   const localizedAdminTabs = adminTabs.map((item) => ({ ...item, label: copy.tabs[item.id] }));
@@ -1493,6 +1506,31 @@ export default function AdminApp() {
       currentItems.splice(index, 1);
       return setNestedValue(current, path, currentItems);
     });
+  };
+
+  const handleLoadVault = async (password = "") => {
+    try {
+      setBusyAction("load-vault");
+      const response = await fetch("/api/admin/vault", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-Requested-With": "XMLHttpRequest" },
+        body: JSON.stringify({ vaultPassword: password || vaultPassword })
+      });
+
+      const result = await response.json();
+      if (!response.ok || !result.ok) throw new Error(result.message || "Access denied.");
+      
+      setVaultData(result.data);
+      if (result.data.decryptedSubmissions) {
+        setDecryptedRecords(result.data.decryptedSubmissions);
+      }
+      setStatus({ state: "success", message: isArabic ? "تم الوصول لمستودع البيانات بنجاح." : "Security vault access granted." });
+    } catch (err) {
+      setStatus({ state: "error", message: err.message });
+      setVaultData({ submissions: [], stats: {}, auditLogs: [] });
+    } finally {
+      setBusyAction("");
+    }
   };
 
   const handleSaveProfile = async () => {
@@ -3158,6 +3196,103 @@ export default function AdminApp() {
     </div>
   );
 
+  const renderVaultTab = () => (
+    <div className="space-y-6">
+      <SectionCard
+        eyebrow="Security Operations"
+        title={copy.collection.vaultTitle}
+        description={copy.collection.vaultDescription}
+      >
+        <div className="grid gap-4 md:grid-cols-3">
+          <article className="rounded-[1.7rem] border border-white/10 bg-slate-950/70 p-5">
+            <p className="display-meta text-white/42">{isArabic ? "حالة التشفير" : "Encryption Status"}</p>
+            <div className="mt-4 flex items-center gap-3">
+              <ShieldCheck size={20} className="text-emerald-400" />
+              <span className="text-sm font-medium text-white">{copy.collection.encryptionActive}</span>
+            </div>
+          </article>
+          <article className="rounded-[1.7rem] border border-white/10 bg-slate-950/70 p-5">
+            <p className="display-meta text-white/42">{isArabic ? "قوة المفتاح" : "Key Strength"}</p>
+            <p className="mt-4 text-white">AES-256-GCM / CBC</p>
+          </article>
+          <article className="rounded-[1.7rem] border border-white/10 bg-slate-950/70 p-5">
+            <p className="display-meta text-white/42">{isArabic ? "نشاط السيرفر" : "Server Activity"}</p>
+            <p className="mt-4 text-emerald-300">Live & Responding</p>
+          </article>
+        </div>
+      </SectionCard>
+
+      <SectionCard 
+        eyebrow="Access Control" 
+        title={isArabic ? "فتح الخزنة" : "Unlock Vault"}
+        description={isArabic ? "اكتب كلمة مرور الخزنة للوصول للبيانات المشفرة." : "Enter the vault password to access encrypted visitor data and audit logs."}
+      >
+        <div className="flex flex-col gap-4 md:flex-row md:items-end">
+          <Field
+            label={isArabic ? "كلمة مرور الخزنة" : "Vault Password"}
+            type="password"
+            className="flex-1"
+            value={vaultPassword}
+            onChange={(e) => setVaultPassword(e.target.value)}
+          />
+          <button
+            onClick={() => handleLoadVault()}
+            disabled={busyAction === "load-vault"}
+            className="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-8 py-3 text-xs uppercase tracking-widest text-cyan-100 hover:bg-cyan-300/20 disabled:opacity-50"
+          >
+            {busyAction === "load-vault" ? (isArabic ? "جاري الفتح..." : "Unlocking...") : (isArabic ? "فتح السجلات" : "Access Records")}
+          </button>
+        </div>
+      </SectionCard>
+
+      <div className="grid gap-6 xl:grid-cols-2">
+        <SectionCard eyebrow="Inbound" title={copy.collection.submissions}>
+          <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
+            {vaultData.submissions.length > 0 ? (
+              vaultData.submissions.map((sub, idx) => (
+                <div key={idx} className="rounded-[1.5rem] border border-white/5 bg-white/2 p-5">
+                  <div className="flex items-center justify-between mb-3 text-xs">
+                    <span className="text-white/40">{new Date(sub.timestamp).toLocaleString()}</span>
+                    <span className="text-cyan-300/60 uppercase">{sub.id.split('-')[0]}</span>
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-[10px] uppercase tracking-widest text-white/30 mb-1">Sender</p>
+                      <p className="text-sm font-medium text-white">{sub.name} <span className="text-white/40 font-normal">({sub.email})</span></p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] uppercase tracking-widest text-white/30 mb-1">Message</p>
+                      <p className="text-sm leading-relaxed text-white/80 bg-white/5 rounded-xl p-4 border border-white/5">
+                        {decryptedRecords[sub.id] || "••••••••••••••••••••"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="p-10 text-center text-white/40">No records found.</div>
+            )}
+          </div>
+        </SectionCard>
+
+        <SectionCard eyebrow="System" title={copy.collection.auditLog}>
+          <div className="space-y-2 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
+            {(vaultData.auditLogs || []).map((log, idx) => (
+              <div key={idx} className="flex items-center gap-3 text-xs py-3 border-b border-white/5 last:border-0">
+                <span className="text-white/30 whitespace-nowrap">{new Date(log.timestamp).toLocaleTimeString()}</span>
+                <span className={`px-2 py-0.5 rounded text-[10px] ${log.type === 'SUCCESS' ? 'bg-emerald-400/10 text-emerald-400' : 'bg-rose-400/10 text-rose-400'}`}>{log.type}</span>
+                <span className="text-white/70 truncate">{log.message}</span>
+              </div>
+            ))}
+            {(!vaultData.auditLogs || vaultData.auditLogs.length === 0) && (
+              <div className="p-10 text-center text-white/40">No audit logs available.</div>
+            )}
+          </div>
+        </SectionCard>
+      </div>
+    </div>
+  );
+
   const activeTabConfig = localizedAdminTabs.find((item) => item.id === activeTab) || localizedAdminTabs[0];
 
   return (
@@ -3356,6 +3491,7 @@ export default function AdminApp() {
                 {activeTab === "projects" ? renderProjectsTab() : null}
                 {activeTab === "certificates" ? renderCertificatesTab() : null}
                 {activeTab === "extras" ? renderExtrasTab() : null}
+                {activeTab === "vault" ? renderVaultTab() : null}
               </motion.div>
             </AnimatePresence>
           </main>

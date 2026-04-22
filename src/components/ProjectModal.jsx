@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight, X } from "lucide-react";
 
@@ -23,10 +23,16 @@ function safeUrl(value = "#") {
   return "#";
 }
 
-export default function ProjectModal({ project, onClose }) {
+export default function ProjectModal({ project, onClose, onLogEvent }) {
   const liveUrl = safeUrl(project.links?.live);
   const repoUrl = safeUrl(project.links?.repo);
   const caseStudyUrl = safeUrl(project.links?.caseStudy);
+  const entryTime = useRef(Date.now());
+
+  const handleClose = () => {
+    const durationSeconds = Math.round((Date.now() - entryTime.current) / 1000);
+    onClose(durationSeconds);
+  };
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
@@ -34,7 +40,7 @@ export default function ProjectModal({ project, onClose }) {
 
     const handleKeyDown = (event) => {
       if (event.key === "Escape") {
-        onClose();
+        handleClose();
       }
     };
 
@@ -52,7 +58,7 @@ export default function ProjectModal({ project, onClose }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      onClick={onClose}
+      onClick={handleClose}
     >
       <motion.div
         className="glow-border glass-panel relative w-full max-w-5xl overflow-hidden rounded-[2rem] border border-white/10 p-5 shadow-[0_40px_140px_rgba(0,0,0,0.65)] md:p-8"
@@ -64,7 +70,7 @@ export default function ProjectModal({ project, onClose }) {
       >
         <button
           type="button"
-          onClick={onClose}
+          onClick={handleClose}
           className="absolute right-4 top-4 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/6 text-white/80 transition hover:bg-white/12 hover:text-white"
           aria-label="Close project details"
         >
@@ -134,7 +140,7 @@ export default function ProjectModal({ project, onClose }) {
                   <a
                     href={liveUrl}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 rounded-full border border-cyan-300/25 bg-cyan-300/10 px-5 py-3 text-sm font-medium text-cyan-100 transition hover:bg-cyan-300/16"
                   >
                     Live Preview
@@ -146,8 +152,11 @@ export default function ProjectModal({ project, onClose }) {
                   <a
                     href={repoUrl}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/6 px-5 py-3 text-sm font-medium text-white/80 transition hover:bg-white/12"
+                    onClick={() => {
+                      if (onLogEvent) onLogEvent("HIGH_SIGNAL.GITHUB_CLICK", { target: repoUrl });
+                    }}
                   >
                     Source Code
                     <ArrowUpRight size={16} />
@@ -158,7 +167,7 @@ export default function ProjectModal({ project, onClose }) {
                   <a
                     href={caseStudyUrl}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/6 px-5 py-3 text-sm font-medium text-white/80 transition hover:bg-white/12"
                   >
                     Case Study

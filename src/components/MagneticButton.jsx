@@ -42,7 +42,7 @@ export default function MagneticButton({
     ? {
         href,
         target: isExternal ? "_blank" : undefined,
-        rel: isExternal ? "noreferrer" : undefined
+        rel: isExternal ? "noopener noreferrer" : undefined
       }
     : {
         type,
