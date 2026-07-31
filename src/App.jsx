@@ -46,11 +46,11 @@ import {
 } from "lucide-react";
 import MagneticButton from "./components/MagneticButton";
 import ProjectModal from "./components/ProjectModal";
-import AIChatbot from "./components/AIChatbot";
-import IntegratedAdminStudio from "./components/IntegratedAdminStudio";
 import fallbackProfile from "../data/profile.json";
 
 const BackgroundFX = lazy(() => import("./components/BackgroundFX"));
+const AIChatbot = lazy(() => import("./components/AIChatbot"));
+const IntegratedAdminStudio = lazy(() => import("./components/IntegratedAdminStudio"));
 
 const navItems = [
   { label: "Home", href: "#home" },
@@ -311,6 +311,17 @@ function SectionHeading({ eyebrow, title, description }) {
   );
 }
 
+function AdaptiveTilt({ enabled, children, className = "", ...tiltProps }) {
+  if (!enabled) {
+    return className ? <div className={className}>{children}</div> : <>{children}</>;
+  }
+
+  return (
+    <Tilt {...tiltProps} className={className}>
+      {children}
+    </Tilt>
+  );
+}
 function LoadingScene({ error }) {
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#020617] px-6 text-white">
@@ -368,6 +379,8 @@ export default function App() {
   const [ownerSessionActive, setOwnerSessionActive] = useState(false);
   const [activeFilter, setActiveFilter] = useState("All");
   const [selectedProject, setSelectedProject] = useState(null);
+  const [isFinePointer, setIsFinePointer] = useState(false);
+  const [nonCriticalReady, setNonCriticalReady] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [copiedLabel, setCopiedLabel] = useState("");
   const [formStatus, setFormStatus] = useState({ state: "idle", message: "" });
@@ -418,9 +431,33 @@ export default function App() {
   }, [logEvent]);
 
   const shouldReduceMotion = useReducedMotion();
+  const enableRichMotion = !shouldReduceMotion && isFinePointer;
+  const enableHoverTilt = enableRichMotion;
   const deferredFilter = useDeferredValue(activeFilter);
   const { scrollYProgress } = useScroll();
   const progressScaleX = useSpring(scrollYProgress, { stiffness: 200, damping: 18, mass: 0.1 });
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(hover: hover) and (pointer: fine) and (min-width: 769px)");
+    const updatePointerState = () => setIsFinePointer(mediaQuery.matches);
+
+    updatePointerState();
+    mediaQuery.addEventListener?.("change", updatePointerState);
+    mediaQuery.addListener?.(updatePointerState);
+
+    return () => {
+      mediaQuery.removeEventListener?.("change", updatePointerState);
+      mediaQuery.removeListener?.(updatePointerState);
+    };
+  }, []);
+
+  useEffect(() => {
+    const schedule = window.requestIdleCallback || ((callback) => window.setTimeout(callback, 1200));
+    const cancel = window.cancelIdleCallback || window.clearTimeout;
+    const handle = schedule(() => setNonCriticalReady(true), { timeout: 2200 });
+
+    return () => cancel(handle);
+  }, []);
 
   const parallaxX = useMotionValue(0);
   const parallaxY = useMotionValue(0);
@@ -538,7 +575,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (shouldReduceMotion) {
+    if (!enableRichMotion) {
       return undefined;
     }
 
@@ -556,7 +593,7 @@ export default function App() {
 
     window.addEventListener("pointermove", handlePointerMove);
     return () => window.removeEventListener("pointermove", handlePointerMove);
-  }, [orbPrimaryX, orbPrimaryY, orbSecondaryX, orbSecondaryY, parallaxX, parallaxY, shouldReduceMotion]);
+  }, [enableRichMotion, orbPrimaryX, orbPrimaryY, orbSecondaryX, orbSecondaryY, parallaxX, parallaxY]);
 
   const filters = useMemo(() => {
     if (!profile?.projects?.length) {
@@ -766,12 +803,12 @@ export default function App() {
     <div className="relative min-h-screen overflow-x-clip bg-[#020617] text-white">
       <motion.div
         aria-hidden="true"
-        className="pointer-events-none fixed left-0 top-0 z-[70] h-[520px] w-[520px] rounded-full bg-cyan-400/12 blur-[130px]"
+        className="pointer-events-none fixed left-0 top-0 z-[70] hidden h-[520px] w-[520px] rounded-full bg-cyan-400/12 blur-[130px] md:block"
         style={{ x: orbPrimarySpringX, y: orbPrimarySpringY }}
       />
       <motion.div
         aria-hidden="true"
-        className="pointer-events-none fixed left-0 top-0 z-[71] h-[220px] w-[220px] rounded-full bg-violet-500/20 blur-[90px]"
+        className="pointer-events-none fixed left-0 top-0 z-[71] hidden h-[220px] w-[220px] rounded-full bg-violet-500/20 blur-[90px] md:block"
         style={{ x: orbSecondarySpringX, y: orbSecondarySpringY }}
       />
       <motion.div
@@ -789,7 +826,7 @@ export default function App() {
         <div className="blob blob-three" />
       </div>
 
-      {!shouldReduceMotion ? (
+      {enableRichMotion ? (
         <Suspense fallback={null}>
           <BackgroundFX />
         </Suspense>
@@ -830,11 +867,12 @@ export default function App() {
                 Future-ready developer
               </div>
 
-              <motion.div variants={staggerContainer} initial="hidden" animate="show" className="hero-name">
+              <motion.div variants={staggerContainer} initial="hidden" animate="show" className="hero-name" aria-label={profile.personal.fullName}>
                 {heroNameLines.map((line, lineIndex) => (
                   <motion.div key={`${line}-${lineIndex}`} variants={staggerItem} className="hero-name__line">
                     {line.split("").map((character, characterIndex) => (
                       <motion.span
+                        aria-hidden="true"
                         key={`${character}-${lineIndex}-${characterIndex}`}
                         custom={characterIndex}
                         variants={staggerItem}
@@ -935,22 +973,22 @@ export default function App() {
               initial="hidden"
               animate="show"
               className="relative min-h-[540px]"
-              style={shouldReduceMotion ? undefined : { x: heroShiftX, y: heroShiftY }}
+              style={enableRichMotion ? { x: heroShiftX, y: heroShiftY } : undefined}
             >
               <motion.div
                 aria-hidden="true"
                 className="absolute -left-2 top-6 h-40 w-40 rounded-full border border-cyan-300/18 bg-cyan-300/8 blur-sm"
-                animate={shouldReduceMotion ? undefined : { y: [0, -18, 0], opacity: [0.4, 0.9, 0.4] }}
+                animate={enableRichMotion ? { y: [0, -18, 0], opacity: [0.4, 0.9, 0.4] } : undefined}
                 transition={{ repeat: Number.POSITIVE_INFINITY, duration: 6.5, ease: "easeInOut" }}
               />
               <motion.div
                 aria-hidden="true"
                 className="absolute bottom-6 right-0 h-52 w-52 rounded-full border border-violet-400/16 bg-violet-500/12 blur-[6px]"
-                animate={shouldReduceMotion ? undefined : { y: [0, 20, 0], x: [0, 12, 0] }}
+                animate={enableRichMotion ? { y: [0, 20, 0], x: [0, 12, 0] } : undefined}
                 transition={{ repeat: Number.POSITIVE_INFINITY, duration: 8.5, ease: "easeInOut" }}
               />
 
-              <Tilt
+              <AdaptiveTilt enabled={enableHoverTilt}
                 tiltMaxAngleX={8}
                 tiltMaxAngleY={8}
                 glareEnable
@@ -1023,7 +1061,7 @@ export default function App() {
                     </a>
                   ) : null}
                 </div>
-              </Tilt>
+              </AdaptiveTilt>
             </motion.div>
           </div>
         </section>
@@ -1037,7 +1075,7 @@ export default function App() {
           viewport={{ once: true, amount: 0.2 }}
         >
           <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.95fr_1.05fr]">
-            <Tilt tiltMaxAngleX={6} tiltMaxAngleY={6} perspective={1800}>
+            <AdaptiveTilt enabled={enableHoverTilt} tiltMaxAngleX={6} tiltMaxAngleY={6} perspective={1800}>
               <div className="glow-border glass-panel h-full rounded-[2rem] p-6 md:p-8">
                 <div className="flex items-start justify-between gap-4">
                   <SectionHeading
@@ -1063,7 +1101,7 @@ export default function App() {
                   </div>
                 </div>
               </div>
-            </Tilt>
+            </AdaptiveTilt>
 
             <div className="grid gap-6">
               <div className="glow-border glass-panel rounded-[2rem] p-6 md:p-8">
@@ -1171,7 +1209,7 @@ export default function App() {
 
                 return (
                   <motion.div key={tech.name} variants={staggerItem}>
-                    <Tilt tiltMaxAngleX={9} tiltMaxAngleY={9} perspective={1600} glareEnable glareMaxOpacity={0.14}>
+                    <AdaptiveTilt enabled={enableHoverTilt} tiltMaxAngleX={9} tiltMaxAngleY={9} perspective={1600} glareEnable glareMaxOpacity={0.14}>
                       <article className="glow-border skill-card">
                         <div className="skill-icon">
                           <Icon size={22} />
@@ -1185,7 +1223,7 @@ export default function App() {
                         </div>
                         <p className="mt-4 text-sm leading-7 text-white/68">{tech.summary}</p>
                       </article>
-                    </Tilt>
+                    </AdaptiveTilt>
                   </motion.div>
                 );
               })}
@@ -1284,7 +1322,7 @@ export default function App() {
             >
               {filteredProjects.map((project) => (
                 <motion.div key={project.slug} variants={staggerItem}>
-                  <Tilt tiltMaxAngleX={8} tiltMaxAngleY={8} perspective={1800} glareEnable glareMaxOpacity={0.12}>
+                  <AdaptiveTilt enabled={enableHoverTilt} tiltMaxAngleX={8} tiltMaxAngleY={8} perspective={1800} glareEnable glareMaxOpacity={0.12}>
                     <article className="project-card-shell group">
                       <div className="project-image-wrap">
                         <img
@@ -1320,7 +1358,7 @@ export default function App() {
                         </div>
                       </div>
                     </article>
-                  </Tilt>
+                  </AdaptiveTilt>
                 </motion.div>
               ))}
             </motion.div>
@@ -1658,34 +1696,42 @@ export default function App() {
         ) : null}
       </AnimatePresence>
 
-      <NonCriticalFeatureBoundary featureName="AI assistant">
-        <AIChatbot />
-      </NonCriticalFeatureBoundary>
+      {nonCriticalReady ? (
+        <>
+          <NonCriticalFeatureBoundary featureName="AI assistant">
+            <Suspense fallback={null}>
+              <AIChatbot />
+            </Suspense>
+          </NonCriticalFeatureBoundary>
 
-      <NonCriticalFeatureBoundary featureName="Admin studio">
-        <IntegratedAdminStudio
-          adminPromptOpen={adminPromptOpen}
-          onCloseAdminPrompt={() => setAdminPromptOpen(false)}
-          onVerifyAdminToken={adminHandlers.onVerifyAdminToken}
-          editorState={editorState}
-          onCloseEditor={adminHandlers.onCloseEditor}
-          adminToken={adminToken}
-          onAdminTokenChange={setAdminToken}
-          rememberAdmin={rememberAdmin}
-          onRememberAdminChange={setRememberAdmin}
-          isAdminAuthenticated={ownerSessionActive}
-          busy={submitting}
-          status={formStatus}
-          profileImage={profile?.personal?.profileImage}
-          profile={profile}
-          onLogout={adminHandlers.onLogout}
-          onOpenVault={adminHandlers.onOpenVault}
-          onOpenPhotoEditor={adminHandlers.onOpenPhotoEditor}
-          onOpenProjectCreator={adminHandlers.onOpenProjectCreator}
-          onOpenCertificateCreator={adminHandlers.onOpenCertificateCreator}
-          onOpenContactEditor={adminHandlers.onOpenContactEditor}
-        />
-      </NonCriticalFeatureBoundary>
+          <NonCriticalFeatureBoundary featureName="Admin studio">
+            <Suspense fallback={null}>
+              <IntegratedAdminStudio
+                adminPromptOpen={adminPromptOpen}
+                onCloseAdminPrompt={() => setAdminPromptOpen(false)}
+                onVerifyAdminToken={adminHandlers.onVerifyAdminToken}
+                editorState={editorState}
+                onCloseEditor={adminHandlers.onCloseEditor}
+                adminToken={adminToken}
+                onAdminTokenChange={setAdminToken}
+                rememberAdmin={rememberAdmin}
+                onRememberAdminChange={setRememberAdmin}
+                isAdminAuthenticated={ownerSessionActive}
+                busy={submitting}
+                status={formStatus}
+                profileImage={profile?.personal?.profileImage}
+                profile={profile}
+                onLogout={adminHandlers.onLogout}
+                onOpenVault={adminHandlers.onOpenVault}
+                onOpenPhotoEditor={adminHandlers.onOpenPhotoEditor}
+                onOpenProjectCreator={adminHandlers.onOpenProjectCreator}
+                onOpenCertificateCreator={adminHandlers.onOpenCertificateCreator}
+                onOpenContactEditor={adminHandlers.onOpenContactEditor}
+              />
+            </Suspense>
+          </NonCriticalFeatureBoundary>
+        </>
+      ) : null}
     </div>
   );
 }

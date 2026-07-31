@@ -903,3 +903,133 @@ body::selection {
     height: 240px;
   }
 }
+
+/* Performance and responsive tuning */
+@media (max-width: 768px), (hover: none), (pointer: coarse) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .grid-overlay {
+    opacity: 0.12;
+    animation: none;
+    background-size: 56px 56px;
+  }
+
+  .gradient-veil {
+    opacity: 0.68;
+    animation: none;
+  }
+
+  .noise-overlay {
+    opacity: 0.1;
+  }
+
+  .blob,
+  .glow-border::after {
+    display: none;
+  }
+
+  .glow-border::before {
+    opacity: 0.42;
+    animation: none;
+  }
+
+  .glass-panel,
+  .service-card,
+  .skill-card,
+  .process-card,
+  .timeline-card,
+  .insight-card,
+  .project-card-shell,
+  .hero-signal-card {
+    backdrop-filter: blur(14px);
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.24);
+  }
+
+  .hero-name {
+    font-size: 2.6rem;
+    line-height: 0.98;
+    letter-spacing: 0.045em;
+  }
+
+  .hero-name__line {
+    flex-wrap: nowrap;
+    gap: 0.03em;
+    max-width: 100%;
+  }
+
+  .hero-name span {
+    flex: 0 0 auto;
+  }
+
+  .section-kicker {
+    font-size: 0.57rem;
+    letter-spacing: 0.13em;
+    padding: 0.5rem 0.72rem;
+  }
+
+  .section-title {
+    font-size: 1.35rem;
+    letter-spacing: 0.035em;
+  }
+
+  .display-meta,
+  .magnetic-button,
+  .hero-copy-button,
+  .filter-pill,
+  .social-pill,
+  .owner-access-button,
+  .owner-access-inline {
+    letter-spacing: 0.055em;
+  }
+
+  .project-image-wrap {
+    height: 210px;
+  }
+
+  .contact-link-card {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .contact-copy-button {
+    margin-left: 3.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-name {
+    font-size: 2.28rem;
+    letter-spacing: 0.035em;
+  }
+
+  .section-title {
+    font-size: 1.22rem;
+  }
+
+  .magnetic-button,
+  .hero-copy-button {
+    min-height: 2.9rem;
+    padding-inline: 0.92rem;
+  }
+
+  .project-image-wrap {
+    height: 190px;
+  }
+
+  .contact-copy-button {
+    margin-left: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

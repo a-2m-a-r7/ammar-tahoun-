@@ -1,16 +1,16 @@
-import React from "react";
+﻿import React from "react";
 import ReactDOM from "react-dom/client";
+import { lazy, Suspense } from "react";
 import "@fontsource/inter/latin-400.css";
 import "@fontsource/inter/latin-500.css";
 import "@fontsource/inter/latin-600.css";
 import "@fontsource/inter/latin-700.css";
 
 import "./styles.css";
-import App from "./App";
-import AdminApp from "./AdminApp";
 
 const pathname = window.location.pathname.replace(/\/+$/, "") || "/";
 const isAdminRoute = pathname === "/admin" || pathname.startsWith("/admin/");
+const RootComponent = lazy(() => (isAdminRoute ? import("./AdminApp") : import("./App")));
 
 class AdminErrorBoundary extends React.Component {
   constructor(props) {
@@ -140,18 +140,20 @@ class PortfolioErrorBoundary extends React.Component {
   }
 }
 
-const RootComponent = isAdminRoute ? AdminApp : App;
-
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    {isAdminRoute ? (
-      <AdminErrorBoundary>
-        <RootComponent />
-      </AdminErrorBoundary>
-    ) : (
-      <PortfolioErrorBoundary>
-        <RootComponent />
-      </PortfolioErrorBoundary>
-    )}
+    <Suspense fallback={null}>
+      {isAdminRoute ? (
+        <AdminErrorBoundary>
+          <RootComponent />
+        </AdminErrorBoundary>
+      ) : (
+        <PortfolioErrorBoundary>
+          <RootComponent />
+        </PortfolioErrorBoundary>
+      )}
+    </Suspense>
   </React.StrictMode>
 );
+
+

@@ -13,7 +13,7 @@
     "check": "node --check server.js && vite build"
   },
   "engines": {
-    "node": "20.x"
+    "node": ">=20 <26"
   },
   "dependencies": {
     "@fontsource/inter": "^5.2.8",
