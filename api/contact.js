@@ -126,16 +126,20 @@ export default async function handler(req, res) {
   try {
     const body = await readJsonBody(req);
     const payload = {
-      name: body?.name,
-      email: body?.email,
-      message: body?.message,
-      company: body?.company,
-      projectType: body?.projectType,
-      budget: body?.budget,
-      website: body?.website
+      name: String(body?.name || "").trim(),
+      email: String(body?.email || "").trim(),
+      message: String(body?.message || "").trim(),
+      company: String(body?.company || "").trim(),
+      projectType: String(body?.projectType || "").trim(),
+      budget: String(body?.budget || "").trim(),
+      website: String(body?.website || "").trim()
     };
 
-    if (!payload.name || payload.name.trim().length < 2) {
+    if (payload.website) {
+      return res.status(200).json({ ok: true, message: "Message sent successfully. I will get back to you soon." });
+    }
+
+    if (!payload.name || payload.name.length < 2) {
       return res.status(422).json({ ok: false, message: "Name is required." });
     }
 
@@ -143,7 +147,7 @@ export default async function handler(req, res) {
       return res.status(422).json({ ok: false, message: "Valid email is required." });
     }
 
-    if (!payload.message || payload.message.trim().length < 10) {
+    if (!payload.message || payload.message.length < 10) {
       return res.status(422).json({ ok: false, message: "Message must be at least 10 characters long." });
     }
 

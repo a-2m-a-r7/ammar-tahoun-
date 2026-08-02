@@ -1,13 +1,13 @@
 # Ammar Tahoon Portfolio
 
-Ultra-premium futuristic developer portfolio built with:
+AI-focused portfolio built with:
 
 - React
 - Vite
 - Tailwind CSS
 - Framer Motion
 - React Parallax Tilt
-- Secure Node.js API for contact handling
+- Secure Node.js/API contact handling
 
 ## Run locally
 
@@ -44,7 +44,7 @@ node server.js
 Open:
 
 ```text
-http://localhost:3000
+http://localhost:3005
 ```
 
 ## Main content file
@@ -103,6 +103,5 @@ Copy `.env.example` to `.env` if you want to customize runtime values:
 
 ## Notes
 
-- The current content is a premium placeholder foundation and should be replaced with your real information.
 - Static assets live in `static/` and are copied into `dist/` during build.
 - The Node server serves the built React app from `dist/`.

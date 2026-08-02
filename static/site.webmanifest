@@ -1,10 +1,10 @@
 {
   "name": "Ammar Tahoon Portfolio",
-  "short_name": "Ammar",
+  "short_name": "Ammar Tahoon",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f4efe7",
-  "theme_color": "#0f172a",
+  "background_color": "#020617",
+  "theme_color": "#020617",
   "icons": [
     {
       "src": "/assets/favicon.svg",

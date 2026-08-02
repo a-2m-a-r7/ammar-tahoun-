@@ -11,7 +11,9 @@ export default function MagneticButton({
   className,
   variant = "primary",
   icon,
-  type = "button"
+  type = "button",
+  target,
+  rel
 }) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -41,8 +43,9 @@ export default function MagneticButton({
   const componentProps = href
     ? {
         href,
-        target: isExternal ? "_blank" : undefined,
-        rel: isExternal ? "noopener noreferrer" : undefined
+        onClick,
+        target: target || (isExternal ? "_blank" : undefined),
+        rel: rel || (isExternal ? "noopener noreferrer" : undefined)
       }
     : {
         type,

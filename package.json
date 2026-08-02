@@ -1,7 +1,7 @@
 {
   "name": "ammar-tahoon-portfolio",
   "version": "1.0.0",
-  "description": "Modern full-stack portfolio template for Ammar Tahoon",
+  "description": "AI-focused portfolio for Ammar Tahoon",
   "private": true,
   "type": "module",
   "scripts": {
@@ -13,7 +13,7 @@
     "check": "node --check server.js && vite build"
   },
   "engines": {
-    "node": ">=20 <26"
+    "node": "24.x"
   },
   "dependencies": {
     "@fontsource/inter": "^5.2.8",

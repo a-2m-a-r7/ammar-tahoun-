@@ -1,7 +1,7 @@
 {
   "site": {
-    "title": "Ammar Tahoon | Futuristic Developer Portfolio",
-    "description": "Ultra-premium futuristic portfolio for Ammar Tahoon, showcasing cinematic frontend work, AI-powered products, premium UI systems, and secure full-stack engineering.",
+    "title": "Ammar Tahoon | AI Engineering Student & Developer",
+    "description": "Portfolio of Ammar Tahoon, an AI Engineering student in Egypt building machine learning, computer vision, NLP, C# desktop tools, and modern web interfaces.",
     "url": ""
   },
   "personal": {
@@ -9,9 +9,9 @@
     "legalName": "Ammar Ahmed Abdelrahman Tahoon",
     "nativeName": "Ammar Tahoon",
     "role": "AI Engineer",
-    "tagline": "AI Engineer",
-    "heroSummary": "I build AI-driven solutions across machine learning, deep learning, computer vision, and NLP, while turning ideas into clean and practical digital products.",
-    "availability": "Student",
+    "tagline": "AI Engineering Student",
+    "heroSummary": "I am building practical AI and software projects across machine learning, deep learning, computer vision, NLP, desktop tools, and modern web interfaces.",
+    "availability": "First-year university student focused on AI engineering and practical project building.",
     "location": "10th of Ramadan City, Egypt",
     "timezone": "Africa/Cairo",
     "email": "mart33645@gmail.com",
@@ -20,10 +20,10 @@
     "profileImage": "/media/profile/avatar-1774383698268-030e1fcb.jpg"
   },
   "highlights": [
-    "Machine learning and deep learning focus",
-    "Computer vision and NLP projects",
-    "Practical AI product building",
-    "Modern web interfaces for smart systems"
+    "Machine learning and deep learning fundamentals",
+    "Computer vision and NLP exploration",
+    "C# desktop and simulation projects",
+    "Modern web interfaces for AI ideas"
   ],
   "socials": [
     {
@@ -49,30 +49,30 @@
   ],
   "stats": [
     {
-      "value": "Top",
-      "label": "AI Performance"
+      "value": "AI",
+      "label": "Current Focus"
     },
     {
-      "value": "5+",
-      "label": "Deep Learning Projects"
+      "value": "03",
+      "label": "Featured Projects"
     },
     {
-      "value": "Junior",
-      "label": "AI Engineering"
+      "value": "1st",
+      "label": "University Year"
     },
     {
       "value": "Active",
-      "label": "System Researcher"
+      "label": "Learning Path"
     }
   ],
   "about": {
     "intro": "I am an AI Engineering student focused on learning and building across the main AI tracks, with special interest in machine learning, deep learning, computer vision, and NLP.",
     "body": "My goal is to grow as a well-rounded AI Engineer by building practical projects that connect intelligent models with useful real-world applications. I keep expanding my skills through hands-on work, continuous learning, and a strong interest in the full AI landscape.",
     "principles": [
-      "Design that communicates authority in seconds",
-      "Motion that supports storytelling, not noise",
-      "Frontend architecture with performance discipline",
-      "Backend foundations ready for real-world extension"
+      "Build strong programming and math fundamentals before chasing advanced models",
+      "Turn learning into small working projects that can be tested and explained",
+      "Document the problem, tools, decisions, and lessons behind each project",
+      "Connect AI logic with usable interfaces so projects are easier to understand"
     ]
   },
   "spotlightTech": [
@@ -119,30 +119,30 @@
   ],
   "services": [
     {
-      "title": "AI Model Development",
-      "summary": "Building intelligent solutions using machine learning concepts and practical model experimentation.",
+      "title": "AI Learning Projects",
+      "summary": "Building practical experiments that strengthen machine learning, deep learning, and model evaluation fundamentals.",
       "points": [
-        "Model-focused problem solving",
-        "Experimentation with AI workflows",
-        "Practical project implementation"
+        "Problem framing",
+        "Model experimentation",
+        "Clear project documentation"
       ]
     },
     {
-      "title": "Computer Vision Projects",
-      "summary": "Creating AI solutions that work with images and visual data to solve real-world tasks.",
+      "title": "Computer Vision Experiments",
+      "summary": "Exploring image processing and visual understanding with tools such as Python, OpenCV, and deep learning frameworks.",
       "points": [
-        "Image processing concepts",
-        "Visual recognition workflows",
-        "Project-based implementation"
+        "Image processing basics",
+        "Detection and recognition workflows",
+        "Visual project prototypes"
       ]
     },
     {
-      "title": "Web Development",
-      "summary": "Building modern web applications and interfaces that can present products, services, and AI ideas in a clear way.",
+      "title": "Web and Desktop Interfaces",
+      "summary": "Creating interfaces that present technical ideas clearly, from React portfolio pages to C# desktop tools and simulators.",
       "points": [
-        "Responsive interface building",
-        "Frontend project implementation",
-        "Clean modern user experience"
+        "Responsive web interfaces",
+        "WPF and C# desktop apps",
+        "Clean user flows for technical projects"
       ]
     }
   ],
@@ -185,23 +185,23 @@
   "process": [
     {
       "step": "01",
-      "title": "Decode the Vision",
-      "description": "Map the product story, the target audience, and the emotional first impression the interface should create."
+      "title": "Frame the Problem",
+      "description": "Define what the project should solve, who it helps, and what a successful result should look like."
     },
     {
       "step": "02",
-      "title": "Design the Scene",
-      "description": "Translate strategy into cinematic layouts, premium typography, motion hierarchy, and immersive UI direction."
+      "title": "Choose the Tools",
+      "description": "Select the language, framework, model approach, and data flow that fit the project level and goal."
     },
     {
       "step": "03",
-      "title": "Engineer the Experience",
-      "description": "Build the frontend, secure the backend, optimize the interactions, and prepare the system for scale."
+      "title": "Build and Test",
+      "description": "Implement the core logic, test edge cases, improve the interface, and keep the project understandable."
     },
     {
       "step": "04",
-      "title": "Launch with Confidence",
-      "description": "Ship a portfolio or product presence that feels world-class and is easy to update over time."
+      "title": "Document the Learning",
+      "description": "Summarize the challenge, decisions, outcome, and next improvements so the project tells a clear story."
     }
   ],
   "projects": [
@@ -330,49 +330,25 @@
     }
   ],
   "certificates": [],
-  "testimonials": [
-    {
-      "quote": "The engineering depth behind the AI workflows is impressive. A clear understanding of model deployment and interactive UI.",
-      "name": "Academic Reviewer",
-      "title": "Feedback from early system testing"
-    },
-    {
-      "quote": "Strong visual storytelling, clean engineering, and interaction layers that make the AI logic feel accessible.",
-      "name": "Independent Researcher",
-      "title": "Feedback on Project Architecture"
-    }
-  ],
-  "insights": [
-    {
-      "title": "Why premium motion design changes how recruiters perceive frontend skill",
-      "tag": "Motion",
-      "summary": "A short insight slot you can later replace with real articles, product thoughts, or technical writing.",
-      "url": "#"
-    },
-    {
-      "title": "The difference between a normal portfolio and a product-level personal brand",
-      "tag": "Brand",
-      "summary": "Use this section for ideas, essays, or short notes that show your thinking beyond implementation.",
-      "url": "#"
-    }
-  ],
+  "testimonials": [],
+  "insights": [],
   "faqs": [
     {
-      "question": "Is this portfolio ready to customize right away?",
-      "answer": "Yes. Replace the placeholder content in data/profile.json, update your links, and the experience is ready to run."
+      "question": "What are you focused on right now?",
+      "answer": "I am focused on AI engineering fundamentals, especially machine learning, deep learning, computer vision, NLP, and practical projects that connect models with usable software."
     },
     {
-      "question": "Can I add real projects and services later?",
-      "answer": "Yes. The entire frontend reads from the profile JSON file, so you can update content without touching the UI structure."
+      "question": "Are the project links available?",
+      "answer": "Some projects are still being prepared for public GitHub or live demos. The project cards currently explain the context, stack, challenge, solution, and learning outcome."
     },
     {
-      "question": "Is the contact form secured?",
-      "answer": "Yes. The backend includes validation, payload limits, a honeypot field, rate limiting, and secure response headers."
+      "question": "How can someone contact you?",
+      "answer": "The fastest ways are email, WhatsApp, or the contact form on this site. I am open to feedback, learning opportunities, collaborations, and early career conversations."
     }
   ],
   "contact": {
-    "heading": "Let's build something impossible to ignore",
-    "intro": "Use the form for freelance inquiries, remote opportunities, or ambitious product ideas. Messages are stored safely and can later be forwarded to email or webhooks.",
+    "heading": "Let's connect about AI, projects, or learning opportunities",
+    "intro": "Use the form for feedback, collaboration ideas, internship conversations, or questions about my projects. You can also reach me directly by email or WhatsApp.",
     "directLinks": [
       {
         "label": "Email",

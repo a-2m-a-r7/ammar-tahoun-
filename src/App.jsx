@@ -654,7 +654,13 @@ export default function App() {
   const insights = profile?.insights || [];
   const faqs = profile?.faqs || [];
   const contactLinks = profile?.contact?.directLinks || [];
-  const focusTechNames = highlightedTech.slice(0, 3).map((item) => item.name).join(" • ");
+  const focusTechNames = highlightedTech.slice(0, 3).map((item) => item.name).join(" / ");
+
+  const resumeUrl = safeUrl(profile?.personal?.resumeUrl);
+  const hasResumeUrl = resumeUrl !== "#";
+  const resumeRequestUrl = profile?.personal?.email
+    ? `mailto:${profile.personal.email}?subject=${encodeURIComponent("Resume request for Ammar Tahoon")}`
+    : "#";
 
   const heroSignals = useMemo(
     () => [
@@ -864,12 +870,12 @@ export default function App() {
             <motion.div variants={sectionVariants} initial="hidden" animate="show" className="space-y-8">
               <div className="section-kicker">
                 <span className="section-kicker__dot" />
-                Future-ready developer
+                AI engineering student
               </div>
 
-              <motion.div variants={staggerContainer} initial="hidden" animate="show" className="hero-name" aria-label={profile.personal.fullName}>
+              <motion.h1 variants={staggerContainer} initial="hidden" animate="show" className="hero-name" aria-label={profile.personal.fullName}>
                 {heroNameLines.map((line, lineIndex) => (
-                  <motion.div key={`${line}-${lineIndex}`} variants={staggerItem} className="hero-name__line">
+                  <motion.span key={`${line}-${lineIndex}`} variants={staggerItem} className="hero-name__line">
                     {line.split("").map((character, characterIndex) => (
                       <motion.span
                         aria-hidden="true"
@@ -880,9 +886,9 @@ export default function App() {
                         {character === " " ? "\u00A0" : character}
                       </motion.span>
                     ))}
-                  </motion.div>
+                  </motion.span>
                 ))}
-              </motion.div>
+              </motion.h1>
 
               <motion.p
                 className="max-w-2xl text-[11px] font-semibold uppercase tracking-[0.14em] text-cyan-200/85 md:text-sm"
@@ -922,14 +928,14 @@ export default function App() {
                 animate="show"
               >
                 <motion.div variants={staggerItem}>
-                  <MagneticButton 
-                    href={safeUrl(profile.personal.resumeUrl)} 
-                    target="_blank" 
-                    variant="outline" 
+                  <MagneticButton
+                    href={hasResumeUrl ? resumeUrl : resumeRequestUrl}
+                    target={hasResumeUrl ? "_blank" : undefined}
+                    variant="outline"
                     icon={<Briefcase size={16} />}
-                    onClick={() => logEvent("HIGH_SIGNAL.CV_DOWNLOAD")}
+                    onClick={() => logEvent(hasResumeUrl ? "HIGH_SIGNAL.CV_DOWNLOAD" : "HIGH_SIGNAL.CV_REQUEST")}
                   >
-                    View Resume
+                    {hasResumeUrl ? "View Resume" : "Request Resume"}
                   </MagneticButton>
                 </motion.div>
                 <motion.div variants={staggerItem}>
@@ -1046,7 +1052,7 @@ export default function App() {
                       const Icon = socialIconMap[item.label] || Globe;
 
                       return (
-                        <a key={item.label} href={safeUrl(item.url)} target="_blank" rel="noreferrer" className="social-pill">
+                        <a key={item.label} href={safeUrl(item.url)} target="_blank" rel="noopener noreferrer" className="social-pill">
                           <Icon size={15} />
                           <span>{item.label}</span>
                         </a>
@@ -1080,7 +1086,7 @@ export default function App() {
                 <div className="flex items-start justify-between gap-4">
                   <SectionHeading
                     eyebrow="About Me"
-                    title="A glassmorphism profile node built to communicate focus and credibility."
+                    title="A focused profile of my AI learning path, projects, and technical growth."
                   />
                   <Shield className="hidden text-cyan-300 md:block" size={22} />
                 </div>
@@ -1107,7 +1113,7 @@ export default function App() {
               <div className="glow-border glass-panel rounded-[2rem] p-6 md:p-8">
                 <SectionHeading
                   eyebrow="Precision Bio"
-                  title="AI, immersive frontend engineering, and premium product execution."
+                  title="AI engineering, practical projects, and clean web interfaces."
                   description={profile.about.body}
                 />
               </div>
@@ -1140,8 +1146,8 @@ export default function App() {
           <div className="mx-auto max-w-7xl space-y-10">
             <SectionHeading
               eyebrow="What I Build"
-              title="Product-grade services engineered to look sharp, move smoothly, and scale cleanly."
-              description="Every block below is designed to feel premium while still communicating practical product value."
+              title="The kinds of technical work I am building toward as I grow."
+              description="A clear view of my current strengths across AI fundamentals, computer vision experiments, and web interfaces for presenting smart systems."
             />
 
             <motion.div
@@ -1193,8 +1199,8 @@ export default function App() {
           <div className="mx-auto max-w-7xl space-y-10">
             <SectionHeading
               eyebrow="Technical Arsenal"
-              title="Glowing technology cards with depth, tilt, and motion-driven presence."
-              description="The goal is not only to show the stack, but to present it like a premium capability system."
+              title="A practical stack for learning, building, and explaining AI systems."
+              description="These tools represent my current focus areas and the technologies I use to turn ideas into working projects."
             />
 
             <motion.div
@@ -1255,9 +1261,9 @@ export default function App() {
         >
           <div className="mx-auto max-w-7xl space-y-10">
             <SectionHeading
-              eyebrow="Build Sequence"
-              title="Section transitions designed like scenes in a product trailer."
-              description="This process section reinforces how strategy, motion, engineering, and launch readiness connect."
+              eyebrow="How I Work"
+              title="A simple project workflow from problem framing to testing."
+              description="I use each project to strengthen fundamentals, document decisions, and turn learning into something usable."
             />
 
             <motion.div
@@ -1290,8 +1296,8 @@ export default function App() {
             <div className="flex flex-wrap items-start justify-between gap-4">
               <SectionHeading
                 eyebrow="Featured Projects"
-                title="Cinematic project cards with filters, tilt, hover overlays, and animated detail views."
-                description="Built to impress recruiters and clients within seconds while still giving each project enough substance."
+                title="Selected projects that show my current AI, desktop, and web development practice."
+                description="Each project explains the problem, the tools I used, and what I learned or improved while building it."
               />
             </div>
 
@@ -1305,6 +1311,7 @@ export default function App() {
                     type="button"
                     onClick={() => handleFilterClick(filter)}
                     className="filter-pill"
+                    aria-pressed={active}
                   >
                     {active ? <motion.span layoutId="filter-pill" className="filter-pill__active" /> : null}
                     <span className={`relative z-[1] ${active ? "text-white" : "text-white/60"}`}>{filter}</span>
@@ -1336,6 +1343,7 @@ export default function App() {
                           type="button"
                           onClick={() => setSelectedProject(project)}
                           className="project-card__cta"
+                          aria-label={`View details for ${project.title}`}
                         >
                           View Details
                         </button>
@@ -1403,8 +1411,8 @@ export default function App() {
             <div className="space-y-8">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <SectionHeading
-                  eyebrow="Certificates + Insight"
-                  title="Learning milestones, credentials, and progress markers that strengthen the story."
+                  eyebrow={insights.length > 0 ? "Certificates + Insight" : "Certificates"}
+                  title="Verified learning milestones and credentials as they become available."
                 />
               </div>
 
@@ -1440,21 +1448,23 @@ export default function App() {
                   ))
                 ) : (
                   <article className="glass-panel rounded-[1.8rem] border border-dashed border-white/10 p-6">
-                    <p className="display-meta text-cyan-200/76">Ready for your first certificate</p>
-                    <p className="mt-4 text-sm leading-7 text-white/66">Certificates will appear here as you add them from the private admin dashboard.</p>
+                    <p className="display-meta text-cyan-200/76">No verified certificates yet</p>
+                    <p className="mt-4 text-sm leading-7 text-white/66">Verified certificates can be added here as they are earned, with credential links when available.</p>
                   </article>
                 )}
               </div>
 
-              <div className="grid gap-4 md:grid-cols-2">
-                {insights.map((item) => (
-                  <a key={item.title} href={safeUrl(item.url)} target="_blank" rel="noopener noreferrer" className="insight-card">
-                    <p className="display-meta text-cyan-200/76">{item.tag}</p>
-                    <h3 className="display-heading-sm mt-4 text-white">{item.title}</h3>
-                    <p className="mt-4 text-sm leading-7 text-white/66">{item.summary}</p>
-                  </a>
-                ))}
-              </div>
+              {insights.length > 0 ? (
+                <div className="grid gap-4 md:grid-cols-2">
+                  {insights.map((item) => (
+                    <a key={item.title} href={safeUrl(item.url)} target="_blank" rel="noopener noreferrer" className="insight-card">
+                      <p className="display-meta text-cyan-200/76">{item.tag}</p>
+                      <h3 className="display-heading-sm mt-4 text-white">{item.title}</h3>
+                      <p className="mt-4 text-sm leading-7 text-white/66">{item.summary}</p>
+                    </a>
+                  ))}
+                </div>
+              ) : null}
             </div>
           </div>
         </motion.section>
@@ -1469,7 +1479,7 @@ export default function App() {
           <div className="mx-auto max-w-7xl space-y-8">
             <SectionHeading
               eyebrow="FAQ"
-              title="Answers that reduce hesitation and keep the experience conversion-ready."
+              title="Quick answers for recruiters, collaborators, and visitors."
             />
 
             <div className="grid gap-4 lg:grid-cols-3">
@@ -1642,6 +1652,7 @@ export default function App() {
                   {submitting ? "Transmitting..." : "Send Message"}
                 </MagneticButton>
                 <p
+                  aria-live="polite"
                   className={`text-sm ${
                     formStatus.state === "success"
                       ? "text-emerald-300"
@@ -1663,7 +1674,7 @@ export default function App() {
           <div className="space-y-2">
             <p className="font-display cursor-default text-sm uppercase tracking-[0.12em] text-white">{profile.personal.nativeName}</p>
             <p className="text-sm text-white/48">
-              Built with React, Tailwind CSS, Framer Motion, premium interaction design, and a secure contact backend.
+              Built with React, Tailwind CSS, Framer Motion, and a secure contact backend.
             </p>
           </div>
           <div className="display-meta flex flex-wrap items-center gap-3 text-white/42">

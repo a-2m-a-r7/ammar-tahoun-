@@ -1,6 +1,6 @@
 # Ammar Tahoon Portfolio
 
-Ultra-premium futuristic portfolio with:
+AI-focused portfolio with:
 
 - React 19 + Vite
 - Tailwind CSS 4
@@ -37,7 +37,7 @@ npm.cmd start
 Then open:
 
 ```text
-http://localhost:3000
+http://localhost:3005
 ```
 
 ## Public site
@@ -97,7 +97,7 @@ PORTFOLIO_ADMIN_TOKEN=your-secret-key
 Start the app, then open:
 
 ```text
-http://localhost:3000/admin
+http://localhost:3005/admin
 ```
 
 The dashboard uses a server-side admin session cookie instead of storing the key in the browser.

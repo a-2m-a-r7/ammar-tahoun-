@@ -1,223 +1,235 @@
 {
   "site": {
-    "title": "Ammar Tahoon | Futuristic Developer Portfolio",
-    "description": "Ultra-premium futuristic portfolio for Ammar Tahoon, showcasing cinematic frontend work, AI-powered products, premium UI systems, and secure full-stack engineering.",
-    "url": "http://localhost:3000"
+    "title": "Ammar Tahoon | AI Engineering Student & Developer",
+    "description": "Portfolio of Ammar Tahoon, an AI Engineering student in Egypt building machine learning, computer vision, NLP, C# desktop tools, and modern web interfaces.",
+    "url": ""
   },
   "personal": {
     "fullName": "Ammar Tahoon",
-    "nativeName": "AMMAR TAHOON",
-    "role": "Full-Stack Developer | AI Product Builder | Frontend Engineer",
-    "tagline": "I build futuristic web apps",
-    "heroSummary": "I design and engineer cinematic web experiences that blend motion, performance, and product clarity. This portfolio is built to feel like a premium digital product from the first second.",
-    "availability": "Available for elite freelance projects, remote roles, product collaborations, and AI-first startup builds.",
-    "location": "Egypt",
+    "legalName": "Ammar Ahmed Abdelrahman Tahoon",
+    "nativeName": "Ammar Tahoon",
+    "role": "AI Engineer",
+    "tagline": "AI Engineering Student",
+    "heroSummary": "I am building practical AI and software projects across machine learning, deep learning, computer vision, NLP, desktop tools, and modern web interfaces.",
+    "availability": "First-year university student focused on AI engineering and practical project building.",
+    "location": "10th of Ramadan City, Egypt",
     "timezone": "Africa/Cairo",
-    "email": "you@example.com",
-    "phone": "+20 100 000 0000",
+    "email": "mart33645@gmail.com",
+    "phone": "01140628954",
     "resumeUrl": "#",
-    "profileImage": "/assets/avatar-monogram.svg"
+    "profileImage": "/media/profile/avatar-1774383698268-030e1fcb.jpg"
   },
   "highlights": [
-    "Cinematic UI engineering",
-    "AI-ready product systems",
-    "Secure full-stack delivery",
-    "Fast, scalable, immersive UX"
+    "Machine learning and deep learning fundamentals",
+    "Computer vision and NLP exploration",
+    "C# desktop and simulation projects",
+    "Modern web interfaces for AI ideas"
   ],
   "socials": [
     {
       "label": "GitHub",
-      "handle": "@your-github",
-      "url": "https://github.com/your-github"
+      "handle": "@mart33645-wq",
+      "url": "https://github.com/mart33645-wq"
     },
     {
       "label": "LinkedIn",
-      "handle": "/in/your-linkedin",
-      "url": "https://linkedin.com/in/your-linkedin"
+      "handle": "/in/ammar-tahoun-822222382",
+      "url": "https://www.linkedin.com/in/ammar-tahoun-822222382?utm_source=share_via&utm_content=profile&utm_medium=member_android"
     },
     {
-      "label": "Behance",
-      "handle": "@your-behance",
-      "url": "https://behance.net/your-behance"
+      "label": "Instagram",
+      "handle": "@a_2m_a_r7",
+      "url": "https://www.instagram.com/a_2m_a_r7?igsh=OTdrdnc2c2dldDVk"
     },
     {
       "label": "WhatsApp",
-      "handle": "Direct line",
-      "url": "https://wa.me/201000000000"
+      "handle": "Chat on WhatsApp",
+      "url": "https://wa.me/201140628954"
     }
   ],
   "stats": [
     {
-      "value": "03+",
-      "label": "Years of Experience"
+      "value": "AI",
+      "label": "Current Focus"
     },
     {
-      "value": "12+",
-      "label": "Projects Count"
+      "value": "03",
+      "label": "Featured Projects"
     },
     {
-      "value": "100%",
-      "label": "Dedication"
+      "value": "1st",
+      "label": "University Year"
     },
     {
-      "value": "24h",
-      "label": "Response Window"
+      "value": "Active",
+      "label": "Learning Path"
     }
   ],
   "about": {
-    "intro": "I care deeply about the first impression a product creates. My work combines clean engineering, premium visuals, and intentional interaction design so every interface feels modern, confident, and memorable.",
-    "body": "This portfolio foundation is data-driven and secure by default. You can replace the placeholder content with your real bio, projects, socials, and experience from a single JSON file, while keeping the cinematic frontend and the contact API intact.",
+    "intro": "I am an AI Engineering student focused on learning and building across the main AI tracks, with special interest in machine learning, deep learning, computer vision, and NLP.",
+    "body": "My goal is to grow as a well-rounded AI Engineer by building practical projects that connect intelligent models with useful real-world applications. I keep expanding my skills through hands-on work, continuous learning, and a strong interest in the full AI landscape.",
     "principles": [
-      "Design that communicates authority in seconds",
-      "Motion that supports storytelling, not noise",
-      "Frontend architecture with performance discipline",
-      "Backend foundations ready for real-world extension"
+      "Build strong programming and math fundamentals before chasing advanced models",
+      "Turn learning into small working projects that can be tested and explained",
+      "Document the problem, tools, decisions, and lessons behind each project",
+      "Connect AI logic with usable interfaces so projects are easier to understand"
     ]
   },
   "spotlightTech": [
     {
+      "name": "Python",
+      "category": "Core",
+      "summary": "My main language for building AI projects, experimenting with models, and solving practical machine learning problems."
+    },
+    {
+      "name": "Machine Learning",
+      "category": "AI/ML",
+      "summary": "Training and applying machine learning models to turn data into useful predictions and intelligent systems."
+    },
+    {
+      "name": "Deep Learning",
+      "category": "AI",
+      "summary": "Exploring neural networks and deep learning workflows for building more advanced intelligent systems."
+    },
+    {
+      "name": "TensorFlow",
+      "category": "Framework",
+      "summary": "Using TensorFlow to build, train, and experiment with deep learning models for practical AI tasks."
+    },
+    {
+      "name": "OpenCV",
+      "category": "Computer Vision",
+      "summary": "Working with OpenCV for image processing, visual analysis, and computer vision project implementation."
+    },
+    {
+      "name": "Computer Vision",
+      "category": "AI",
+      "summary": "Working on image-based AI tasks such as detection, recognition, and visual understanding."
+    },
+    {
+      "name": "NLP",
+      "category": "AI",
+      "summary": "Exploring natural language processing to build systems that understand, analyze, and work with text."
+    },
+    {
       "name": "React",
       "category": "Frontend",
-      "summary": "Building fluid interfaces, interactive dashboards, and component systems with premium UX polish."
-    },
-    {
-      "name": "Node.js",
-      "category": "Backend",
-      "summary": "Creating secure APIs, web services, and scalable product backends with structured logic."
-    },
-    {
-      "name": "MongoDB",
-      "category": "Data",
-      "summary": "Designing flexible data layers for content, messaging, and product analytics."
-    },
-    {
-      "name": "Tailwind CSS",
-      "category": "UI Systems",
-      "summary": "Crafting fast, expressive design systems with strong visual consistency and responsive control."
-    },
-    {
-      "name": "OpenAI",
-      "category": "AI",
-      "summary": "Integrating copilots, assistants, summarization, and AI-enhanced product workflows."
-    },
-    {
-      "name": "Next.js",
-      "category": "Full-Stack",
-      "summary": "Shipping SEO-friendly, production-ready apps with server rendering and strong DX."
+      "summary": "Building clean and interactive web interfaces to present AI products and smart applications in a usable way."
     }
   ],
   "services": [
     {
-      "title": "Premium Portfolio Systems",
-      "summary": "Personal brands and portfolio websites engineered to feel expensive, polished, and globally competitive.",
+      "title": "AI Learning Projects",
+      "summary": "Building practical experiments that strengthen machine learning, deep learning, and model evaluation fundamentals.",
       "points": [
-        "High-end visual direction",
-        "Cinematic interactions and transitions",
-        "Flexible content structure"
+        "Problem framing",
+        "Model experimentation",
+        "Clear project documentation"
       ]
     },
     {
-      "title": "Full-Stack Product Development",
-      "summary": "From concept to production: frontend architecture, backend APIs, forms, data flows, and deployable product foundations.",
+      "title": "Computer Vision Experiments",
+      "summary": "Exploring image processing and visual understanding with tools such as Python, OpenCV, and deep learning frameworks.",
       "points": [
-        "Responsive product interfaces",
-        "Structured backend logic",
-        "Secure contact and data handling"
+        "Image processing basics",
+        "Detection and recognition workflows",
+        "Visual project prototypes"
       ]
     },
     {
-      "title": "AI-Powered Experiences",
-      "summary": "Interfaces and tools designed for AI workflows, automation, copilots, and smart product experiences.",
+      "title": "Web and Desktop Interfaces",
+      "summary": "Creating interfaces that present technical ideas clearly, from React portfolio pages to C# desktop tools and simulators.",
       "points": [
-        "Assistant-ready flows",
-        "Prompt-driven interactions",
-        "Scalable integration patterns"
+        "Responsive web interfaces",
+        "WPF and C# desktop apps",
+        "Clean user flows for technical projects"
       ]
     }
   ],
   "skillGroups": [
     {
-      "title": "Frontend Engineering",
+      "title": "AI and Machine Learning",
       "items": [
+        "Python",
+        "Machine Learning",
+        "Deep Learning",
+        "TensorFlow",
+        "Computer Vision",
+        "NLP",
+        "OpenCV"
+      ]
+    },
+    {
+      "title": "Web Development",
+      "items": [
+        "HTML",
+        "CSS",
+        "JavaScript",
         "React",
-        "Next.js",
-        "Tailwind CSS",
-        "Framer Motion",
-        "Responsive Design",
-        "Design Systems"
-      ]
-    },
-    {
-      "title": "Backend Systems",
-      "items": [
         "Node.js",
-        "REST APIs",
-        "Authentication",
-        "Rate Limiting",
-        "Validation",
-        "Security Headers"
+        "Tailwind CSS"
       ]
     },
     {
-      "title": "Data and Infra",
+      "title": "Tools and Data",
       "items": [
         "MongoDB",
-        "PostgreSQL",
-        "Redis",
-        "Docker",
-        "Deployment",
-        "Webhooks"
+        "Git",
+        "GitHub",
+        "Jupyter Notebook",
+        "VS Code",
+        "APIs"
       ]
     }
   ],
   "process": [
     {
       "step": "01",
-      "title": "Decode the Vision",
-      "description": "Map the product story, the target audience, and the emotional first impression the interface should create."
+      "title": "Frame the Problem",
+      "description": "Define what the project should solve, who it helps, and what a successful result should look like."
     },
     {
       "step": "02",
-      "title": "Design the Scene",
-      "description": "Translate strategy into cinematic layouts, premium typography, motion hierarchy, and immersive UI direction."
+      "title": "Choose the Tools",
+      "description": "Select the language, framework, model approach, and data flow that fit the project level and goal."
     },
     {
       "step": "03",
-      "title": "Engineer the Experience",
-      "description": "Build the frontend, secure the backend, optimize the interactions, and prepare the system for scale."
+      "title": "Build and Test",
+      "description": "Implement the core logic, test edge cases, improve the interface, and keep the project understandable."
     },
     {
       "step": "04",
-      "title": "Launch with Confidence",
-      "description": "Ship a portfolio or product presence that feels world-class and is easy to update over time."
+      "title": "Document the Learning",
+      "description": "Summarize the challenge, decisions, outcome, and next improvements so the project tells a clear story."
     }
   ],
   "projects": [
     {
-      "title": "Signal Command Center",
-      "slug": "signal-command-center",
-      "summary": "A futuristic control dashboard for mission-critical alerts, live metrics, and team operations in a cinematic command-room interface.",
-      "category": "React",
-      "year": "2026",
+      "title": "Base Calc",
+      "slug": "base-calc",
+      "summary": "A desktop application built with WPF and C# for handling base calculations and number-system conversion in a clean, simple, and educational interface.",
+      "category": "Desktop",
+      "year": "Recent",
       "image": "/assets/project-command.svg",
       "stack": [
-        "React",
-        "Node.js",
-        "PostgreSQL",
-        "AI"
+        "WPF",
+        "C#",
+        "Desktop App",
+        "Algorithms"
       ],
       "metrics": [
-        "Realtime insights",
-        "Operator-centric UX",
-        "Scalable system design"
+        "Number system conversion",
+        "Clean desktop workflow",
+        "Learning-focused utility"
       ],
       "details": {
-        "challenge": "Create a monitoring dashboard that feels powerful without overwhelming the operator with noise.",
-        "solution": "I designed a layered interface with focus zones, rich motion cues, and structured data surfaces that guide attention naturally.",
+        "challenge": "Build a useful desktop tool that makes base conversion and calculation easier to understand and use for students and learners.",
+        "solution": "I created a WPF-based desktop experience with clear inputs, accurate calculation logic, and a straightforward interface focused on speed and simplicity.",
         "impact": [
-          "Reduced cognitive overload through stronger visual hierarchy",
-          "Made high-frequency data easier to scan",
-          "Created a foundation ready for AI-powered diagnostics"
+          "Made base conversion easier to test and validate",
+          "Strengthened my desktop application fundamentals",
+          "Delivered a practical educational utility in C#"
         ]
       },
       "links": {
@@ -227,30 +239,30 @@
       }
     },
     {
-      "title": "Atlas Commerce Experience",
-      "slug": "atlas-commerce-experience",
-      "summary": "A premium commerce experience focused on speed, conversion, storytelling, and luxury product presentation across devices.",
-      "category": "Next.js",
-      "year": "2026",
+      "title": "Mini Physics Lab Simulator",
+      "slug": "mini-physics-lab-simulator",
+      "summary": "A small virtual physics lab built with WPF and C# to simulate electrical circuit experiments using bulbs, resistors, a voltmeter, an ammeter, batteries, and switches.",
+      "category": "Simulation",
+      "year": "Recent",
       "image": "/assets/project-commerce.svg",
       "stack": [
-        "Next.js",
-        "Tailwind CSS",
-        "Stripe",
-        "Analytics"
+        "WPF",
+        "C#",
+        "Physics",
+        "Simulation"
       ],
       "metrics": [
-        "Luxury visual system",
-        "Conversion-focused flow",
-        "Responsive product storytelling"
+        "Circuit simulation",
+        "Interactive lab components",
+        "Educational desktop experience"
       ],
       "details": {
-        "challenge": "Elevate the perceived value of the brand while keeping the storefront extremely fast and conversion-ready.",
-        "solution": "I combined premium editorial layouts, deliberate whitespace, motion-assisted product focus, and a clean purchase path.",
+        "challenge": "Recreate a simple but realistic physics lab experience in software so users can interact with circuit elements in a clear and understandable way.",
+        "solution": "I designed an interactive desktop simulator where users can connect and explore electrical elements visually while observing values through virtual measuring tools.",
         "impact": [
-          "Stronger premium brand perception",
-          "Cleaner product discovery journey",
-          "Flexible structure for future catalog growth"
+          "Turned physical circuit ideas into an interactive software experience",
+          "Improved my understanding of simulation-oriented problem solving",
+          "Created a useful educational project with real component interaction"
         ]
       },
       "links": {
@@ -260,30 +272,30 @@
       }
     },
     {
-      "title": "Pulse AI Assistant",
-      "slug": "pulse-ai-assistant",
-      "summary": "An AI-powered workspace assistant that transforms documents, messages, and knowledge into fast action across product teams.",
+      "title": "AI-Powered Pharmacy Platform",
+      "slug": "ai-powered-pharmacy-platform",
+      "summary": "A full pharmacy website supported by AI, designed to provide a modern digital experience for showcasing products, improving user interaction, and expanding into smarter pharmacy workflows.",
       "category": "AI",
-      "year": "2026",
+      "year": "Recent",
       "image": "/assets/project-ai.svg",
       "stack": [
-        "OpenAI",
-        "Node.js",
-        "Redis",
-        "Webhooks"
+        "Web Development",
+        "AI",
+        "Full Stack",
+        "Database"
       ],
       "metrics": [
-        "AI-first workflows",
-        "Fast retrieval patterns",
-        "Integrations-ready backend"
+        "End-to-end website structure",
+        "AI-supported experience",
+        "Scalable pharmacy concept"
       ],
       "details": {
-        "challenge": "Build an assistant experience that feels useful in real work, not like a disconnected demo.",
-        "solution": "I focused on sharp task framing, webhook integrations, and a UI that turns AI output into actionable next steps.",
+        "challenge": "Build a complete pharmacy website that goes beyond a standard storefront by adding AI support to improve the overall digital experience.",
+        "solution": "I developed a full web platform structure that combines product presentation, service-oriented flows, and AI support to make the project feel smarter and more modern.",
         "impact": [
-          "Faster response and summarization loops",
-          "Cleaner knowledge access for teams",
-          "Ready path for deeper product automation"
+          "Showcased my ability to combine web development with AI concepts",
+          "Created a stronger full-stack style portfolio project",
+          "Built a foundation that can grow into a smarter pharmacy product"
         ]
       },
       "links": {
@@ -295,86 +307,63 @@
   ],
   "experience": [
     {
-      "period": "Now",
-      "role": "Independent Developer",
-      "company": "Portfolio + Product Systems",
-      "summary": "Building premium portfolio experiences, full-stack web products, and AI-ready interfaces with a focus on first impression, clarity, and performance.",
+      "period": "First Year",
+      "role": "University Student",
+      "company": "Innovation University, 10th of Ramadan City, Egypt",
+      "summary": "Currently studying at Innovation University and building a strong foundation in programming, problem-solving, and modern software development while preparing to specialize in AI.",
       "points": [
-        "Designed and shipped immersive frontend experiences",
-        "Built secure APIs and structured contact flows",
-        "Created reusable systems ready for future growth"
+        "Building core technical foundations through university study",
+        "Preparing to specialize in Artificial Intelligence",
+        "Combining academic learning with practical project building"
       ]
     },
     {
-      "period": "Open to update",
-      "role": "Add your real role here",
-      "company": "Replace with your company or freelance phase",
-      "summary": "This slot is ready for your actual background, collaborations, internships, client work, or startup journey.",
+      "period": "Current Focus",
+      "role": "AI Learning Path",
+      "company": "Self-Directed Development",
+      "summary": "I am actively exploring the main AI tracks through personal practice and project building, with growing focus on machine learning, deep learning, computer vision, and NLP.",
       "points": [
-        "Add measurable outcomes",
-        "Add product or company names",
-        "Add 2 to 3 concrete achievements"
+        "Learning across the broader AI landscape",
+        "Building hands-on projects to strengthen understanding",
+        "Creating an early portfolio that reflects my future specialization"
       ]
     }
   ],
-  "testimonials": [
-    {
-      "quote": "The interface feels premium immediately. It has the confidence of a product, not just a portfolio page.",
-      "name": "Sample Client",
-      "title": "Replace with a real testimonial"
-    },
-    {
-      "quote": "Strong visual storytelling, clean engineering, and interactions that make the work feel alive.",
-      "name": "Sample Founder",
-      "title": "Replace with a real testimonial"
-    }
-  ],
-  "insights": [
-    {
-      "title": "Why premium motion design changes how recruiters perceive frontend skill",
-      "tag": "Motion",
-      "summary": "A short insight slot you can later replace with real articles, product thoughts, or technical writing.",
-      "url": "#"
-    },
-    {
-      "title": "The difference between a normal portfolio and a product-level personal brand",
-      "tag": "Brand",
-      "summary": "Use this section for ideas, essays, or short notes that show your thinking beyond implementation.",
-      "url": "#"
-    }
-  ],
+  "certificates": [],
+  "testimonials": [],
+  "insights": [],
   "faqs": [
     {
-      "question": "Is this portfolio ready to customize right away?",
-      "answer": "Yes. Replace the placeholder content in data/profile.json, update your links, and the experience is ready to run."
+      "question": "What are you focused on right now?",
+      "answer": "I am focused on AI engineering fundamentals, especially machine learning, deep learning, computer vision, NLP, and practical projects that connect models with usable software."
     },
     {
-      "question": "Can I add real projects and services later?",
-      "answer": "Yes. The entire frontend reads from the profile JSON file, so you can update content without touching the UI structure."
+      "question": "Are the project links available?",
+      "answer": "Some projects are still being prepared for public GitHub or live demos. The project cards currently explain the context, stack, challenge, solution, and learning outcome."
     },
     {
-      "question": "Is the contact form secured?",
-      "answer": "Yes. The backend includes validation, payload limits, a honeypot field, rate limiting, and secure response headers."
+      "question": "How can someone contact you?",
+      "answer": "The fastest ways are email, WhatsApp, or the contact form on this site. I am open to feedback, learning opportunities, collaborations, and early career conversations."
     }
   ],
   "contact": {
-    "heading": "Let's build something impossible to ignore",
-    "intro": "Use the form for freelance inquiries, remote opportunities, or ambitious product ideas. Messages are stored safely and can later be forwarded to email or webhooks.",
+    "heading": "Let's connect about AI, projects, or learning opportunities",
+    "intro": "Use the form for feedback, collaboration ideas, internship conversations, or questions about my projects. You can also reach me directly by email or WhatsApp.",
     "directLinks": [
       {
         "label": "Email",
-        "value": "you@example.com",
-        "url": "mailto:you@example.com"
+        "value": "mart33645@gmail.com",
+        "url": "mailto:mart33645@gmail.com"
       },
       {
         "label": "Phone",
-        "value": "+20 100 000 0000",
-        "url": "tel:+201000000000"
+        "value": "01140628954",
+        "url": "tel:+201140628954"
       },
       {
         "label": "WhatsApp",
-        "value": "Open a direct chat",
-        "url": "https://wa.me/201000000000"
+        "value": "Chat with me on WhatsApp",
+        "url": "https://wa.me/201140628954"
       }
     ]
   }

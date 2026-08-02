@@ -28,6 +28,7 @@ export default function ProjectModal({ project, onClose, onLogEvent }) {
   const repoUrl = safeUrl(project.links?.repo);
   const caseStudyUrl = safeUrl(project.links?.caseStudy);
   const entryTime = useRef(Date.now());
+  const titleId = `${project.slug || "project"}-modal-title`;
 
   const handleClose = () => {
     const durationSeconds = Math.round((Date.now() - entryTime.current) / 1000);
@@ -67,6 +68,9 @@ export default function ProjectModal({ project, onClose, onLogEvent }) {
         exit={{ opacity: 0, scale: 0.94, y: 20 }}
         transition={{ type: "spring", stiffness: 180, damping: 22 }}
         onClick={(event) => event.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
       >
         <button
           type="button"
@@ -92,7 +96,7 @@ export default function ProjectModal({ project, onClose, onLogEvent }) {
               <div className="inline-flex items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-cyan-200">
                 {project.category} / {project.year}
               </div>
-              <h3 className="display-heading-lg text-white">
+              <h3 id={titleId} className="display-heading-lg text-white">
                 {project.title}
               </h3>
               <p className="text-sm leading-7 text-white/68 md:text-base">{project.summary}</p>
