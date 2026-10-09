@@ -37,6 +37,7 @@ import {
   MessageSquare,
   Phone,
   Rocket,
+  Search,
   Shield,
   ShieldCheck,
   Sparkles,
@@ -378,6 +379,8 @@ export default function App() {
   const [error, setError] = useState("");
   const [ownerSessionActive, setOwnerSessionActive] = useState(false);
   const [activeFilter, setActiveFilter] = useState("All");
+  const [projectSearch, setProjectSearch] = useState("");
+  const deferredProjectSearch = useDeferredValue(projectSearch);
   const [selectedProject, setSelectedProject] = useState(null);
   const [isFinePointer, setIsFinePointer] = useState(false);
   const [nonCriticalReady, setNonCriticalReady] = useState(false);
@@ -1301,23 +1304,37 @@ export default function App() {
               />
             </div>
 
-            <div className="flex flex-wrap gap-3">
-              {filters.map((filter) => {
-                const active = filter === activeFilter;
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div className="flex flex-wrap gap-2.5">
+                {filters.map((filter) => {
+                  const active = filter === activeFilter;
 
-                return (
-                  <button
-                    key={filter}
-                    type="button"
-                    onClick={() => handleFilterClick(filter)}
-                    className="filter-pill"
-                    aria-pressed={active}
-                  >
-                    {active ? <motion.span layoutId="filter-pill" className="filter-pill__active" /> : null}
-                    <span className={`relative z-[1] ${active ? "text-white" : "text-white/60"}`}>{filter}</span>
-                  </button>
-                );
-              })}
+                  return (
+                    <button
+                      key={filter}
+                      type="button"
+                      onClick={() => handleFilterClick(filter)}
+                      className="filter-pill"
+                      aria-pressed={active}
+                    >
+                      {active ? <motion.span layoutId="filter-pill" className="filter-pill__active" /> : null}
+                      <span className={`relative z-[1] ${active ? "text-white" : "text-white/60"}`}>{filter}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="relative min-w-[280px]">
+                <Search className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-cyan-300/60" size={16} />
+                <input
+                  type="text"
+                  value={projectSearch}
+                  onChange={(e) => setProjectSearch(e.target.value)}
+                  placeholder="Smart search (Python, C#, AI)..."
+                  className="w-full rounded-full border border-cyan-400/20 bg-slate-900/60 py-2.5 pl-10 pr-4 text-xs text-white placeholder-white/40 backdrop-blur-md outline-none transition focus:border-cyan-400 focus:bg-slate-900/80 md:text-sm"
+                  aria-label="Search projects by keyword, tech, or title"
+                />
+              </div>
             </div>
 
             <motion.div

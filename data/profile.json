@@ -2,7 +2,7 @@
   "site": {
     "title": "Ammar Tahoon | AI Engineering Student & Developer",
     "description": "Portfolio of Ammar Tahoon, an AI Engineering student in Egypt building machine learning, computer vision, NLP, C# desktop tools, and modern web interfaces.",
-    "url": ""
+    "url": "https://ammartahoun.online"
   },
   "personal": {
     "fullName": "Ammar Tahoon",
@@ -28,8 +28,8 @@
   "socials": [
     {
       "label": "GitHub",
-      "handle": "@mart33645-wq",
-      "url": "https://github.com/mart33645-wq"
+      "handle": "@a-2m-a-r7",
+      "url": "https://github.com/a-2m-a-r7"
     },
     {
       "label": "LinkedIn",
@@ -206,102 +206,210 @@
   ],
   "projects": [
     {
-      "title": "Base Calc",
-      "slug": "base-calc",
-      "summary": "A desktop application built with WPF and C# for handling base calculations and number-system conversion in a clean, simple, and educational interface.",
-      "category": "Desktop",
-      "year": "Recent",
-      "image": "/assets/project-command.svg",
+      "title": "DataCamp Student Club Platform",
+      "slug": "datacamp-student-club",
+      "summary": "Production-grade educational web portal empowering university AI & Data Science students with an in-browser WebAssembly Python compiler, live Google Gemini AI mentor, and interactive learning tracks.",
+      "category": "Web Platform",
+      "year": "2026",
+      "image": "/projects/datacamp-student-club.svg",
       "stack": [
-        "WPF",
+        "TypeScript",
+        "React 19",
+        "Vite",
+        "Tailwind CSS",
+        "Firebase",
+        "Google Gemini",
+        "Pyodide (Wasm)"
+      ],
+      "metrics": [
+        "In-browser Python without server",
+        "Bilingual RAG AI Mentorship",
+        "Full Auth & Progress Tracking"
+      ],
+      "details": {
+        "challenge": "University students exploring AI and data science often encounter complex local Python setup hurdles, lack instant code feedback, and need bilingual guidance aligned with their university curriculum.",
+        "solution": "Built a comprehensive web platform for the DataCamp Student Club at Innovation University. Features a client-side WebAssembly Python sandbox (Pyodide), the NEXUS AI bilingual mentor powered by Google Gemini with live Firestore context, and gamified student progress milestones.",
+        "impact": [
+          "Eliminated local setup friction for new club members entering data science",
+          "Delivered zero-latency Python code execution entirely in the browser",
+          "Adopted as the official student club operating portal at Innovation University"
+        ]
+      },
+      "links": {
+        "live": "https://datacamp-student-club.vercel.app",
+        "repo": "https://github.com/a-2m-a-r7/datacamp-student-club",
+        "caseStudy": "#datacamp-student-club"
+      }
+    },
+    {
+      "title": "CircuitSim Pro - Physics Simulator",
+      "slug": "circuit-sim-pro",
+      "summary": "Interactive Windows desktop physics simulation suite for modeling electrical circuits, evaluating real-time Ohm's law parameters, and plotting oscilloscope current signals.",
+      "category": "Simulation",
+      "year": "2026",
+      "image": "/projects/circuit-sim-pro.svg",
+      "stack": [
         "C#",
+        "WPF",
+        ".NET 9.0",
+        "Desktop App",
+        "Physics Engine"
+      ],
+      "metrics": [
+        "Real-time Ohm's Law Solver",
+        "Oscilloscope Signal Canvas",
+        "Sub-millisecond Physics Loop"
+      ],
+      "details": {
+        "challenge": "Physical laboratory equipment is costly, fragile, and not always accessible to students studying electrical circuits and basic circuit physics.",
+        "solution": "Developed CircuitSim Pro, an intuitive Windows desktop application providing a virtual sandbox where students can connect power sources, resistors, switches, and lamps while observing instant electrical responses.",
+        "impact": [
+          "Enabled safe, interactive experimentation with electrical circuit parameters",
+          "Bridged theoretical Ohm's law equations with visual, real-time feedback",
+          "Demonstrated high performance and responsive desktop engineering in .NET 9"
+        ]
+      },
+      "links": {
+        "live": "#",
+        "repo": "https://github.com/a-2m-a-r7/circuit-sim-pro",
+        "caseStudy": "#circuit-sim-pro"
+      }
+    },
+    {
+      "title": "SmartMall AI OS",
+      "slug": "smartmall-ai-os",
+      "summary": "Intelligent operating system architecture designed to automate commercial retail spaces with AI-driven inventory prediction, automated customer flow analysis, and smart workflows.",
+      "category": "AI Systems",
+      "year": "2026",
+      "image": "/projects/smartmall-ai-os.svg",
+      "stack": [
+        "Python",
+        "TypeScript",
+        "C++",
+        "AI Workflows",
+        "Automation"
+      ],
+      "metrics": [
+        "Multi-service Architecture",
+        "Automated Retail Triggers",
+        "Predictive Analytics Core"
+      ],
+      "details": {
+        "challenge": "Commercial shopping centers operate on fragmented, manual systems that fail to anticipate shopper density, optimize inventory, or automate emergency and energy protocols.",
+        "solution": "Designed SmartMall AI OS, an architectural concept and operational blueprint unifying sensory inputs, predictive machine learning pipelines, and automated facility event responders.",
+        "impact": [
+          "Formulated end-to-end blueprint for smart commercial operations",
+          "Demonstrated deep cross-disciplinary knowledge spanning systems architecture and AI",
+          "Engineered scalable modular components ready for IoT and edge deployment"
+        ]
+      },
+      "links": {
+        "live": "#",
+        "repo": "https://github.com/a-2m-a-r7/smartmall-ai-os",
+        "caseStudy": "#smartmall-ai-os"
+      }
+    },
+    {
+      "title": "AI Quest: Engineer Path",
+      "slug": "ai-quest-engineer-path",
+      "summary": "Gamified desktop application that transforms the journey of becoming an AI Engineer into an RPG learning adventure, covering 8 roadmap worlds from Python foundations to Agentic AI.",
+      "category": "AI & Desktop",
+      "year": "2026",
+      "image": "/projects/ai-quest-engineer-path.svg",
+      "stack": [
+        "Electron 38",
+        "React 19",
+        "Vite 7",
+        "JavaScript",
+        "Tailwind CSS",
+        "i18n"
+      ],
+      "metrics": [
+        "8 Worlds & 39 AI Topics",
+        "RPG Progression & XP Engine",
+        "Full Bilingual Arabic/English"
+      ],
+      "details": {
+        "challenge": "Self-learning modern AI Engineering is overwhelming and prone to tutorial hell without a clear, structured roadmap and tangible milestones.",
+        "solution": "Created AI Quest, a local-first desktop application combining deep educational roadmaps with RPG gamification mechanics (XP, boss challenges, achievement badges, and leveling).",
+        "impact": [
+          "Provided structured guidance for aspiring engineers to track AI milestones systematically",
+          "Turned tedious syllabus tracking into an engaging, gamified daily habit",
+          "Bridged Arabic-speaking learners with international cutting-edge AI engineering standards"
+        ]
+      },
+      "links": {
+        "live": "#",
+        "repo": "https://github.com/a-2m-a-r7/ai-quest-engineer-path",
+        "caseStudy": "#ai-quest-engineer-path"
+      }
+    },
+    {
+      "title": "Base Calculator & Number Systems Converter",
+      "slug": "base-calc-2",
+      "summary": "High-speed Windows desktop application for converting between Binary, Octal, Decimal, and Hexadecimal, featuring chained multi-operand arithmetic across mixed number systems.",
+      "category": "Desktop Utility",
+      "year": "2026",
+      "image": "/projects/base-calc-2.svg",
+      "stack": [
+        "C#",
+        "WPF",
+        ".NET 9.0",
         "Desktop App",
         "Algorithms"
       ],
       "metrics": [
-        "Number system conversion",
-        "Clean desktop workflow",
-        "Learning-focused utility"
+        "Simultaneous 4-Base Output",
+        "Chained Mixed-Base Arithmetic",
+        "Step-by-step Math Breakdown"
       ],
       "details": {
-        "challenge": "Build a useful desktop tool that makes base conversion and calculation easier to understand and use for students and learners.",
-        "solution": "I created a WPF-based desktop experience with clear inputs, accurate calculation logic, and a straightforward interface focused on speed and simplicity.",
+        "challenge": "Computer science students and systems engineers need fast, accurate multi-base arithmetic with transparent step-by-step validation during digital logic and assembly learning.",
+        "solution": "Built a dedicated WPF .NET 9 desktop calculator allowing users to enter numbers in any base, perform chained calculations, and see results simultaneously across all four major bases.",
         "impact": [
-          "Made base conversion easier to test and validate",
-          "Strengthened my desktop application fundamentals",
-          "Delivered a practical educational utility in C#"
+          "Accelerated verification of low-level numbering conversions for students",
+          "Delivered a fluid, keyboard-optimized desktop tool with instant calculation times",
+          "Reinforced core algorithms and desktop application fundamentals in C#"
         ]
       },
       "links": {
         "live": "#",
-        "repo": "#",
-        "caseStudy": "#"
+        "repo": "https://github.com/a-2m-a-r7/base-calc-2",
+        "caseStudy": "#base-calc-2"
       }
     },
     {
-      "title": "Mini Physics Lab Simulator",
-      "slug": "mini-physics-lab-simulator",
-      "summary": "A small virtual physics lab built with WPF and C# to simulate electrical circuit experiments using bulbs, resistors, a voltmeter, an ammeter, batteries, and switches.",
-      "category": "Simulation",
-      "year": "Recent",
-      "image": "/assets/project-commerce.svg",
+      "title": "Dino Game Pro",
+      "slug": "dino-game-pro",
+      "summary": "High-performance 60 FPS endless runner desktop game for Windows built natively in C# and WPF, featuring custom procedural obstacle generation and score tracking.",
+      "category": "Game Dev",
+      "year": "2026",
+      "image": "/projects/dino-game-pro.svg",
       "stack": [
-        "WPF",
         "C#",
-        "Physics",
-        "Simulation"
+        "WPF",
+        ".NET 9.0",
+        "Canvas 60FPS",
+        "Game Engine"
       ],
       "metrics": [
-        "Circuit simulation",
-        "Interactive lab components",
-        "Educational desktop experience"
+        "Native 60 FPS Loop",
+        "Procedural Spawning Engine",
+        "Sub-5ms Input Latency"
       ],
       "details": {
-        "challenge": "Recreate a simple but realistic physics lab experience in software so users can interact with circuit elements in a clear and understandable way.",
-        "solution": "I designed an interactive desktop simulator where users can connect and explore electrical elements visually while observing values through virtual measuring tools.",
+        "challenge": "Demonstrating that WPF and .NET desktop frameworks can maintain smooth 60 FPS game-loop rendering and low-latency input handling without full game engines like Unity.",
+        "solution": "Constructed a native Windows implementation of the classic endless runner, implementing custom collision detection, progressive speed curves, and persistent score storage.",
         "impact": [
-          "Turned physical circuit ideas into an interactive software experience",
-          "Improved my understanding of simulation-oriented problem solving",
-          "Created a useful educational project with real component interaction"
+          "Demonstrated desktop animation and game loop capabilities in pure WPF",
+          "Delivered a fun, responsive desktop game with instant startup time",
+          "Strengthened understanding of frame pacing, memory allocation, and event handling in .NET"
         ]
       },
       "links": {
         "live": "#",
-        "repo": "#",
-        "caseStudy": "#"
-      }
-    },
-    {
-      "title": "AI-Powered Pharmacy Platform",
-      "slug": "ai-powered-pharmacy-platform",
-      "summary": "A full pharmacy website supported by AI, designed to provide a modern digital experience for showcasing products, improving user interaction, and expanding into smarter pharmacy workflows.",
-      "category": "AI",
-      "year": "Recent",
-      "image": "/assets/project-ai.svg",
-      "stack": [
-        "Web Development",
-        "AI",
-        "Full Stack",
-        "Database"
-      ],
-      "metrics": [
-        "End-to-end website structure",
-        "AI-supported experience",
-        "Scalable pharmacy concept"
-      ],
-      "details": {
-        "challenge": "Build a complete pharmacy website that goes beyond a standard storefront by adding AI support to improve the overall digital experience.",
-        "solution": "I developed a full web platform structure that combines product presentation, service-oriented flows, and AI support to make the project feel smarter and more modern.",
-        "impact": [
-          "Showcased my ability to combine web development with AI concepts",
-          "Created a stronger full-stack style portfolio project",
-          "Built a foundation that can grow into a smarter pharmacy product"
-        ]
-      },
-      "links": {
-        "live": "#",
-        "repo": "#",
-        "caseStudy": "#"
+        "repo": "https://github.com/a-2m-a-r7/dino-game-pro",
+        "caseStudy": "#dino-game-pro"
       }
     }
   ],

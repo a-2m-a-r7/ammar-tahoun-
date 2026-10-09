@@ -8,6 +8,7 @@
     "dev": "vite",
     "dev:server": "node --watch server.js",
     "build": "vite build && node postbuild.js",
+    "sync-projects": "node scripts/sync-projects.mjs",
     "start": "npm run build && node server.js",
     "serve": "node server.js",
     "check": "node --check server.js && vite build"

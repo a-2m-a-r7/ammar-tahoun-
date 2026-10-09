@@ -1,5 +1,8 @@
 node_modules
 .env
+.env.*
+!.env.example
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -8,5 +11,6 @@ dist
 .DS_Store
 Thumbs.db
 data/contact-submissions.json.bak
+*-backup.*
 
 .vercel
