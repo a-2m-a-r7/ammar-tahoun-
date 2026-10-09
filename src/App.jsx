@@ -32,6 +32,7 @@ import {
   Database,
   Globe,
   Layers3,
+  Lock,
   Mail,
   MapPin,
   MessageSquare,
@@ -549,12 +550,21 @@ export default function App() {
           signal: controller.signal
         });
 
-        if (active) {
-          setOwnerSessionActive(response.ok);
+        const localEmail = typeof window !== "undefined" ? window.localStorage.getItem("portfolio_owner_email") : null;
+
+        if (response.ok) {
+          const data = await response.json().catch(() => null);
+          const isAmmar = data?.authenticated === true && data?.email === "mart33645@gmail.com";
+          if (active) {
+            setOwnerSessionActive(Boolean(isAmmar || localEmail === "mart33645@gmail.com"));
+          }
+        } else if (active) {
+          setOwnerSessionActive(localEmail === "mart33645@gmail.com");
         }
       } catch (sessionError) {
         if (active && sessionError.name !== "AbortError") {
-          setOwnerSessionActive(false);
+          const localEmail = typeof window !== "undefined" ? window.localStorage.getItem("portfolio_owner_email") : null;
+          setOwnerSessionActive(localEmail === "mart33645@gmail.com");
         }
       }
     }
@@ -706,6 +716,18 @@ export default function App() {
   const [adminToken, setAdminToken] = useState("");
   const [rememberAdmin, setRememberAdmin] = useState(false);
   const [adminPromptOpen, setAdminPromptOpen] = useState(false);
+  // Owner Access Shortcut
+  useEffect(() => {
+    const handleAdminKey = (e) => {
+      if ((e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "a") || (e.altKey && e.key.toLowerCase() === "a")) {
+        e.preventDefault();
+        setAdminPromptOpen(true);
+      }
+    };
+    window.addEventListener("keydown", handleAdminKey);
+    return () => window.removeEventListener("keydown", handleAdminKey);
+  }, []);
+
   const [editorState, setEditorState] = useState({ type: null, mode: "create", data: null });
 
   const adminHandlers = {
@@ -716,27 +738,37 @@ export default function App() {
     onOpenContactEditor: () => setEditorState({ type: "contact", mode: "edit", data: profile }),
     onCloseEditor: () => setEditorState({ type: null, mode: "create", data: null }),
     onLogout: async () => {
-      await fetch("/api/admin/logout", { method: "POST" });
+      try { await fetch("/api/admin/logout", { method: "POST" }); } catch {}
+      window.localStorage.removeItem("portfolio_owner_email");
       setOwnerSessionActive(false);
       window.location.reload();
     },
-    onVerifyAdminToken: async (token) => {
+    onVerifyAdminToken: async (token, email = "mart33645@gmail.com") => {
       setSubmitting(true);
       try {
+        const normalizedEmail = (email || "mart33645@gmail.com").trim().toLowerCase();
+        if (normalizedEmail !== "mart33645@gmail.com") {
+          setFormStatus({ state: "error", message: "الدخول مخصص فقط للمالك: mart33645@gmail.com" });
+          return;
+        }
+
         const res = await fetch("/api/admin/verify", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ adminToken: token })
+          body: JSON.stringify({ adminToken: token, email: normalizedEmail })
         });
-        if (res.ok) {
+        const data = await res.json().catch(() => ({}));
+
+        if (res.ok && data?.ok) {
+          window.localStorage.setItem("portfolio_owner_email", "mart33645@gmail.com");
           setOwnerSessionActive(true);
           setAdminPromptOpen(false);
-          setFormStatus({ state: "success", message: "Admin session unlocked." });
+          setFormStatus({ state: "success", message: "مرحباً يا عمار! تم تفعيل لوحة التحكم بنجاح." });
         } else {
-          setFormStatus({ state: "error", message: "Invalid admin token." });
+          setFormStatus({ state: "error", message: data?.message || "مفتاح الدخول غير صحيح." });
         }
       } catch (err) {
-        setFormStatus({ state: "error", message: "Verification failed." });
+        setFormStatus({ state: "error", message: "تعذر التحقق من خادم الأدمن." });
       } finally {
         setSubmitting(false);
       }
@@ -1703,7 +1735,17 @@ export default function App() {
                 <ShieldCheck size={14} />
                 <span>Admin</span>
               </a>
-            ) : null}
+            ) : (
+              <button
+                type="button"
+                onClick={() => setAdminPromptOpen(true)}
+                className="opacity-20 hover:opacity-100 transition p-1 text-white/40 hover:text-cyan-300"
+                title="Owner Login (mart33645@gmail.com)"
+                aria-label="Owner Sign In"
+              >
+                <Lock size={12} />
+              </button>
+            )}
           </div>
         </div>
       </footer>

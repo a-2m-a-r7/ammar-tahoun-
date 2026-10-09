@@ -123,6 +123,8 @@ export default function IntegratedAdminStudio({
   onOpenVault
 }) {
   const [photoFile, setPhotoFile] = useState(null);
+  const [panelOpen, setPanelOpen] = useState(false);
+  const [adminEmail, setAdminEmail] = useState("mart33645@gmail.com");
   const [certificateValues, setCertificateValues] = useState(createCertificateForm(editorState?.data));
   const [projectValues, setProjectValues] = useState(createProjectForm(editorState?.data));
   const [contactValues, setContactValues] = useState(() => createContactFormFromProfile(profile));
@@ -220,7 +222,7 @@ export default function IntegratedAdminStudio({
 
   const handleVerifySubmit = async (event) => {
     event.preventDefault();
-    await onVerifyAdminToken(adminToken);
+    await onVerifyAdminToken(adminToken, adminEmail);
   };
 
   const handlePhotoSubmit = async (event) => {
@@ -382,151 +384,191 @@ export default function IntegratedAdminStudio({
   return (
     <>
       {isAdminAuthenticated ? (
-        <div className="pointer-events-none fixed bottom-4 right-4 z-[105] w-[min(23rem,calc(100vw-1rem))]">
-          <div className="pointer-events-auto glow-border glass-panel rounded-[1.8rem] p-4 md:p-5">
-            <div className="mb-4 flex items-start justify-between gap-4">
-              <div>
-                <p className="text-xs uppercase tracking-[0.28em] text-cyan-200/76">لوحة التحكم السريعة</p>
-                <p className="mt-2 text-sm leading-6 text-white/62">
-                  أدوات تظهر لك فقط؛ الزوار لا يرونها ولا يتغيّر شكل الموقع لهم.
-                </p>
-              </div>
-              <div className="inline-flex shrink-0 items-center gap-2 rounded-full border border-emerald-300/18 bg-emerald-300/10 px-3 py-2 text-[11px] uppercase tracking-[0.18em] text-emerald-200">
-                <Shield size={13} />
-                جاهز
-              </div>
-            </div>
+        <>
+          {/* Floating Admin FAB Button - Positioned safely above the AI Chat button */}
+          <motion.button
+            type="button"
+            onClick={() => setPanelOpen(!panelOpen)}
+            className="fixed bottom-[5.75rem] right-6 z-[95] flex h-12 w-12 items-center justify-center rounded-full border border-violet-400/40 bg-slate-950/90 text-violet-300 shadow-[0_0_24px_rgba(139,92,246,0.4)] backdrop-blur-xl transition hover:border-violet-300 hover:bg-violet-600/30 hover:text-white"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.92 }}
+            title="لوحة تحكم المالك (mart33645@gmail.com)"
+            aria-label="Toggle Quick Admin Studio"
+          >
+            <Shield size={22} className="text-violet-300" />
+            <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500" />
+            </span>
+          </motion.button>
 
-            <div className="grid grid-cols-2 gap-3">
-              <div className="relative">
-                <button
-                  type="button"
-                  onClick={onOpenPhotoEditor}
-                  className="w-full rounded-[1.3rem] border border-white/10 bg-white/6 p-3 pb-10 text-left transition hover:border-cyan-300/20 hover:bg-cyan-300/10"
-                >
-                  <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-slate-950/72 text-cyan-200">
-                    <ImagePlus size={18} />
-                  </span>
-                  <p className="mt-3 text-sm font-medium text-white/88">صورة البروفايل</p>
-                  <p className="mt-1 text-[11px] text-white/45">تغيير الصورة</p>
-                </button>
-                <button
-                  type="button"
-                  disabled={busy}
-                  onClick={(event) => void handleClearPhotoFab(event)}
-                  className={deleteFabClass}
-                  title="إعادة الصورة الافتراضية"
-                  aria-label="حذف صورة البروفايل المرفوعة"
-                >
-                  <Trash2 size={15} />
-                </button>
-              </div>
+          {/* Collapsible Quick Admin Panel - Positioned at bottom-[9.5rem] right-6 so it floats safely above both buttons */}
+          <AnimatePresence>
+            {panelOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: 20, scale: 0.94 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 20, scale: 0.94 }}
+                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                className="fixed bottom-[9.5rem] right-6 z-[105] w-[min(23rem,calc(100vw-2rem))] overflow-hidden rounded-[2rem] border border-violet-400/30 bg-slate-950/95 p-5 shadow-[0_30px_100px_rgba(0,0,0,0.85)] backdrop-blur-2xl"
+              >
+                <div className="mb-4 flex items-start justify-between gap-3">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <p className="text-xs uppercase tracking-[0.22em] text-cyan-200">لوحة التحكم السريعة</p>
+                      <span className="rounded-full bg-emerald-500/20 px-2 py-0.5 text-[10px] text-emerald-300 font-mono">mart33645</span>
+                    </div>
+                    <p className="mt-1 text-xs text-white/58">
+                      أدوات تظهر لك فقط؛ الزوار لا يرونها ولا يتغيّر شكل الموقع لهم.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setPanelOpen(false)}
+                    className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 hover:bg-white/12 hover:text-white transition"
+                    aria-label="Close Admin Studio"
+                  >
+                    <X size={15} />
+                  </button>
+                </div>
 
-              <div className="relative">
-                <button
-                  type="button"
-                  onClick={onOpenProjectCreator}
-                  className="w-full rounded-[1.3rem] border border-white/10 bg-white/6 p-3 pb-10 text-left transition hover:border-cyan-300/20 hover:bg-cyan-300/10"
-                >
-                  <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-slate-950/72 text-cyan-200">
-                    <FolderPlus size={18} />
-                  </span>
-                  <p className="mt-3 text-sm font-medium text-white/88">مشروع جديد</p>
-                  <p className="mt-1 text-[11px] text-white/45">إضافة للمعارض</p>
-                </button>
-                <button
-                  type="button"
-                  disabled={busy}
-                  onClick={handleOpenProjectDelete}
-                  className={deleteFabClass}
-                  title="حذف مشروع"
-                  aria-label="حذف مشروع من المعرض"
-                >
-                  <Trash2 size={15} />
-                </button>
-              </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => { setPanelOpen(false); onOpenPhotoEditor(); }}
+                      className="w-full rounded-[1.3rem] border border-white/10 bg-white/6 p-3 pb-10 text-left transition hover:border-cyan-300/20 hover:bg-cyan-300/10"
+                    >
+                      <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-slate-950/72 text-cyan-200">
+                        <ImagePlus size={18} />
+                      </span>
+                      <p className="mt-3 text-sm font-medium text-white/88">صورة البروفايل</p>
+                      <p className="mt-1 text-[11px] text-white/45">تغيير الصورة</p>
+                    </button>
+                    <button
+                      type="button"
+                      disabled={busy}
+                      onClick={(event) => void handleClearPhotoFab(event)}
+                      className={deleteFabClass}
+                      title="إعادة الصورة الافتراضية"
+                      aria-label="حذف صورة البروفايل المرفوعة"
+                    >
+                      <Trash2 size={15} />
+                    </button>
+                  </div>
 
-              <div className="relative">
-                <button
-                  type="button"
-                  onClick={onOpenCertificateCreator}
-                  className="w-full rounded-[1.3rem] border border-white/10 bg-white/6 p-3 pb-10 text-left transition hover:border-cyan-300/20 hover:bg-cyan-300/10"
-                >
-                  <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-slate-950/72 text-cyan-200">
-                    <Trophy size={18} />
-                  </span>
-                  <p className="mt-3 text-sm font-medium text-white/88">شهادة</p>
-                  <p className="mt-1 text-[11px] text-white/45">إضافة شهادة</p>
-                </button>
-                <button
-                  type="button"
-                  disabled={busy}
-                  onClick={handleOpenCertificateDelete}
-                  className={deleteFabClass}
-                  title="حذف شهادة"
-                  aria-label="حذف شهادة"
-                >
-                  <Trash2 size={15} />
-                </button>
-              </div>
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => { setPanelOpen(false); onOpenProjectCreator(); }}
+                      className="w-full rounded-[1.3rem] border border-white/10 bg-white/6 p-3 pb-10 text-left transition hover:border-cyan-300/20 hover:bg-cyan-300/10"
+                    >
+                      <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-slate-950/72 text-cyan-200">
+                        <FolderPlus size={18} />
+                      </span>
+                      <p className="mt-3 text-sm font-medium text-white/88">مشروع جديد</p>
+                      <p className="mt-1 text-[11px] text-white/45">إضافة للمعارض</p>
+                    </button>
+                    <button
+                      type="button"
+                      disabled={busy}
+                      onClick={handleOpenProjectDelete}
+                      className={deleteFabClass}
+                      title="حذف مشروع"
+                      aria-label="حذف مشروع من المعرض"
+                    >
+                      <Trash2 size={15} />
+                    </button>
+                  </div>
 
-              <div className="relative">
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => { setPanelOpen(false); onOpenCertificateCreator(); }}
+                      className="w-full rounded-[1.3rem] border border-white/10 bg-white/6 p-3 pb-10 text-left transition hover:border-cyan-300/20 hover:bg-cyan-300/10"
+                    >
+                      <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-slate-950/72 text-cyan-200">
+                        <Trophy size={18} />
+                      </span>
+                      <p className="mt-3 text-sm font-medium text-white/88">شهادة</p>
+                      <p className="mt-1 text-[11px] text-white/45">إضافة شهادة</p>
+                    </button>
+                    <button
+                      type="button"
+                      disabled={busy}
+                      onClick={handleOpenCertificateDelete}
+                      className={deleteFabClass}
+                      title="حذف شهادة"
+                      aria-label="حذف شهادة"
+                    >
+                      <Trash2 size={15} />
+                    </button>
+                  </div>
+
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => { setPanelOpen(false); onOpenContactEditor(); }}
+                      className="w-full rounded-[1.3rem] border border-white/10 bg-white/6 p-3 pb-10 text-left transition hover:border-cyan-300/20 hover:bg-cyan-300/10"
+                    >
+                      <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-slate-950/72 text-cyan-200">
+                        <MessageSquare size={18} />
+                      </span>
+                      <p className="mt-3 text-sm font-medium text-white/88">التواصل</p>
+                      <p className="mt-1 text-[11px] text-white/45">بريد، هاتف، نص القسم</p>
+                    </button>
+                    <button
+                      type="button"
+                      disabled={busy}
+                      onClick={(event) => void handleClearContactFab(event)}
+                      className={deleteFabClass}
+                      title="مسح حقول التواصل السريعة"
+                      aria-label="مسح بيانات التواصل السريعة"
+                    >
+                      <Trash2 size={15} />
+                    </button>
+                  </div>
+
+                  <div className="col-span-2 relative">
+                    <button
+                      type="button"
+                      onClick={() => { setPanelOpen(false); onOpenVault(); }}
+                      className="w-full rounded-[1.3rem] border border-cyan-400/20 bg-cyan-400/10 p-3 text-left transition hover:bg-cyan-400/20 flex items-center justify-between"
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-cyan-300/30 bg-slate-950/72 text-cyan-200">
+                          <Lock size={18} />
+                        </span>
+                        <div>
+                          <p className="text-sm font-medium text-white/88">Security Vault</p>
+                          <p className="text-[11px] text-cyan-200/50">Level 5 Protected</p>
+                        </div>
+                      </div>
+                      <span className="rounded-full bg-cyan-500/15 px-3 py-1 text-[10px] uppercase font-bold text-cyan-300">Open</span>
+                    </button>
+                  </div>
+                </div>
+
+                <a
+                  href="/admin"
+                  className="mt-3 flex w-full items-center justify-center gap-2 rounded-[1.3rem] border border-violet-300/25 bg-violet-500/15 py-3 text-xs uppercase tracking-[0.2em] text-violet-100 transition hover:bg-violet-500/25"
+                >
+                  <ExternalLink size={14} />
+                  لوحة تحكم كاملة
+                </a>
+
                 <button
                   type="button"
-                  onClick={onOpenContactEditor}
-                  className="w-full rounded-[1.3rem] border border-white/10 bg-white/6 p-3 pb-10 text-left transition hover:border-cyan-300/20 hover:bg-cyan-300/10"
+                  onClick={() => { setPanelOpen(false); onLogout(); }}
+                  className="mt-2.5 flex w-full items-center justify-center gap-2 rounded-[1.3rem] border border-white/10 bg-white/6 py-2.5 text-xs uppercase tracking-[0.2em] text-white/72 transition hover:border-rose-300/25 hover:bg-rose-500/15 hover:text-rose-100"
                 >
-                  <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-slate-950/72 text-cyan-200">
-                    <MessageSquare size={18} />
-                  </span>
-                  <p className="mt-3 text-sm font-medium text-white/88">التواصل</p>
-                  <p className="mt-1 text-[11px] text-white/45">بريد، هاتف، نص القسم</p>
+                  <LogOut size={15} />
+                  إنهاء الجلسة
                 </button>
-                <button
-                  type="button"
-                  disabled={busy}
-                  onClick={(event) => void handleClearContactFab(event)}
-                  className={deleteFabClass}
-                  title="مسح حقول التواصل السريعة"
-                  aria-label="مسح بيانات التواصل السريعة"
-                >
-                  <Trash2 size={15} />
-                </button>
-              </div>
-
-              <div className="relative">
-                <button
-                  type="button"
-                  onClick={onOpenVault}
-                  className="w-full rounded-[1.3rem] border border-cyan-400/20 bg-cyan-400/10 p-3 pb-10 text-left transition hover:bg-cyan-400/20"
-                >
-                  <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-cyan-300/30 bg-slate-950/72 text-cyan-200">
-                    <Lock size={18} />
-                  </span>
-                  <p className="mt-3 text-sm font-medium text-white/88">Security Vault</p>
-                  <p className="mt-1 text-[11px] text-cyan-200/50">Level 5 Protected</p>
-                </button>
-              </div>
-            </div>
-
-            <a
-              href="/admin"
-              className="mt-3 flex w-full items-center justify-center gap-2 rounded-[1.3rem] border border-violet-300/20 bg-violet-400/8 py-3 text-xs uppercase tracking-[0.2em] text-violet-100 transition hover:bg-violet-400/14"
-            >
-              <ExternalLink size={14} />
-              لوحة تحكم كاملة
-            </a>
-
-            <button
-              type="button"
-              onClick={onLogout}
-              className="mt-3 flex w-full items-center justify-center gap-2 rounded-[1.3rem] border border-white/10 bg-white/6 py-3 text-xs uppercase tracking-[0.2em] text-white/72 transition hover:border-rose-300/22 hover:bg-rose-300/10 hover:text-rose-100"
-            >
-              <LogOut size={16} />
-              إنهاء الجلسة
-            </button>
-          </div>
-        </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </>
       ) : null}
 
       <AnimatePresence>

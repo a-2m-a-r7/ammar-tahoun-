@@ -11,6 +11,10 @@
     {
       "source": "/media/(.*)",
       "destination": "/api/media?path=/media/$1"
+    },
+    {
+      "source": "/admin(.*)",
+      "destination": "/index.html"
     }
   ],
   "headers": [
