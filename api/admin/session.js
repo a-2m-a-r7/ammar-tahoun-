@@ -4,7 +4,7 @@ export default function handler(req, res) {
 
   const cookies = req.headers.cookie || "";
   const authHeader = req.headers.authorization || req.headers["x-admin-token"] || "";
-  const token = (process.env.PORTFOLIO_ADMIN_TOKEN || "wijbOXa0tg8YGZ19D6qRWQspl37BMFHUcEnNx42dkmJKy5fL").trim();
+  const token = (process.env.PORTFOLIO_ADMIN_TOKEN || "aaaasss443").trim();
 
   const isSessionCookie = cookies.includes("portfolio_admin_session=active");
   const isAuthValid = token && (authHeader === token || authHeader === `Bearer ${token}`);

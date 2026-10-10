@@ -13,18 +13,13 @@ export default async function handler(req, res) {
   body = body || {};
 
   const email = String(body.email || "").trim().toLowerCase();
-  const adminToken = String(body.adminToken || body.password || "").trim();
-  const expectedToken = (process.env.PORTFOLIO_ADMIN_TOKEN || "wijbOXa0tg8YGZ19D6qRWQspl37BMFHUcEnNx42dkmJKy5fL").trim();
+  const password = String(body.adminToken || body.password || "").trim();
 
-  const isEmailMatch = email === "mart33645@gmail.com";
-  const isTokenMatch = adminToken && (
-    adminToken === expectedToken ||
-    adminToken === "mart33645" ||
-    adminToken === "ammar2026"
-  );
+  const VALID_EMAIL = "mart33645@gmail.com";
+  const VALID_PASSWORD = "aaaasss443";
 
-  // Authenticate if email matches mart33645@gmail.com and/or token matches
-  if ((isEmailMatch && isTokenMatch) || (!email && isTokenMatch) || (isEmailMatch && !adminToken)) {
+  // Strict check: Only mart33645@gmail.com with password aaaasss443
+  if (email === VALID_EMAIL && password === VALID_PASSWORD) {
     res.setHeader(
       "Set-Cookie",
       "portfolio_admin_session=active; Path=/; HttpOnly; SameSite=Lax; Max-Age=604800"
@@ -32,14 +27,14 @@ export default async function handler(req, res) {
     return res.status(200).json({
       ok: true,
       authenticated: true,
-      email: "mart33645@gmail.com",
-      message: "Admin authentication successful"
+      email: VALID_EMAIL,
+      message: "تم تسجيل الدخول بنجاح"
     });
   }
 
   return res.status(401).json({
     ok: false,
     authenticated: false,
-    message: "Invalid login credentials. Access is restricted exclusively to mart33645@gmail.com."
+    message: "بيانات الدخول غير صحيحة. الوصول مقتصر حصرياً على mart33645@gmail.com بكلمة السر المعتمدة."
   });
 }

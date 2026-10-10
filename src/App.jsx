@@ -1778,6 +1778,7 @@ export default function App() {
             <Suspense fallback={null}>
               <IntegratedAdminStudio
                 adminPromptOpen={adminPromptOpen}
+                onOpenAdminPrompt={() => setAdminPromptOpen(true)}
                 onCloseAdminPrompt={() => setAdminPromptOpen(false)}
                 onVerifyAdminToken={adminHandlers.onVerifyAdminToken}
                 editorState={editorState}

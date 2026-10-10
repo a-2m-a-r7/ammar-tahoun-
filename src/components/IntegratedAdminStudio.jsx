@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ExternalLink, FolderPlus, ImagePlus, Lock, LogOut, MessageSquare, Shield, Trash2, Trophy, X } from "lucide-react";
+import { ExternalLink, FolderPlus, ImagePlus, Lock, LogOut, MessageSquare, Shield, ShieldCheck, Trash2, Trophy, X } from "lucide-react";
 import {
   cloneProfile,
   createCertificateForm,
@@ -94,6 +94,7 @@ function ModalShell({ title, eyebrow, description, icon: Icon, onClose, children
 
 export default function IntegratedAdminStudio({
   adminPromptOpen,
+  onOpenAdminPrompt,
   onCloseAdminPrompt,
   onVerifyAdminToken,
   editorState,
@@ -383,29 +384,44 @@ export default function IntegratedAdminStudio({
 
   return (
     <>
-      {isAdminAuthenticated ? (
-        <>
-          {/* Floating Admin FAB Button - Positioned safely above the AI Chat button */}
-          <motion.button
-            type="button"
-            onClick={() => setPanelOpen(!panelOpen)}
-            className="fixed bottom-[5.75rem] right-6 z-[95] flex h-12 w-12 items-center justify-center rounded-full border border-violet-400/40 bg-slate-950/90 text-violet-300 shadow-[0_0_24px_rgba(139,92,246,0.4)] backdrop-blur-xl transition hover:border-violet-300 hover:bg-violet-600/30 hover:text-white"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.92 }}
-            title="لوحة تحكم المالك (mart33645@gmail.com)"
-            aria-label="Toggle Quick Admin Studio"
-          >
-            <Shield size={22} className="text-violet-300" />
+      {/* Floating Admin FAB Button - Positioned safely above the AI Chat button */}
+      <motion.button
+        type="button"
+        onClick={() => {
+          if (isAdminAuthenticated) {
+            setPanelOpen(!panelOpen);
+          } else if (onOpenAdminPrompt) {
+            onOpenAdminPrompt();
+          }
+        }}
+        className="fixed bottom-[5.75rem] right-6 z-[95] flex h-12 w-12 items-center justify-center rounded-full border border-violet-400/40 bg-slate-950/90 text-violet-300 shadow-[0_0_24px_rgba(139,92,246,0.4)] backdrop-blur-xl transition hover:border-violet-300 hover:bg-violet-600/30 hover:text-white"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.92 }}
+        title={isAdminAuthenticated ? "لوحة تحكم المالك (mart33645@gmail.com)" : "تسجيل دخول المالك (mart33645@gmail.com)"}
+        aria-label="Toggle Quick Admin Studio"
+      >
+        {isAdminAuthenticated ? (
+          <>
+            <ShieldCheck size={22} className="text-emerald-300" />
             <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500" />
             </span>
-          </motion.button>
+          </>
+        ) : (
+          <div className="relative flex items-center justify-center">
+            <Shield size={20} className="text-violet-300/80" />
+            <span className="absolute -bottom-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-slate-900 border border-violet-400/50 text-violet-300">
+              <Lock size={8} />
+            </span>
+          </div>
+        )}
+      </motion.button>
 
-          {/* Collapsible Quick Admin Panel - Positioned at bottom-[9.5rem] right-6 so it floats safely above both buttons */}
-          <AnimatePresence>
-            {panelOpen && (
-              <motion.div
+      {/* Collapsible Quick Admin Panel - Positioned at bottom-[9.5rem] right-6 so it floats safely above both buttons */}
+      <AnimatePresence>
+        {isAdminAuthenticated && panelOpen && (
+          <motion.div
                 initial={{ opacity: 0, y: 20, scale: 0.94 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 20, scale: 0.94 }}
@@ -568,33 +584,43 @@ export default function IntegratedAdminStudio({
               </motion.div>
             )}
           </AnimatePresence>
-        </>
-      ) : null}
 
       <AnimatePresence>
         {adminPromptOpen ? (
           <ModalShell
-            eyebrow="Hidden Admin Access"
-            title={isAdminAuthenticated ? "Admin mode is active" : "Unlock admin mode"}
-            description="وصول خاص بك فقط. استخدم نفس المفتاح PORTFOLIO_ADMIN_TOKEN. افتح اللوحة بـ Ctrl+Shift+A أو نقرتين على اسمك في الهيدر/الفوتر، أو من الصفحة /admin."
+            eyebrow="Portfolio Admin | mart33645@gmail.com"
+            title={isAdminAuthenticated ? "لوحة الإدارة مفعلة" : "تسجيل دخول المالك"}
+            description="دخول مخصص حصرياً لعمار طاحون (mart33645@gmail.com). بمجرد إدخال بريدك والمفتاح، ستفتح لك أدوات التعديل السريع ولوحة التحكم الكاملة."
             icon={Lock}
             onClose={onCloseAdminPrompt}
           >
             <form onSubmit={handleVerifySubmit} className="grid gap-4">
               <label className="input-shell">
-                <span>Admin key</span>
+                <span>بريد المالك (Owner Gmail)</span>
+                <input
+                  type="email"
+                  value={adminEmail}
+                  onChange={(event) => setAdminEmail(event.target.value)}
+                  placeholder="mart33645@gmail.com"
+                  autoComplete="email"
+                  required
+                />
+              </label>
+
+              <label className="input-shell">
+                <span>المفتاح السري أو كلمة المرور</span>
                 <input
                   type="password"
                   value={adminToken}
                   onChange={(event) => onAdminTokenChange(event.target.value)}
-                  placeholder="Enter your private admin key"
+                  placeholder="أدخل المفتاح السري أو كلمة المرور"
                   autoComplete="current-password"
                   required
                 />
               </label>
 
-              <div className="rounded-[1.5rem] border border-white/10 bg-white/5 p-4 text-sm leading-7 text-white/66">
-                After the key is verified, edit controls become visible only in your current session and stay hidden from normal visitors.
+              <div className="rounded-[1.5rem] border border-white/10 bg-white/5 p-4 text-xs leading-6 text-white/66">
+                الوصول محمي بنظام أمان مشفر. لن تظهر أدوات التعديل إلا بعد التحقق من أنك صاحب الحساب mart33645@gmail.com.
               </div>
 
               <label className="flex items-center gap-3 rounded-[1.2rem] border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/72">
@@ -604,7 +630,7 @@ export default function IntegratedAdminStudio({
                   onChange={(event) => onRememberAdminChange(event.target.checked)}
                   className="h-4 w-4 accent-cyan-300"
                 />
-                <span>Remember on this browser only</span>
+                <span>تذكرني على هذا المتصفح</span>
               </label>
 
               <div className="flex flex-wrap items-center justify-between gap-4">
@@ -617,14 +643,14 @@ export default function IntegratedAdminStudio({
                         : "text-white/52"
                   }`}
                 >
-                  {status.message || "Admin tools stay invisible until you unlock them."}
+                  {status.message || "أدوات الإدارة تبقى مخفية عن الزوار العاديين."}
                 </p>
                 <button
                   type="submit"
                   disabled={busy}
                   className="inline-flex items-center justify-center rounded-full border border-cyan-300/25 bg-cyan-300/10 px-5 py-3 text-sm font-medium text-cyan-100 transition hover:bg-cyan-300/16 disabled:cursor-not-allowed disabled:opacity-45"
                 >
-                  {busy ? "Checking..." : isAdminAuthenticated ? "Refresh Access" : "Unlock Admin Mode"}
+                  {busy ? "جارٍ التحقق..." : isAdminAuthenticated ? "تحديث الوصول" : "دخول لوحة التحكم"}
                 </button>
               </div>
             </form>

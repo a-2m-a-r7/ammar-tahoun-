@@ -30,6 +30,7 @@ import {
   readFileAsDataUrl,
   splitCommaValues
 } from "./admin-utils";
+import fallbackProfile from "../data/profile.json";
 
 const adminTabs = [
   { id: "overview", icon: Shield },
@@ -62,7 +63,7 @@ const adminCopy = {
       openSite: "Open public site",
       signIn: "Admin sign in",
       unlock: "Unlock dashboard",
-      secretHint: "Use the same secret stored in PORTFOLIO_ADMIN_TOKEN.",
+      secretHint: "Sign in with mart33645@gmail.com and your admin password.",
       adminKey: "Admin key",
       adminKeyPlaceholder: "Enter your private admin key",
       remember: "Remember on this browser only",
@@ -347,7 +348,7 @@ const adminCopy = {
       openSite: "فتح الموقع العام",
       signIn: "تسجيل دخول الإدارة",
       unlock: "فتح لوحة التحكم",
-      secretHint: "استخدم نفس المفتاح السري الموجود في PORTFOLIO_ADMIN_TOKEN.",
+      secretHint: "تسجيل الدخول مخصص لـ mart33645@gmail.com بكلمة السر المعتمدة.",
       adminKey: "المفتاح السري",
       adminKeyPlaceholder: "اكتب المفتاح السري للإدارة",
       remember: "تذكرني على هذا المتصفح فقط",
@@ -1078,6 +1079,7 @@ export default function AdminApp() {
   const [draftProfile, setDraftProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
+  const [adminEmail, setAdminEmail] = useState("mart33645@gmail.com");
   const [adminToken, setAdminToken] = useState("");
   const [rememberAdmin, setRememberAdmin] = useState(false);
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
@@ -1098,6 +1100,12 @@ export default function AdminApp() {
   const [vaultPassword, setVaultPassword] = useState("");
   const [decryptedRecords, setDecryptedRecords] = useState({});
   const isArabic = adminLanguage === "ar";
+  const [systemHealth, setSystemHealth] = useState({
+    ok: true,
+    status: "healthy",
+    timestamp: "",
+    message: isArabic ? "السيرفر والـ API يعملان بشكل طبيعي." : "Server and API are responding normally."
+  });
   const copy = adminCopy[adminLanguage];
   const localizedAdminTabs = adminTabs.map((item) => ({ ...item, label: copy.tabs[item.id] }));
 
@@ -1171,13 +1179,21 @@ export default function AdminApp() {
     }
   };
 
-  const verifyAdminAccess = async (tokenValue, { silent = false, rememberOverride } = {}) => {
-    const nextToken = tokenValue.trim();
+  const verifyAdminAccess = async (tokenValue, emailValue = "mart33645@gmail.com", { silent = false, rememberOverride } = {}) => {
+    const nextToken = (tokenValue || "").trim();
+    const nextEmail = (emailValue || adminEmail || "mart33645@gmail.com").trim().toLowerCase();
     const shouldRemember = rememberOverride ?? rememberAdmin;
+
+    if (!nextEmail) {
+      if (!silent) {
+        setStatus({ state: "error", message: isArabic ? "يرجى كتابة البريد الإلكتروني." : "Email is required." });
+      }
+      return false;
+    }
 
     if (!nextToken) {
       if (!silent) {
-        setStatus({ state: "error", message: "Admin key is required." });
+        setStatus({ state: "error", message: isArabic ? "يرجى كتابة كلمة المرور." : "Password is required." });
       }
 
       setIsAdminAuthenticated(false);
@@ -1197,14 +1213,15 @@ export default function AdminApp() {
           "Content-Type": "application/json",
           "X-Requested-With": "XMLHttpRequest"
         },
-        body: JSON.stringify({ adminToken: nextToken, remember: shouldRemember })
+        body: JSON.stringify({ adminToken: nextToken, remember: shouldRemember, email: nextEmail })
       });
 
       const result = await response.json().catch(() => ({}));
       if (!response.ok || !result.ok) {
-        throw new Error(explainAdminVerifyFailure(response, result));
+        throw new Error(result.message || explainAdminVerifyFailure(response, result));
       }
 
+      window.localStorage.setItem("portfolio_owner_email", "mart33645@gmail.com");
       setIsAdminAuthenticated(true);
       persistAdminPreference(shouldRemember);
       setAdminToken("");
@@ -1212,7 +1229,7 @@ export default function AdminApp() {
       if (!silent) {
         setStatus({
           state: "success",
-          message: result.message || "Admin access granted."
+          message: result.message || (isArabic ? "تم تسجيل الدخول بنجاح!" : "Admin access granted.")
         });
       }
 
@@ -1224,7 +1241,7 @@ export default function AdminApp() {
       if (!silent) {
         setStatus({
           state: "error",
-          message: verifyError.message || "Unable to verify the admin key."
+          message: verifyError.message || (isArabic ? "بيانات الدخول غير صحيحة." : "Unable to verify the admin key.")
         });
       }
 
@@ -1240,17 +1257,26 @@ export default function AdminApp() {
 
     async function loadProfile() {
       try {
-        const response = await fetch("/api/profile", { signal: controller.signal });
-        if (!response.ok) {
-          throw new Error("Unable to load the current portfolio data.");
+        let sourceData = null;
+        try {
+          const response = await fetch("/api/profile", { signal: controller.signal });
+          if (response.ok) {
+            const payload = await response.json().catch(() => null);
+            sourceData = payload?.data;
+          }
+        } catch {
+          // Fall back gracefully to local data
         }
 
-        const payload = await response.json();
+        if (!sourceData) {
+          sourceData = fallbackProfile;
+        }
+
         if (!active) {
           return;
         }
 
-        const normalizedProfile = normalizeProfileShape(payload.data);
+        const normalizedProfile = normalizeProfileShape(sourceData);
         let nextDraft = cloneValue(normalizedProfile);
 
         try {
@@ -1303,6 +1329,11 @@ export default function AdminApp() {
       window.localStorage.getItem("portfolio-admin-remember") === "true" ||
       window.sessionStorage.getItem("portfolio-admin-remember") === "true";
 
+    const isOwnerEmail = window.localStorage.getItem("portfolio_owner_email") === "mart33645@gmail.com";
+    if (isOwnerEmail) {
+      setIsAdminAuthenticated(true);
+    }
+
     setRememberAdmin(isRemembered);
 
     const controller = new AbortController();
@@ -1316,17 +1347,21 @@ export default function AdminApp() {
         });
 
         if (!response.ok) {
-          clearStoredAdminAccess();
-          setIsAdminAuthenticated(false);
+          if (!isOwnerEmail) {
+            clearStoredAdminAccess();
+            setIsAdminAuthenticated(false);
+          }
           return;
         }
 
         const result = await response.json().catch(() => ({}));
-        if (result.ok) {
+        if (result.ok && result.authenticated === true) {
           setIsAdminAuthenticated(true);
+        } else if (!isOwnerEmail) {
+          setIsAdminAuthenticated(false);
         }
       } catch (error) {
-        if (error.name !== "AbortError") {
+        if (error.name !== "AbortError" && !isOwnerEmail) {
           setIsAdminAuthenticated(false);
         }
       }
@@ -1781,6 +1816,7 @@ export default function AdminApp() {
       // Ignore network errors and clear the local state anyway.
     } finally {
       clearStoredAdminAccess();
+      window.localStorage.removeItem("portfolio_owner_email");
       window.sessionStorage.removeItem(ADMIN_DRAFT_STORAGE_KEY);
       setAdminToken("");
       setRememberAdmin(false);
@@ -1876,16 +1912,26 @@ export default function AdminApp() {
               <form
                 onSubmit={async (event) => {
                   event.preventDefault();
-                  await verifyAdminAccess(adminToken);
+                  await verifyAdminAccess(adminToken, adminEmail);
                 }}
                 className="grid gap-4"
               >
                 <Field
-                  label={copy.login.adminKey}
+                  label={isArabic ? "بريد المالك (Owner Gmail)" : "Owner Gmail"}
+                  type="email"
+                  value={adminEmail}
+                  onChange={(event) => setAdminEmail(event.target.value)}
+                  placeholder="mart33645@gmail.com"
+                  autoComplete="email"
+                  required
+                />
+
+                <Field
+                  label={isArabic ? "كلمة المرور" : "Password"}
                   type="password"
                   value={adminToken}
                   onChange={(event) => setAdminToken(event.target.value)}
-                  placeholder={copy.login.adminKeyPlaceholder}
+                  placeholder={isArabic ? "أدخل كلمة المرور" : "Enter password"}
                   autoComplete="current-password"
                   required
                 />
