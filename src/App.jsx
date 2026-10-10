@@ -716,7 +716,7 @@ export default function App() {
   const [adminToken, setAdminToken] = useState("");
   const [rememberAdmin, setRememberAdmin] = useState(false);
   const [adminPromptOpen, setAdminPromptOpen] = useState(false);
-  // Owner Access Shortcut
+  // Owner Access Shortcut & URL param
   useEffect(() => {
     const handleAdminKey = (e) => {
       if ((e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "a") || (e.altKey && e.key.toLowerCase() === "a")) {
@@ -725,6 +725,14 @@ export default function App() {
       }
     };
     window.addEventListener("keydown", handleAdminKey);
+
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      if (params.has("admin") || params.has("login")) {
+        setAdminPromptOpen(true);
+      }
+    }
+
     return () => window.removeEventListener("keydown", handleAdminKey);
   }, []);
 
@@ -1721,7 +1729,7 @@ export default function App() {
       <footer className="px-4 pb-8 md:px-6 md:pb-10">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 rounded-[2rem] border border-white/8 bg-slate-950/60 px-6 py-6 backdrop-blur-xl md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
-            <p className="font-display cursor-default text-sm uppercase tracking-[0.12em] text-white">{profile.personal.nativeName}</p>
+            <p onDoubleClick={() => setAdminPromptOpen(true)} className="font-display cursor-default text-sm uppercase tracking-[0.12em] text-white">{profile.personal.nativeName}</p>
             <p className="text-sm text-white/48">
               Built with React, Tailwind CSS, Framer Motion, and a secure contact backend.
             </p>
@@ -1739,11 +1747,11 @@ export default function App() {
               <button
                 type="button"
                 onClick={() => setAdminPromptOpen(true)}
-                className="opacity-20 hover:opacity-100 transition p-1 text-white/40 hover:text-cyan-300"
-                title="Owner Login (mart33645@gmail.com)"
+                className="opacity-0 hover:opacity-10 transition p-1 text-white/40"
+                title="Ammar"
                 aria-label="Owner Sign In"
               >
-                <Lock size={12} />
+                <Lock size={10} />
               </button>
             )}
           </div>

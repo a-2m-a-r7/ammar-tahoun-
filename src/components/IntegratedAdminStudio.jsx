@@ -384,44 +384,29 @@ export default function IntegratedAdminStudio({
 
   return (
     <>
-      {/* Floating Admin FAB Button - Positioned safely above the AI Chat button */}
-      <motion.button
-        type="button"
-        onClick={() => {
-          if (isAdminAuthenticated) {
-            setPanelOpen(!panelOpen);
-          } else if (onOpenAdminPrompt) {
-            onOpenAdminPrompt();
-          }
-        }}
-        className="fixed bottom-[5.75rem] right-6 z-[95] flex h-12 w-12 items-center justify-center rounded-full border border-violet-400/40 bg-slate-950/90 text-violet-300 shadow-[0_0_24px_rgba(139,92,246,0.4)] backdrop-blur-xl transition hover:border-violet-300 hover:bg-violet-600/30 hover:text-white"
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.92 }}
-        title={isAdminAuthenticated ? "لوحة تحكم المالك (mart33645@gmail.com)" : "تسجيل دخول المالك (mart33645@gmail.com)"}
-        aria-label="Toggle Quick Admin Studio"
-      >
-        {isAdminAuthenticated ? (
-          <>
+      {/* Floating Admin FAB Button & Panel - STRICTLY rendered ONLY for authenticated owner mart33645@gmail.com */}
+      {isAdminAuthenticated ? (
+        <>
+          <motion.button
+            type="button"
+            onClick={() => setPanelOpen(!panelOpen)}
+            className="fixed bottom-[5.75rem] right-6 z-[95] flex h-12 w-12 items-center justify-center rounded-full border border-violet-400/40 bg-slate-950/90 text-violet-300 shadow-[0_0_24px_rgba(139,92,246,0.4)] backdrop-blur-xl transition hover:border-violet-300 hover:bg-violet-600/30 hover:text-white"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.92 }}
+            title="لوحة تحكم المالك (mart33645@gmail.com)"
+            aria-label="Toggle Quick Admin Studio"
+          >
             <ShieldCheck size={22} className="text-emerald-300" />
             <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500" />
             </span>
-          </>
-        ) : (
-          <div className="relative flex items-center justify-center">
-            <Shield size={20} className="text-violet-300/80" />
-            <span className="absolute -bottom-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-slate-900 border border-violet-400/50 text-violet-300">
-              <Lock size={8} />
-            </span>
-          </div>
-        )}
-      </motion.button>
+          </motion.button>
 
-      {/* Collapsible Quick Admin Panel - Positioned at bottom-[9.5rem] right-6 so it floats safely above both buttons */}
-      <AnimatePresence>
-        {isAdminAuthenticated && panelOpen && (
-          <motion.div
+          {/* Collapsible Quick Admin Panel - Positioned at bottom-[9.5rem] right-6 so it floats safely above both buttons */}
+          <AnimatePresence>
+            {panelOpen && (
+              <motion.div
                 initial={{ opacity: 0, y: 20, scale: 0.94 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 20, scale: 0.94 }}
@@ -584,6 +569,8 @@ export default function IntegratedAdminStudio({
               </motion.div>
             )}
           </AnimatePresence>
+        </>
+      ) : null}
 
       <AnimatePresence>
         {adminPromptOpen ? (
